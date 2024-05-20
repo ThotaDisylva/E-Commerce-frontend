@@ -8,7 +8,7 @@ import { Orders } from "../OrdersPage/Orders";
 import { Route, Routes } from "react-router-dom";
 import { Adminsidebar } from "../../Adminsidebar";
 
-export const AdminPage = () => {
+const AdminPage = () => {
   return (
     <div className="flex ">
       <CssBaseline />
@@ -26,3 +26,5 @@ export const AdminPage = () => {
     </div>
   );
 };
+
+export default AdminPage;
