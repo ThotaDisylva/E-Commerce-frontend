@@ -1,10 +1,9 @@
 import React from "react";
-import OrderAddressCard from "../../components/Address/OrderAddressCard";
-import { Button, Step, StepLabel, Stepper } from "@mui/material";
 import productsData from "../../components/ProductCard/ProductsData";
+import { Button, Step, StepLabel, Stepper } from "@mui/material";
+import OrderDetailsCard from "../../components/OrderDetails/OrderDetailsCard/OrderDetailsCard";
+import OrderAddressCard from "../../components/Address/OrderAddressCard";
 import ProductCardSummary from "../../components/ProductCard/ProductCardSummary/ProductCardSummary";
-
-import OrderDetailsCard from "../../components/OrderDetailsCard/OrderDetailsCard";
 
 const steps = [
   "Placed",
