@@ -52,7 +52,7 @@ export const Orders = () => {
             <TableCell align="center">Price</TableCell>
             <TableCell align="center">Status</TableCell>
             <TableCell align="center">Update</TableCell>
-            <TableCell align="center">Delete</TableCell>
+            {/* <TableCell align="center">Delete</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>

@@ -11,8 +11,8 @@ import { Adminsidebar } from "../../Adminsidebar";
 const AdminPage = () => {
   return (
     <div className="flex ">
-      <CssBaseline />
-      <div className="w-[15%]  border border-r-grey-300 h-full">
+      {/* <CssBaseline /> */}
+      <div>
         <Adminsidebar/>
       </div>
       <div className="w-[85%]">
