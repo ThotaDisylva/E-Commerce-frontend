@@ -21,7 +21,6 @@ function App() {
 
   useEffect(()=>{
     const temp = localStorage.getItem("ecommerce-app");
-    console.log("look ->",temp.jwtToken)
     if(localStorage.getItem("role") === "admin"){
       setAdmin(true)
     }
