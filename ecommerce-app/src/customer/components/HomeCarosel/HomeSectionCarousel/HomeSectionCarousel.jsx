@@ -4,12 +4,11 @@ import "react-alice-carousel/lib/alice-carousel.css";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { Button, IconButton } from "@mui/material";
-import productsData from "../../ProductCard/ProductsData";
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import ProductCard from "../../ProductDetails/ProductCard";
 import { Link } from "react-router-dom";
 
-const HomeSectionCarousel = () => {
+const HomeSectionCarousel = ({subCategory, productsData}) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef();
 
@@ -42,7 +41,7 @@ const HomeSectionCarousel = () => {
   return (
     <div className="relative border bg-white">
     <div className="flex items-center justify-between w-full px-6 py-5">
-      <h2 className="text-2xl font-extrabold text-gray-800  ">Smart Phones</h2>
+      <h2 className="text-2xl font-extrabold text-gray-800  ">{subCategory}</h2>
       <IconButton color="primary" sx={{backgroundColor:"blue", height:"25px", width:"25px", '&:hover':{backgroundColor:"blue"}}}>
           <ChevronRightRoundedIcon sx={{color:"white"}}/>
       </IconButton>

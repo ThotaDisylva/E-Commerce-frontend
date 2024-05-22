@@ -7,6 +7,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Badge,
 } from "@mui/material";
 import {
   ShoppingCartOutlined as ShoppingCartOutlinedIcon,
@@ -21,12 +22,15 @@ import SignUp from "./AuthPopup/SignUp";
 import Popup from "reactjs-popup";
 import { Link } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = ({cartItemCount}) => {
   const [cardOpen, setCardOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [subCategoryOpen, setSubCategoryOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  console.log(cartItemCount)
+
+
     const [isSignIn, setIsSignIn] = useState(true);
     const openPopup = () => {
       setIsPopupOpen(true);
@@ -104,7 +108,9 @@ const NavBar = () => {
         <div className="lg:flex lg:flex-row lg:items-center lg:justify-end hidden">
         <Link to={"/cart"}>
           <IconButton size="large" aria-label="cart">
+          <Badge badgeContent={cartItemCount} color="primary">
             <ShoppingCartOutlinedIcon fontSize="inherit" />
+          </Badge>
           </IconButton>
         </Link>
             <Button variant="contained" onClick={openPopup}>
@@ -128,7 +134,9 @@ const NavBar = () => {
           <div className="flex items-center hover:bg-[#F1F2F4] cursor-pointer px-5">
           <Link to={"/cart"}>
             <div className="my-3">
-              <ShoppingCartOutlinedIcon fontSize="medium" />
+              <Badge badgeContent={cartItemCount} color="primary">
+                <ShoppingCartOutlinedIcon fontSize="medium" />
+              </Badge>
               <span className="ml-2">Cart</span>
             </div>
           </Link>

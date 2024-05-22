@@ -39,6 +39,7 @@ function CheckoutAddressCard() {
             </Typography>
             <Typography variant="body1" style={{ textAlign: 'left', marginBottom: '8px' }}>
               Bhubaneswar, ODISHA - 751014,
+              {/* {`${city}, ${state} - ${pincode}`} */}
             </Typography>
             <Typography variant="body1" style={{ textAlign: 'left', marginBottom: '8px' }}>
             6371949629

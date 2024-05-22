@@ -6,7 +6,7 @@ import Home from './customer/pages/HomePage/Home'
 import { Toaster } from "react-hot-toast";
 import CartPage from "./customer/pages/CartPage/CartPage";
 
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import SearchPage from "./customer/pages/SearchPage/SearchPage";
 import { useEffect, useState } from "react";
 import CheckoutAddressPage from "./customer/pages/CheckoutAddressPage/CheckoutAddressPage";
@@ -14,27 +14,23 @@ import OrderSummaryPage from "./customer/pages/OrderSummaryPage/OrderSummaryPage
 import MyProfilePage from "./customer/pages/MyProfilePage/MyProfilePage";
 import ProductDetailsPage from "./customer/pages/ProductDetailsPage/ProductDetailsPage";
 import AdminPage from "./Admin/pages/AdminPage/AdminPage";
+import { useUserInfoContext } from "./context/UserInfoContext";
 
 function App() {
 
-  const [admin, setAdmin] = useState(false);
+  const {role, cartItemCount} = useUserInfoContext();
 
-  useEffect(()=>{
-    const temp = localStorage.getItem("ecommerce-app");
-    console.log("look ->",temp.jwtToken)
-    if(localStorage.getItem("role") === "admin"){
-      setAdmin(true)
-    }
-  },[])
+  console.log(cartItemCount);
 
-  
+
+
   return (
     <>
 
-      {!admin && (<div>
-        <NavBar/>
+      {!(role==="admin") && (<div>
+        <NavBar cartItemCount={role===null? 0: cartItemCount}/>
       </div>)}
-      <div className={admin? "pt-[2rem]":"pt-[6rem]"}>
+      <div className={(role==="admin")? "pt-[2rem]":"pt-[6rem]"}>
       <Toaster/>
         <Routes>
             <Route path="/" element=<Home />/>
@@ -47,11 +43,11 @@ function App() {
             <Route path="/orderDetails" element=<OrderDetailsPage />/> 
             <Route path="/search" element=<SearchPage/>/>
             <Route path="/productDetails" element=<ProductDetailsPage />/>
-            {admin && (<Route path="/admin" element=<AdminPage/>/>)}
+            <Route path="/admin" element={(role!=="admin") ? <Navigate to="/"/> : <AdminPage/>}/>
         </Routes>
         
       </div>
-      {!admin && (<div>
+      {!(role==="admin")&& (<div>
         <Footer/>
       </div>)}
     </>
