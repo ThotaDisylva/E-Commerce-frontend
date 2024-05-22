@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
+import { useUserInfoContext } from '../context/UserInfoContext';
 
 const useSignup =() => {
     const [loading, setLoading] = useState(false);
+
+    const {setRole} = useUserInfoContext();
 
     const signup = async ({ firstName, lastName, email, password, phoneNumber, role }) => {
 
@@ -27,7 +30,12 @@ const useSignup =() => {
 
             console.log("data"+data);
 
-            localStorage.setItem("ecommerce-app",data); 
+
+            setRole(data?.role);
+        
+            localStorage.setItem("role", data?.role);
+            localStorage.setItem("jwtToken", data?.jwtToken);
+            localStorage.setItem("userId", data?.userId);
 
         } catch (error) {
             toast.error(error.message);

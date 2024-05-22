@@ -1,9 +1,11 @@
 import {React} from 'react'
 import toast from 'react-hot-toast';
 import { useState } from 'react';
+import { useUserInfoContext } from '../context/UserInfoContext';
 
 const useSignin = () => {
     const [loading, setLoading] = useState(false);
+    const {setRole} = useUserInfoContext();
 
     const signin = async ({ email, password }) => {
         const success = handleInputErrors({email, password});
@@ -23,10 +25,12 @@ const useSignin = () => {
                 throw new Error(data.error);
             }
 
+            setRole(data?.role);
+
             localStorage.setItem("role", data?.role);
             localStorage.setItem("jwtToken", data?.jwtToken);
             localStorage.setItem("userId", data?.userId);
-            setUser(data);
+
 
         } catch (error) {
             toast.error(error.message);
