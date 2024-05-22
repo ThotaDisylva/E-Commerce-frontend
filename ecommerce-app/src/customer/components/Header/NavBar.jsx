@@ -29,18 +29,15 @@ const NavBar = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [isSignIn, setIsSignIn] = useState(true);
     const openPopup = () => {
-      setIsSignIn(true); 
       setIsPopupOpen(true);
     };
-  
     const closePopup = () => {
       setIsPopupOpen(false);
     };
-  
     const toggleForm = () => {
       setIsSignIn(!isSignIn);
     };
-  
+
   const dummySubcategories = {
     "Category 1": ["Subcategory 1.1", "Subcategory 1.2", "Subcategory 1.3"],
     "Category 2": ["Subcategory 2.1", "Subcategory 2.2"],
@@ -184,16 +181,11 @@ const NavBar = () => {
         </List>
       </Drawer>
 
-      {/* {isPopupOpen && (
+      {isPopupOpen && (
         <Popup open={isPopupOpen} closeOnDocumentClick onClose={closePopup}>
           {isSignIn ? <SignIn toggleForm={toggleForm} /> : <SignUp toggleForm={toggleForm} />}
         </Popup>
-      )} */}
-      {isPopupOpen && (
-          <Popup open={isPopupOpen} closeOnDocumentClick onClose={closePopup}>
-            {isSignIn ? <SignIn toggleForm={toggleForm} /> : <SignUp toggleForm={toggleForm} />}
-          </Popup>
-        )}
+      )}
       </div>
       
   );
