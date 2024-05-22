@@ -71,11 +71,11 @@ const Monthlyoverview = () => {
     <Card sx = {{width:"100%",mt:2}}>
         <Container>
         <CardHeader title="Monthly Overview"
-            action = {
-                <IconButton size = "small">
-                    <MoreVertIcon/>
-                </IconButton>
-            }
+            // action = {
+            //     <IconButton size = "small">
+            //         <MoreVertIcon/>
+            //     </IconButton>
+            // }
             subheader = {
                 <Typography variant='body2'>
                     <Box component='span' sx = {{fontWeight:600 ,color:'text.primary'}}>

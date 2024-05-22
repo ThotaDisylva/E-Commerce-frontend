@@ -71,7 +71,8 @@ const OrderInAdmin = ({orders}) => {
                         ))}
                     </List>
                 </Popover>
-            </TableCell><TableCell align="center"><Button variant="contained" onClick={handleDelete}>Delete</Button></TableCell>
+            </TableCell>
+            {/* <TableCell align="center"><Button variant="contained" onClick={handleDelete}>Delete</Button></TableCell> */}
 </TableRow></>
     );
 }
