@@ -26,7 +26,7 @@ const Home = () => {
       
       <div className='space-y-10 pb-20 pt-10 flex flex-col justify-center px-5 lg:px-10'>
 
-      {categoryInfo && categoryInfo.map((subCategory) => (
+      {categoryInfo?.map((subCategory) => (
           <HomeSectionCarosel
             key={subCategory.subCategoryId}
             subCategory={subCategory.subCategoryName}

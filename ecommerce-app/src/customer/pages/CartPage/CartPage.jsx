@@ -11,11 +11,11 @@ const CartPage=()=>{
     const {cartPageInfo} = useCartPageInfo();
     const {cartItemsInfo, priceDetails} = useUserInfoContext();
 
-    console.log("data-->",cartItemsInfo)
+    // console.log("data-->",cartItemsInfo)
 
     //later fix: it should not fetch data from backend, everytime a user open cart who have not added any product to cart 
     useEffect(() => {
-        if(cartItemsInfo.length===0){
+        if(cartItemsInfo?.length===0){
             cartPageInfo();
         }
     }, []);

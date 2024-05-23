@@ -18,8 +18,11 @@ const useCartPageInfo = () => {
 
                 const data = response.data;
                 setCartItemsInfo(data.cartItems);
-                setCartItemCount(data.cartItems.length);
                 calculatePriceDetails(data.cartItems);
+
+                localStorage.setItem("cart_items_info", cartItemsInfo)
+                
+
 
             } catch (error) {
                 console.error('Error fetching cart page info:', error);
@@ -48,6 +51,7 @@ const useCartPageInfo = () => {
         };
 
         setPriceDetails(priceDetails);
+        localStorage.setItem("cart_price_details", priceDetails);
     };
 
     const reduceCartItem = async (cartId) => {
@@ -73,6 +77,10 @@ const useCartPageInfo = () => {
                     setCartItemCount(prevCount => prevCount - 1);
                     setCartItemsInfo(updatedCartItems);
                     calculatePriceDetails(updatedCartItems);
+
+                    localStorage.setItem("cart_items_count", cartItemCount)
+                    localStorage.setItem("cart_items_info", cartItemsInfo)
+
                 }
             } catch (error) {
                 console.error('Error reducing cart item quantity:', error);
@@ -103,6 +111,9 @@ const useCartPageInfo = () => {
                     setCartItemCount(prevCount => prevCount + 1);
                     setCartItemsInfo(updatedCartItems);
                     calculatePriceDetails(updatedCartItems);
+
+                    localStorage.setItem("cart_items_count", cartItemCount)
+                    localStorage.setItem("cart_items_info", cartItemsInfo)
                 }
             } catch (error) {
                 console.error('Error adding cart item:', error);
@@ -128,6 +139,9 @@ const useCartPageInfo = () => {
                     setCartItemsInfo(updatedCartItems);
                     setCartItemCount(prevCount => prevCount - quantity);
                     calculatePriceDetails(updatedCartItems);
+
+                    localStorage.setItem("cart_items_count", cartItemCount)
+                    localStorage.setItem("cart_items_info", cartItemsInfo)
                 }
             } catch (error) {
                 console.error('Error removing cart item:', error);

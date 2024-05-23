@@ -20,7 +20,8 @@ function App() {
 
   const {role, cartItemCount} = useUserInfoContext();
 
-  console.log(cartItemCount);
+  // console.log(cartItemCount);
+  console.log(role);
 
 
 

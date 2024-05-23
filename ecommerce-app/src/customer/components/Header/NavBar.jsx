@@ -21,26 +21,37 @@ import SignIn from "./AuthPopup/SignIn";
 import SignUp from "./AuthPopup/SignUp";
 import Popup from "reactjs-popup";
 import { Link } from "react-router-dom";
+import { useUserInfoContext } from "../../../context/UserInfoContext";
+import useHomePageInfo from "../../../hooks/useHomePageInfo";
 
-const NavBar = ({cartItemCount}) => {
+const NavBar = ({ cartItemCount }) => {
   const [cardOpen, setCardOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [subCategoryOpen, setSubCategoryOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  console.log(cartItemCount)
+  // console.log(cartItemCount)
 
+  const { role } = useUserInfoContext();
+  const { loadHomePageInfo } = useHomePageInfo();
 
-    const [isSignIn, setIsSignIn] = useState(true);
-    const openPopup = () => {
-      setIsPopupOpen(true);
-    };
-    const closePopup = () => {
-      setIsPopupOpen(false);
-    };
-    const toggleForm = () => {
-      setIsSignIn(!isSignIn);
-    };
+  useEffect(() => {
+    if (role) {
+      loadHomePageInfo();
+      closePopup();
+    }
+  }, [role]);
+
+  const [isSignIn, setIsSignIn] = useState(true);
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+  const toggleForm = () => {
+    setIsSignIn(!isSignIn);
+  };
 
   const dummySubcategories = {
     "Category 1": ["Subcategory 1.1", "Subcategory 1.2", "Subcategory 1.3"],
@@ -61,34 +72,57 @@ const NavBar = ({cartItemCount}) => {
     console.log("Subcategory clicked:", subcategory);
   };
 
-  const categories = ["Category 1", "Category 2", "Category 3", "Category 2", "Category 3", "Category 2", "Category 3", "Category 2", "Category 3", "Category 2", "Category 3", "Category 2", "Category 3", "Category 2", "Category 3", "Category 2", "Category 3", "Category 2", "Category 3"];
+  const categories = [
+    "Category 1",
+    "Category 2",
+    "Category 3",
+    "Category 2",
+    "Category 3",
+    "Category 2",
+    "Category 3",
+    "Category 2",
+    "Category 3",
+    "Category 2",
+    "Category 3",
+    "Category 2",
+    "Category 3",
+    "Category 2",
+    "Category 3",
+    "Category 2",
+    "Category 3",
+    "Category 2",
+    "Category 3",
+  ];
 
   const handleMoreClick = () => {
-      setCardOpen(!cardOpen)
-    
+    setCardOpen(!cardOpen);
   };
 
   const handleDocumentClick = (event) => {
-    if (!event.target.closest('.menu-container')) {
+    if (!event.target.closest(".menu-container")) {
       setCardOpen(false);
     }
   };
-  
+
+  const handleProfileClick = () =>{
+
+  }
+
   useEffect(() => {
-    document.addEventListener('click', handleDocumentClick);
+    document.addEventListener("click", handleDocumentClick);
 
     return () => {
-      document.removeEventListener('click', handleDocumentClick);
+      document.removeEventListener("click", handleDocumentClick);
     };
   }, []);
 
   return (
     <div className="fixed top-0 left-0 w-full bg-white z-[1000]">
       <div className="flex flex-row justify-between items-center h-[4.5rem] px-1 md:px-7">
-      <Link to={"/"}>
-        <div className="text-4xl font-bold hidden md:block">SHOPIT</div>
-      </Link>
-        
+        <Link to={"/"}>
+          <div className="text-4xl font-bold hidden md:block">SHOPIT</div>
+        </Link>
+
         <div className="md:hidden">
           <IconButton
             size="large"
@@ -106,16 +140,30 @@ const NavBar = ({cartItemCount}) => {
           <CategoryButton />
         </div>
         <div className="lg:flex lg:flex-row lg:items-center lg:justify-end hidden">
-        <Link to={"/cart"}>
-          <IconButton size="large" aria-label="cart">
-          <Badge badgeContent={cartItemCount} color="primary">
-            <ShoppingCartOutlinedIcon fontSize="inherit" />
-          </Badge>
-          </IconButton>
-        </Link>
+          <Link to={"/cart"}>
+            <IconButton size="large" aria-label="cart" color="inherit">
+              <Badge badgeContent={cartItemCount} color="primary">
+                <ShoppingCartOutlinedIcon fontSize="inherit" />
+              </Badge>
+            </IconButton>
+          </Link>
+          {!role ? (
             <Button variant="contained" onClick={openPopup}>
               SIGN IN
             </Button>
+          ):(
+            <Link to={"/profile"}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                onClick={handleProfileClick}
+                color="inherit"
+              >
+                <AccountCircle  fontSize="inherit"/>
+              </IconButton>
+            </Link>
+        )}
+          
           
         </div>
         <div className="block lg:hidden menu-container">
@@ -132,19 +180,19 @@ const NavBar = ({cartItemCount}) => {
       {cardOpen && (
         <Card className="bg-white lg:hidden absolute top-[4.5rem] right-0 w-[10rem] py-2">
           <div className="flex items-center hover:bg-[#F1F2F4] cursor-pointer px-5">
-          <Link to={"/cart"}>
-            <div className="my-3">
-              <Badge badgeContent={cartItemCount} color="primary">
-                <ShoppingCartOutlinedIcon fontSize="medium" />
-              </Badge>
-              <span className="ml-2">Cart</span>
-            </div>
-          </Link>
+            <Link to={"/cart"}>
+              <div className="my-3">
+                <Badge badgeContent={cartItemCount} color="primary">
+                  <ShoppingCartOutlinedIcon fontSize="medium" />
+                </Badge>
+                <span className="ml-2">Cart</span>
+              </div>
+            </Link>
           </div>
           <div className="flex items-center hover:bg-[#F1F2F4] cursor-pointer px-5">
             <div className="my-3" onClick={openPopup}>
               <AccountCircle fontSize="medium" />
-              <span className="ml-2">LOGIN</span>
+              <span className="ml-2">{role ? "User":"SIGN IN"}</span>
             </div>
           </div>
         </Card>
@@ -160,7 +208,11 @@ const NavBar = ({cartItemCount}) => {
       >
         <List>
           {categories.map((category, index) => (
-            <ListItem button key={index} onClick={() => handleCategoryClick(category)}>
+            <ListItem
+              button
+              key={index}
+              onClick={() => handleCategoryClick(category)}
+            >
               <ListItemText primary={category} />
             </ListItem>
           ))}
@@ -191,11 +243,14 @@ const NavBar = ({cartItemCount}) => {
 
       {isPopupOpen && (
         <Popup open={isPopupOpen} closeOnDocumentClick onClose={closePopup}>
-          {isSignIn ? <SignIn toggleForm={toggleForm} /> : <SignUp toggleForm={toggleForm} />}
+          {isSignIn ? (
+            <SignIn toggleForm={toggleForm} />
+          ) : (
+            <SignUp toggleForm={toggleForm} />
+          )}
         </Popup>
       )}
-      </div>
-      
+    </div>
   );
 };
 

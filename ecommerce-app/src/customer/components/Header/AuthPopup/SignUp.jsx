@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, Checkbox, CircularProgress } from '@mui/material';
 import './SignUp.css';
 import useSignup from '../../../../hooks/useSignup';
+import { Link } from 'react-router-dom';
+import { useUserInfoContext } from '../../../../context/UserInfoContext';
 
 const SignUp = ({ toggleForm }) => {
 
@@ -15,6 +17,7 @@ const SignUp = ({ toggleForm }) => {
   });
 
   const { loading, signup } = useSignup();
+  const { role } = useUserInfoContext();
 
   const [registerAsManager, setRegisterAsManager] = useState(false);
 
@@ -94,9 +97,11 @@ const handleSubmit = async (event) => {
               Register as Admin
             </Typography>
           </Box>
-          <Button variant="contained" type="submit" fullWidth disabled={loading}>
-          {loading ? <CircularProgress size={"20px"}/> : "Register"}
-          </Button>
+          <Link to={role==="admin"? "/admin":"/"}>
+            <Button variant="contained" disabled={loading} type="submit" fullWidth >
+              {loading ? <CircularProgress size={"20px"}/> : "Register"}
+            </Button>
+          </Link>
           <Box textAlign="center">
             <Typography variant="body2">
               If you already have an account?{' '}

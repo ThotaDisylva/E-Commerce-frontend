@@ -6,6 +6,7 @@ import { useUserInfoContext } from '../context/UserInfoContext';
 const useSignin = () => {
     const [loading, setLoading] = useState(false);
     const {setRole} = useUserInfoContext();
+    
 
     const signin = async ({ email, password }) => {
         const success = handleInputErrors({email, password});
@@ -24,6 +25,8 @@ const useSignin = () => {
             if (data.error) {
                 throw new Error(data.error);
             }
+
+            console.log("role after sigin",data.role)
 
             setRole(data?.role);
 

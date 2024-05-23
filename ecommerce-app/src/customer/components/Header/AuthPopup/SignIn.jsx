@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
 import "./SignIn.css";
 import useSignin from '../../../../hooks/useSignin';
+import { useUserInfoContext } from '../../../../context/UserInfoContext';
+import { Link } from 'react-router-dom';
 
 const SignIn = ({ toggleForm }) => {
 
@@ -9,6 +11,7 @@ const SignIn = ({ toggleForm }) => {
   const [password, setPassword] = useState('');
 
   const { loading, signin }=useSignin();
+  const { role } = useUserInfoContext();
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -47,9 +50,12 @@ const SignIn = ({ toggleForm }) => {
 
           <Box display="flex" gap={2}></Box>
 
-          <Button variant="contained" disabled={loading} type="submit" fullWidth sx={{ mt: -3 }}>
-            {loading ? <CircularProgress size={"20px"}/> : "Login"}
-          </Button>
+          {/* <Link to={role==="admin"? "/admin":"/"}> */}
+            <Button variant="contained" disabled={loading} type="submit" fullWidth sx={{ mt: -3 }}>
+              {loading ? <CircularProgress size={"20px"}/> : "Login"}
+            </Button>
+          {/* </Link> */}
+          
           <Box textAlign="center">
             <Typography variant="body2">
               New User? <a href="#" onClick={toggleForm} className='text-blue-600'>Sign up</a>
