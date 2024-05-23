@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Stepper, Step, StepLabel, Typography } from '@mui/material';
 import productsData from '../../components/ProductCard/ProductsData';
 import CartItem from '../../components/OrderSummary/CartItem';
@@ -12,9 +12,19 @@ const steps = ['Login', 'Address', 'Order Summary', 'Payment'];
 export default function OrderSummaryPage() {
 
 
-  const {choosedAddress, cartItemsInfo,  priceDetails} = useUserInfoContext();
-  console.log("cartItem inside ordersummary -> ",cartItemsInfo);
-  console.log("priceDetails inside ordersummary -> ",priceDetails)
+  const {choosedAddress, cartItemsInfo,setCartItemsInfo,  priceDetails} = useUserInfoContext();
+  // console.log("cartItem inside ordersummary -> ",cartItemsInfo);
+  // console.log("priceDetails inside ordersummary -> ",priceDetails)
+
+  useEffect(()=>{
+
+    if(cartItemsInfo===null){
+      console.log(cartItemsInfo)
+      setCartItemsInfo(localStorage.getItem("cart_items_info"))
+      console.log("inside order summary",localStorage.getItem("cart_items_info"))
+    }
+      
+  },[]);
 
   return (
     <div>

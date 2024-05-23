@@ -21,7 +21,7 @@ const ProductCardCart=({cartItem})=>{
     };
 
     const handleRemove = () =>{
-        removeCartItem(cartId);
+        removeCartItem(cartId,quantity);
     }
 
     return(

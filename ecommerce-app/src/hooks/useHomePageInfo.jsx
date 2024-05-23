@@ -16,8 +16,8 @@ const useHomePageInfo = () => {
       
             const data = response.data;
 
-            console.log(data);
             setCategoryInfo(data.categories);
+            console.log("category :",data)
           } catch (error) {
             console.error('Error fetching homepage info:', error);
           }
@@ -32,10 +32,11 @@ const useHomePageInfo = () => {
                 "Authorization": `Bearer ${jwtToken}`
               }
             });
-      
+
             const data = response.data;
             console.log(data)
             setCartItemCount(data.totalCartItems);
+            localStorage.setItem("cart_items_count", data.totalCartItems)
             console.log("usehomecartCount-> ",cartItemCount);
           } catch (error) {
             console.error('Error fetching homepage info:', error);
