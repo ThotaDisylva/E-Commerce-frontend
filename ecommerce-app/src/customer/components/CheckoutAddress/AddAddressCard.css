@@ -1,0 +1,32 @@
+.address-container {
+    width:550px;
+    padding: 20px; /* Optional: Add padding */
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+   
+    align-items:right;
+    position: relative;
+    background-color: white;
+  }
+  .header {
+    display:flex;
+    align-items:center;
+  }
+  .form-heading {
+    margin-bottom: 10px;
+    text-align: left;
+  }
+  .input-row {
+    margin-top: 20px;
+    text-align: left;
+    font-weight: bold;
+  }
+  .input{
+    margin-bottom:10px;
+  }
+  .save-address {
+    margin-top: 20px;
+    text-align: left;
+    font-weight: bold;
+  }
