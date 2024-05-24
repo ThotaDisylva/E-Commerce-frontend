@@ -9,22 +9,37 @@ const CartPage=()=>{
 
 
     const {cartPageInfo} = useCartPageInfo();
-    const {cartItemsInfo, priceDetails} = useUserInfoContext();
+    const {cartItemsInfo,setCartItemsInfo, priceDetails} = useUserInfoContext();
 
     // console.log("data-->",cartItemsInfo)
 
     //later fix: it should not fetch data from backend, everytime a user open cart who have not added any product to cart 
     useEffect(() => {
-        if(cartItemsInfo?.length===0){
-            cartPageInfo();
+        const load = async () =>{
+            await cartPageInfo();
+            console.log("cartpage item data",cartItemsInfo)
         }
+            load();
+            
     }, []);
     
+
+    // //API call after page reload
+    // setCartItemsInfo(localStorage.getItem("cart_items_info"))
+    // console.log(cartItemsInfo);
+
+    //     if(cartItemsInfo?.length ===0){
+    //         setCartItemsInfo(localStorage.getItem("cart_items_info"))
+
+    //         console.log(cartItemsInfo);
+    //     }
+
+ 
     return(
         <div>
             <div className='lg:grid grid-cols-3 lg:px-16 relative lg:space-x-10'>
                 <div className='col-span-2 '>
-                    {cartItemsInfo?.map((cartItem) => (
+                    {cartItemsInfo.cartItems?.map((cartItem) => (
                         <ProductCardCart key={cartItem.cartId} cartItem={cartItem}/>
                     ))}
                 </div>

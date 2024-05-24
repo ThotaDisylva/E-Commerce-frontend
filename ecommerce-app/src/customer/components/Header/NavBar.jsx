@@ -24,7 +24,7 @@ import { Link } from "react-router-dom";
 import { useUserInfoContext } from "../../../context/UserInfoContext";
 import useHomePageInfo from "../../../hooks/useHomePageInfo";
 
-const NavBar = ({ cartItemCount }) => {
+const NavBar = ({ cartItemCount , categoriesDetails}) => {
   const [cardOpen, setCardOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [subCategoryOpen, setSubCategoryOpen] = useState(false);
@@ -34,6 +34,7 @@ const NavBar = ({ cartItemCount }) => {
 
   const { role } = useUserInfoContext();
   const { loadHomePageInfo } = useHomePageInfo();
+  
 
   useEffect(() => {
     if (role) {
@@ -53,11 +54,31 @@ const NavBar = ({ cartItemCount }) => {
     setIsSignIn(!isSignIn);
   };
 
-  const dummySubcategories = {
-    "Category 1": ["Subcategory 1.1", "Subcategory 1.2", "Subcategory 1.3"],
-    "Category 2": ["Subcategory 2.1", "Subcategory 2.2"],
-    "Category 3": ["Subcategory 3.1", "Subcategory 3.2", "Subcategory 3.3"],
-  };
+
+  const formattedCategories = {};
+
+  // useEffect(()=>{
+
+
+  
+
+  //   // Iterate over each object in categoriesDetails
+  //   categoriesDetails.forEach(category => {
+  //       // Extract categoryName and subCategories
+  //       const { categoryName, subCategories } = category;
+    
+  //       // Initialize an array to store the subcategory names
+  //       const subCategoryNames = [];
+    
+  //       // Iterate over each subcategory and push its name to subCategoryNames array
+  //       subCategories.forEach(subCategory => {
+  //           subCategoryNames.push(subCategory.subCategoryName);
+  //       });
+    
+  //       // Add the category and its subcategory names to the formattedCategories object
+  //       formattedCategories[categoryName] = subCategoryNames;
+  //   });
+  // },[])
 
   const handleClick = () => {
     setMenuOpen(!menuOpen);
@@ -72,27 +93,6 @@ const NavBar = ({ cartItemCount }) => {
     console.log("Subcategory clicked:", subcategory);
   };
 
-  const categories = [
-    "Category 1",
-    "Category 2",
-    "Category 3",
-    "Category 2",
-    "Category 3",
-    "Category 2",
-    "Category 3",
-    "Category 2",
-    "Category 3",
-    "Category 2",
-    "Category 3",
-    "Category 2",
-    "Category 3",
-    "Category 2",
-    "Category 3",
-    "Category 2",
-    "Category 3",
-    "Category 2",
-    "Category 3",
-  ];
 
   const handleMoreClick = () => {
     setCardOpen(!cardOpen);
@@ -137,7 +137,7 @@ const NavBar = ({ cartItemCount }) => {
           <SearchBar />
         </div>
         <div className="hidden md:block">
-          <CategoryButton />
+          <CategoryButton categoriesDetails={categoriesDetails}/>
         </div>
         <div className="lg:flex lg:flex-row lg:items-center lg:justify-end hidden">
           <Link to={"/cart"}>
@@ -207,7 +207,7 @@ const NavBar = ({ cartItemCount }) => {
         sx={{ "& .MuiDrawer-paper": { width: "70vw" } }}
       >
         <List>
-          {categories.map((category, index) => (
+          {Object.keys(formattedCategories).map((category, index) => (
             <ListItem
               button
               key={index}
@@ -228,8 +228,8 @@ const NavBar = ({ cartItemCount }) => {
         sx={{ "& .MuiDrawer-paper": { width: "70vw" } }}
       >
         <List>
-          {dummySubcategories[selectedCategory] &&
-            dummySubcategories[selectedCategory].map((subcategory, index) => (
+          {formattedCategories[selectedCategory] &&
+            formattedCategories[selectedCategory].map((subcategory, index) => (
               <ListItem
                 button
                 key={index}

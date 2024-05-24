@@ -4,7 +4,9 @@ import {
   Grid,
 } from "@mui/material";
 
-function OrderAddressCard() {
+function OrderAddressCard({address, city, state, name, phoneNumber, postalCode}) {
+
+
   return (
     <div className="rounded-lg text-sm md:text-xl w-full">
       <div
@@ -20,7 +22,7 @@ function OrderAddressCard() {
                 Delivery Address
               </div>
               <div className="flex sm:space-x-3 pl-4 items-center w-full">
-                <div className=" font-semibold text-base">Swastik Kumar Padhee</div>
+                <div className=" font-semibold text-base">{name}</div>
                 <div className=" hidden sm:flex">
                   <p className=" font-bold text-green-500 border border-solid w-fit p-2 border-green-500 rounded-3xl text-xs align-middle hover:bg-gray-300">
                     Home
@@ -29,20 +31,19 @@ function OrderAddressCard() {
               </div>
               <div className="pl-4 pr-4 text-gray-500">
                 <Typography style={{ textAlign: "left", marginTop: "7px" }}>
-                  Aditya Hyundai, Plot No 2132/5132, Hal Plot No 342/P, Lewis
-                  Road, Dist, BJB Nagar
+                  {address}
                 </Typography>
                 <Typography
                   variant="body1"
                   style={{ textAlign: "left", marginBottom: "8px" }}
                 >
-                  Bhubaneswar, ODISHA - 751014,
+                  {city}, {state} - {postalCode},
                 </Typography>
                 <Typography
                   variant="body1"
                   style={{ textAlign: "left", marginBottom: "8px" }}
                 >
-                  6371949629
+                  {phoneNumber}
                 </Typography>
                 <p className=" font-bold text-green-500 border border-solid w-fit p-2 border-green-500 rounded-3xl text-xs mb-2 sm:hidden hover:bg-gray-30">
                   Home

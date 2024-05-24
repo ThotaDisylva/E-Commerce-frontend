@@ -2,7 +2,9 @@ import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
-const OrderDetailsCard = () => {
+const OrderDetailsCard = ({orderId, orderDetails}) => {
+
+  console.log("OrderDetails", orderDetails);
   return (
     <div
       className="bg-white p-4 rounded-md shadow-md"
@@ -22,7 +24,7 @@ const OrderDetailsCard = () => {
           Order Date
         </Typography>
         <Typography variant="body1" className="font-weight: 600">
-          15-May-2024
+          {orderDetails.orderDate}
         </Typography>
       </Box>
       <Box
@@ -36,7 +38,7 @@ const OrderDetailsCard = () => {
           Order#
         </Typography>
         <Typography variant="body1" className="font-weight: 600">
-          743-627368-4836495
+          {orderId}
         </Typography>
       </Box>
       <Box
@@ -50,7 +52,7 @@ const OrderDetailsCard = () => {
           Total Amount
         </Typography>
         <Typography variant="body1" className="font-weight: 600">
-          450
+          {orderDetails.totalAmount}
         </Typography>
       </Box>
       <div className="flex justify-end">

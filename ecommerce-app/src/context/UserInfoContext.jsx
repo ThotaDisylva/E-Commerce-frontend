@@ -9,12 +9,13 @@ export const useUserInfoContext = () => {
 
 export const UserInfoContextProvider = ({ children }) => {
     const [role, setRole] = useState(localStorage.getItem("role") || null);
-    const [cartItemsInfo, setCartItemsInfo] = useState(localStorage.getItem("cart_items_info") || []);
+    const [cartItemsInfo, setCartItemsInfo] = useState(JSON.parse(localStorage.getItem("cart_items_info")) || {});
     const [cartItemCount, setCartItemCount] = useState(localStorage.getItem("cart_items_count") || 0);
-    const [priceDetails, setPriceDetails] = useState(localStorage.getItem("cart_price_details") || {});
+    const [priceDetails, setPriceDetails] = useState(JSON.parse(localStorage.getItem("cart_price_details")) || {});
     const [choosedAddress, setChoosedAddress] = useState({});
+    const [categoriesDetails, setCategoriesDetails] = useState(localStorage.getItem("categories_details") || {})
 
-    return <UserInfoContext.Provider value={{role, setRole, cartItemsInfo, setCartItemsInfo, cartItemCount, setCartItemCount, priceDetails, setPriceDetails, choosedAddress, setChoosedAddress}}>
+    return <UserInfoContext.Provider value={{role, setRole, cartItemsInfo, setCartItemsInfo, cartItemCount, setCartItemCount, priceDetails, setPriceDetails, choosedAddress, setChoosedAddress, categoriesDetails, setCategoriesDetails}}>
         {children}
     </UserInfoContext.Provider>
 }
