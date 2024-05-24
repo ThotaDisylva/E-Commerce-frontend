@@ -1,43 +1,65 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   TextField,
   Button,
-  Checkbox,
-  FormControlLabel,
   FormControl,
-  InputLabel,
-  Select,
   MenuItem,
   Divider,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import "./Address.css";
-import statesAndUTs from "./states&utdata";
-const AddAddressCard = () => {
-  const [selectedState, setSelectedState] = useState('');
+import statesAndUTs from "../CheckoutAddress/states&utdata";
+
+const AddAddressCard = ({ address, togglePopup, onSave }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    line1: '',
+    landmark: '',
+    city: '',
+    pincode: '',
+    state: '',
+    type: 'Home'
+  });
+
+  useEffect(() => {
+    if (address) {
+      setFormData(address);
+    }
+  }, [address]);
 
   const handleChange = (event) => {
-    setSelectedState(event.target.value);
+    const { name, value } = event.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
+
   const isNumber = (event) => {
     return /\d/.test(String.fromCharCode(event.keyCode));
   };
-  const validateAddress = (type) => {};
-  const [isActive, setIsActive] = useState(false);
-  const handleClick = () => {
-    setIsActive(!isActive);
-  };
-  const [homeActive, setHomeActive] = useState(false);
-  const [companyActive, setCompanyActive] = useState(false);
+
   const handleHomeButtonClick = () => {
-    setHomeActive(!homeActive);
-    setCompanyActive(false); // Reset company button state
+    setFormData(prevState => ({
+      ...prevState,
+      type: 'Home'
+    }));
   };
+
   const handleCompanyButtonClick = () => {
-    setCompanyActive(!companyActive);
-    setHomeActive(false); // Reset home button state
+    setFormData(prevState => ({
+      ...prevState,
+      type: 'Work'
+    }));
   };
+
+  const handleSubmit = () => {
+    onSave(formData);
+  };
+
   return (
     <div className="address-container">
       <ClearIcon
@@ -47,6 +69,7 @@ const AddAddressCard = () => {
           right: "10px",
           cursor: "pointer",
         }}
+        onClick={togglePopup}
       />
       <div className="header">
         <Typography
@@ -57,7 +80,7 @@ const AddAddressCard = () => {
             textAlign: "left",
           }}
         >
-          Add New Address
+          {address ? 'Edit Address' : 'Add New Address'}
         </Typography>
       </div>
       <Divider />
@@ -74,15 +97,24 @@ const AddAddressCard = () => {
         </Typography>
       </div>
       <div className="input">
-        <TextField label="*Name" id="add_name" variant="outlined" fullWidth />
+        <TextField
+          label="*Name"
+          name="name"
+          variant="outlined"
+          fullWidth
+          value={formData.name}
+          onChange={handleChange}
+        />
       </div>
       <div className="input">
         <TextField
           label="*Enter 10 digit number"
-          id="add_phone"
+          name="phone"
           variant="outlined"
           fullWidth
           autoComplete="off"
+          value={formData.phone}
+          onChange={handleChange}
           onPaste={(e) => e.preventDefault()}
           maxLength="10"
           onKeyPress={(e) => isNumber(e)}
@@ -100,54 +132,66 @@ const AddAddressCard = () => {
           Address
         </Typography>
       </div>
-
       <div className="input">
         <TextField
           label="*Address Line 1"
-          id="add_line1"
+          name="line1"
           variant="outlined"
           fullWidth
+          value={formData.line1}
+          onChange={handleChange}
         />
       </div>
       <div className="input">
         <TextField
           label="Landmark"
-          id="add_land"
+          name="landmark"
           variant="outlined"
           fullWidth
+          value={formData.landmark}
+          onChange={handleChange}
         />
       </div>
       <div className="input">
-        <TextField label="*City" id="add_city" variant="outlined" fullWidth />
+        <TextField
+          label="*City"
+          name="city"
+          variant="outlined"
+          fullWidth
+          value={formData.city}
+          onChange={handleChange}
+        />
       </div>
       <div className="input grid-cols-2 flex space-x-3">
         <TextField
           className="col-span-1 w-2/5"
           label="*Pincode"
-          id="add_pin"
+          name="pincode"
           variant="outlined"
-          
           autoComplete="off"
+          value={formData.pincode}
+          onChange={handleChange}
           onPaste={(e) => e.preventDefault()}
           maxLength="6"
           onKeyPress={(e) => isNumber(e)}
         />
         <FormControl className="col-span-1 w-3/5">
-      <InputLabel id="state-label">State</InputLabel>
-      <Select
-        labelId="state-label"
-        id="state-select"
-        value={selectedState}
-        label="State"
-        onChange={handleChange}
-      >
-        {statesAndUTs.map((state, index) => (
-          <MenuItem key={index} value={state}>
-            {state}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+        <TextField
+          className="col-span-1 w-3/5"
+          select
+          label="State"
+          name="state"
+          value={formData.state}
+          onChange={handleChange}
+          variant="outlined"
+        >
+          {statesAndUTs.map((state, index) => (
+            <MenuItem key={index} value={state}>
+              {state}
+            </MenuItem>
+          ))}
+        </TextField>
+        </FormControl>
       </div>
       <div className="save-address">
         <Typography
@@ -161,9 +205,9 @@ const AddAddressCard = () => {
             borderRadius: "40px",
             fontSize: "10px",
             marginRight: "10px",
-            backgroundColor: homeActive ? "green" : "#ccc",
-            borderColor: homeActive ? "green" : "#ccc",
-            color: homeActive ? "white" : "initial",
+            backgroundColor: formData.type === 'Home' ? "green" : "#ccc",
+            borderColor: formData.type === 'Home' ? "green" : "#ccc",
+            color: formData.type === 'Home' ? "white" : "initial",
           }}
           onClick={handleHomeButtonClick}
         >
@@ -174,18 +218,15 @@ const AddAddressCard = () => {
           style={{
             borderRadius: "40px",
             fontSize: "10px",
-            backgroundColor: companyActive ? "green" : "#ccc",
-            borderColor: companyActive ? "green" : "#ccc",
-            color: companyActive ? "white" : "initial",
+            backgroundColor: formData.type === 'Work' ? "green" : "#ccc",
+            borderColor: formData.type === 'Work' ? "green" : "#ccc",
+            color: formData.type === 'Work' ? "white" : "initial",
           }}
           onClick={handleCompanyButtonClick}
         >
           Work
         </Button>
-        <input type="hidden" value="Home" id="addType" />
-        <input type="hidden" value="Company" id="address_id" />
       </div>
-
       <div className="input-row">
         <Button
           variant="contained"
@@ -198,11 +239,13 @@ const AddAddressCard = () => {
             width: "100%",
             marginTop: "5px",
           }}
+          onClick={handleSubmit}
         >
-          Add Address
+          {address ? 'Update Address' : 'Add Address'}
         </Button>
       </div>
     </div>
   );
 };
+
 export default AddAddressCard;
