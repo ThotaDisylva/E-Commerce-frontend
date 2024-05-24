@@ -3,7 +3,7 @@ import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import categories from './categories';
 import CategoryRoundedIcon from '@mui/icons-material/CategoryRounded';
 
-function CategoryButton() {
+function CategoryButton({categoriesDetails}) {
   const [isOpen, setIsOpen] = useState(false);
   const [subMenuOpen, setSubMenuOpen] = useState(null);
   const [activeCategory, setActiveCategory] = useState(null);
@@ -30,7 +30,6 @@ function CategoryButton() {
   };
 
   const handleSubcategoryClick = (subcategory) => {
-    console.log(subcategory.name);
     setActiveSubMenu(subcategory);
   };
 
@@ -56,35 +55,36 @@ function CategoryButton() {
 
       {isOpen && (
         <div className="absolute top-full left-0 w-64 bg-white shadow-md">
-          <ul className="max-h-[35rem] overflow-y-auto">
-            {categories.map((category) => (
+        <ul className="max-h-[35rem] overflow-y-auto">
+  {categoriesDetails.map((category) => (
+    <li
+      key={category.categoryId}
+      className={`px-4 py-2 ${activeSubMenu && activeSubMenu.categoryId === category.categoryId ? 'bg-[#b9ccf1]' : 'hover:bg-[#b9ccf1]'}`}
+      onMouseEnter={() => handleCategoryClick(category)}
+    >
+      <div className='flex items-center justify-between'>
+        <span>{category.categoryName}</span>
+        <ChevronRightIcon className="w-5 h-5 ml-2" />
+      </div>
+      {subMenuOpen && subMenuOpen.categoryId === category.categoryId && (
+        <div className="absolute top-0 left-full w-64 bg-white shadow-md max-h-[35rem] overflow-y-auto">
+          <ul>
+            {category.subCategories.map((subcategory) => (
               <li
-                key={category.id}
-                className={`px-4 py-2 ${activeSubMenu && activeSubMenu.categoryId === category.id? 'bg-[#b9ccf1]' : 'hover:bg-[#b9ccf1]'}`}
-                onMouseEnter={() => handleCategoryClick(category)}
+                key={subcategory.subCategoryId}
+                className={`px-4 py-2 ${activeSubMenu && activeSubMenu.subCategoryId === subcategory.subCategoryId ? 'bg-[#b9ccf1]' : 'hover:bg-[#b9ccf1]'}`}
+                onClick={() => handleSubcategoryClick(subcategory)}
               >
-                <div className='flex items-center justify-between'>
-                  <span>{category.name}</span>
-                  <ChevronRightIcon className="w-5 h-5 ml-2" />
-                </div>
-                {subMenuOpen && subMenuOpen.id === category.id && (
-                  <div className="absolute top-0 left-full w-64 bg-white shadow-md max-h-[35rem] overflow-y-auto">
-                    <ul>
-                      {category.subcategories.map((subcategory) => (
-                        <li
-                          key={subcategory.id}
-                          className={`px-4 py-2 ${activeSubMenu && activeSubMenu.id === subcategory.id? 'bg-[#b9ccf1]' : 'hover:bg-[#b9ccf1]'}`}
-                          onClick={() => handleSubcategoryClick(subcategory)}
-                        >
-                          <span>{subcategory.name}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                <span>{subcategory.subCategoryName}</span>
               </li>
             ))}
           </ul>
+        </div>
+      )}
+    </li>
+  ))}
+</ul>
+
         </div>
       )}
     </div>

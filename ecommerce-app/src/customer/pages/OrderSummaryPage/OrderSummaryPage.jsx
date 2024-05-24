@@ -12,18 +12,24 @@ const steps = ['Login', 'Address', 'Order Summary', 'Payment'];
 export default function OrderSummaryPage() {
 
 
-  const {choosedAddress, cartItemsInfo,setCartItemsInfo,  priceDetails} = useUserInfoContext();
+  const {choosedAddress, cartItemsInfo,setCartItemsInfo,  priceDetails, setPriceDetails} = useUserInfoContext();
   // console.log("cartItem inside ordersummary -> ",cartItemsInfo);
   // console.log("priceDetails inside ordersummary -> ",priceDetails)
 
-  useEffect(()=>{
 
-    if(cartItemsInfo===null){
-      console.log(cartItemsInfo)
-      setCartItemsInfo(localStorage.getItem("cart_items_info"))
-      console.log("inside order summary",localStorage.getItem("cart_items_info"))
+function isObjEmpty (obj) {
+    return Object.keys(obj).length === 0;
+}
+
+  useEffect(()=>{
+    if(isObjEmpty(cartItemsInfo)){
+      setCartItemsInfo(JSON.parse(localStorage.getItem("cart_items_info")))
     }
       
+
+    if(isObjEmpty(priceDetails)){
+      setPriceDetails(JSON.parse(localStorage.getItem("cart_price_details")))
+    }
   },[]);
 
   return (
@@ -55,7 +61,7 @@ export default function OrderSummaryPage() {
             </div>
             <div className='mt-5 lg:flex'>
               <div className='lg:w-[71%] lg:mr-5 '>
-                {cartItemsInfo?.map((cart)=>(
+                {cartItemsInfo.cartItems?.map((cart)=>(
                   
                   <CartItem key={cart.cartId} ProductsData={cart} />
                 ))}

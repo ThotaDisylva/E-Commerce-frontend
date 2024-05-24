@@ -15,10 +15,18 @@ import MyProfilePage from "./customer/pages/MyProfilePage/MyProfilePage";
 import ProductDetailsPage from "./customer/pages/ProductDetailsPage/ProductDetailsPage";
 import AdminPage from "./Admin/pages/AdminPage/AdminPage";
 import { useUserInfoContext } from "./context/UserInfoContext";
+import useNavbar from "./hooks/useNavbar";
 
 function App() {
 
-  const {role, cartItemCount} = useUserInfoContext();
+  const {role, cartItemCount, categoriesDetails} = useUserInfoContext();
+  const {getCategoriesDetails} = useNavbar();
+
+  useEffect(()=>{
+    if(role!=="admin"){
+      getCategoriesDetails();
+    }
+  },[]);
 
   // console.log(cartItemCount);
   console.log(role);
@@ -29,7 +37,7 @@ function App() {
     <>
 
       {!(role==="admin") && (<div>
-        <NavBar cartItemCount={role===null? 0: cartItemCount}/>
+        <NavBar cartItemCount={role===null? 0: cartItemCount} categoriesDetails={categoriesDetails}/>
       </div>)}
       <div className={(role==="admin")? "pt-[2rem]":"pt-[6rem]"}>
       <Toaster/>

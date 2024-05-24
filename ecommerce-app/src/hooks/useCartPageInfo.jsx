@@ -17,10 +17,13 @@ const useCartPageInfo = () => {
                 });
 
                 const data = response.data;
-                setCartItemsInfo(data.cartItems);
+                console.log("cartitem from data",data)
+                localStorage.setItem("cart_items_info",JSON.stringify(data))
+                setCartItemsInfo(data);
+                console.log("cartitem",cartItemsInfo)
                 calculatePriceDetails(data.cartItems);
 
-                localStorage.setItem("cart_items_info", cartItemsInfo)
+                
                 
 
 
@@ -36,9 +39,9 @@ const useCartPageInfo = () => {
         let totalDeliveryCharge = 0;
 
         cartItems.forEach(item => {
-            actualTotalPrice += item.price * item.quantity;
-            totalDiscountedPrice += (item.price - (item.price * item.discountPercent / 100)) * item.quantity;
-            totalDeliveryCharge += item.deliveryCharge;
+            actualTotalPrice =  Math.floor(actualTotalPrice + item.price * item.quantity);
+            totalDiscountedPrice = Math.floor(totalDiscountedPrice + (item.price * item.discountPercent / 100) * item.quantity);
+            totalDeliveryCharge = Math.floor(totalDeliveryCharge +item.deliveryCharge);
         });
 
         const totalPayablePrice = actualTotalPrice + totalDeliveryCharge - totalDiscountedPrice;
@@ -50,8 +53,9 @@ const useCartPageInfo = () => {
             totalPayablePrice
         };
 
+        localStorage.setItem("cart_price_details", JSON.stringify(priceDetails));
         setPriceDetails(priceDetails);
-        localStorage.setItem("cart_price_details", priceDetails);
+        
     };
 
     const reduceCartItem = async (cartId) => {
@@ -79,7 +83,7 @@ const useCartPageInfo = () => {
                     calculatePriceDetails(updatedCartItems);
 
                     localStorage.setItem("cart_items_count", cartItemCount)
-                    localStorage.setItem("cart_items_info", cartItemsInfo)
+                    localStorage.setItem("cart_items_info", JSON.stringify(cartItemsInfo))
 
                 }
             } catch (error) {
@@ -113,7 +117,7 @@ const useCartPageInfo = () => {
                     calculatePriceDetails(updatedCartItems);
 
                     localStorage.setItem("cart_items_count", cartItemCount)
-                    localStorage.setItem("cart_items_info", cartItemsInfo)
+                    localStorage.setItem("cart_items_info", JSON.stringify(cartItemsInfo))
                 }
             } catch (error) {
                 console.error('Error adding cart item:', error);
@@ -141,7 +145,7 @@ const useCartPageInfo = () => {
                     calculatePriceDetails(updatedCartItems);
 
                     localStorage.setItem("cart_items_count", cartItemCount)
-                    localStorage.setItem("cart_items_info", cartItemsInfo)
+                    localStorage.setItem("cart_items_info", JSON.stringify(cartItemsInfo))
                 }
             } catch (error) {
                 console.error('Error removing cart item:', error);

@@ -32,6 +32,12 @@ const SignUp = ({ toggleForm }) => {
 
 const handleSubmit = async (event) => {
   event.preventDefault();
+    // const role = registerAsManager ? 'admin' : 'user';
+    // const formDataWithRole = { ...formData, role };
+    // await signup(formDataWithRole);
+};
+
+const handleRegister = async () => {
     const role = registerAsManager ? 'admin' : 'user';
     const formDataWithRole = { ...formData, role };
     await signup(formDataWithRole);
@@ -98,7 +104,7 @@ const handleSubmit = async (event) => {
             </Typography>
           </Box>
           <Link to={role==="admin"? "/admin":"/"}>
-            <Button variant="contained" disabled={loading} type="submit" fullWidth >
+            <Button variant="contained" disabled={loading} type="submit" onClick={handleRegister}fullWidth >
               {loading ? <CircularProgress size={"20px"}/> : "Register"}
             </Button>
           </Link>
