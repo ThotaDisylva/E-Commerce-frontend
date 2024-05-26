@@ -14,8 +14,10 @@ const HomeSectionCarousel = ({subCategory, productsData}) => {
 
   const responsive = {
     0: { items: 1 },
-    720: { items: 3 },
-    1024: { items: 4 },
+    750: { items: 2 },
+    850: { items: 3 },
+    1020:{ items: 3.5 },
+    1200: { items: 4 },
   };
 
   const slidePrev = () => {
@@ -29,10 +31,10 @@ const HomeSectionCarousel = ({subCategory, productsData}) => {
   };
 
   const syncActiveIndex = ({ item }) => setActiveIndex(item);
-
+  console.log(productsData);
   const items = productsData.map((product, index) => (
     <div key={index} className="flex justify-center">
-      <Link to={"/productDetails"}>
+      <Link to={`/productDetails/${product.productId}`}>
         <ProductCard product={product} />
       </Link>
     </div>

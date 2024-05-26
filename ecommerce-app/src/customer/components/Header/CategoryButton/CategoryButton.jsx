@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import categories from './categories';
 import CategoryRoundedIcon from '@mui/icons-material/CategoryRounded';
+import SearchPage from '../../../pages/SearchPage/SearchPage';
+import { Link } from 'react-router-dom';
+import useSearchPage from '../../../../hooks/useSearchPage';
 
-function CategoryButton({categoriesDetails}) {
+function CategoryButton({categoriesDetails,filters,setFilters}) {
   const [isOpen, setIsOpen] = useState(false);
   const [subMenuOpen, setSubMenuOpen] = useState(null);
   const [activeCategory, setActiveCategory] = useState(null);
@@ -31,6 +34,14 @@ function CategoryButton({categoriesDetails}) {
 
   const handleSubcategoryClick = (subcategory) => {
     setActiveSubMenu(subcategory);
+    setIsOpen(false);
+    console.log(subcategory.subCategoryName)
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      subcategory:subcategory.subCategoryName
+      
+    }));
+    
   };
 
   useEffect(() => {
@@ -70,6 +81,7 @@ function CategoryButton({categoriesDetails}) {
         <div className="absolute top-0 left-full w-64 bg-white shadow-md max-h-[35rem] overflow-y-auto">
           <ul>
             {category.subCategories.map((subcategory) => (
+              <Link to={"/search"} state={{fromSearchBar:{filters:filters}}}>
               <li
                 key={subcategory.subCategoryId}
                 className={`px-4 py-2 ${activeSubMenu && activeSubMenu.subCategoryId === subcategory.subCategoryId ? 'bg-[#b9ccf1]' : 'hover:bg-[#b9ccf1]'}`}
@@ -77,6 +89,7 @@ function CategoryButton({categoriesDetails}) {
               >
                 <span>{subcategory.subCategoryName}</span>
               </li>
+              </Link>
             ))}
           </ul>
         </div>

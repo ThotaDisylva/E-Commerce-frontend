@@ -13,8 +13,10 @@ const Caroussel = () => {
 
   const responsive = {
     0: { items: 1 },
-    720: { items: 3 },
-    1024: { items: 4 },
+    750: { items: 2 },
+    850: { items: 3 },
+    1020:{ items: 3.5 },
+    1200: { items: 4 },
   };
 
   const slidePrev = () => {
@@ -31,7 +33,9 @@ const Caroussel = () => {
 
   const items = productsData.map((product, index) => (
     <div key={index} className="flex justify-center mr-3">
+      <Link to={`/productDetails/${product.productId}`}>
       <ProductCard product={product} />
+      </Link>
     </div>
   ));
 

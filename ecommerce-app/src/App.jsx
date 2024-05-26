@@ -21,6 +21,13 @@ function App() {
 
   const {role, cartItemCount, categoriesDetails} = useUserInfoContext();
   const {getCategoriesDetails} = useNavbar();
+  const [filters, setFilters] = useState({
+    keyword: '',
+    category: '',
+    subcategory:'',
+    sortByPrice: -1,
+    sortByDate: -1,
+  });
 
   useEffect(()=>{
     if(role!=="admin"){
@@ -28,8 +35,6 @@ function App() {
     }
   },[]);
 
-  // console.log(cartItemCount);
-  console.log(role);
 
 
 
@@ -37,7 +42,7 @@ function App() {
     <>
 
       {!(role==="admin") && (<div>
-        <NavBar cartItemCount={role===null? 0: cartItemCount} categoriesDetails={categoriesDetails}/>
+        <NavBar cartItemCount={role===null? 0: cartItemCount} categoriesDetails={categoriesDetails} filters={filters} setFilters={setFilters}/>
       </div>)}
       <div className={(role==="admin")? "pt-[2rem]":"pt-[6rem]"}>
       <Toaster/>
@@ -50,8 +55,8 @@ function App() {
             {/* <Route path="/profileDetails" element=<ProfileDetailsPage />/>
             <Route path="/address" element=<SavedAddressPage />/>*/}
             <Route path="/orderDetails" element=<OrderDetailsPage />/> 
-            <Route path="/search" element=<SearchPage/>/>
-            <Route path="/productDetails" element=<ProductDetailsPage />/>
+            <Route path="/search" element=<SearchPage/> filters={filters} setFilters={setFilters}/>
+            <Route path="/productDetails/:productId" element=<ProductDetailsPage />/>
             <Route path="/admin" element={(role!=="admin") ? <Navigate to="/"/> : <AdminPage/>}/>
         </Routes>
         

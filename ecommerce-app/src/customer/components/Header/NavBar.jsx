@@ -24,7 +24,7 @@ import { Link } from "react-router-dom";
 import { useUserInfoContext } from "../../../context/UserInfoContext";
 import useHomePageInfo from "../../../hooks/useHomePageInfo";
 
-const NavBar = ({ cartItemCount , categoriesDetails}) => {
+const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
   const [cardOpen, setCardOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [subCategoryOpen, setSubCategoryOpen] = useState(false);
@@ -91,6 +91,11 @@ const NavBar = ({ cartItemCount , categoriesDetails}) => {
 
   const handleSubCategoryClick = (subcategory) => {
     console.log("Subcategory clicked:", subcategory);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      subcategory:subcategory
+      
+    }));
   };
 
 
@@ -134,10 +139,10 @@ const NavBar = ({ cartItemCount , categoriesDetails}) => {
           </IconButton>
         </div>
         <div className="w-full md:w-2/5">
-          <SearchBar />
+          <SearchBar filters={filters} setFilters={setFilters}/>
         </div>
         <div className="hidden md:block">
-          <CategoryButton categoriesDetails={categoriesDetails}/>
+          <CategoryButton categoriesDetails={categoriesDetails} filters={filters} setFilters={setFilters}/>
         </div>
         <div className="lg:flex lg:flex-row lg:items-center lg:justify-end hidden">
           <Link to={"/cart"}>
