@@ -130,7 +130,7 @@ const EditAddressCard = ({ address, onClose, onSave }) => {
           fullWidth
         />
       </div>
-      <div className="input">
+      {/* <div className="input">
         <TextField
           label="Landmark"
           value={landmark}
@@ -138,7 +138,7 @@ const EditAddressCard = ({ address, onClose, onSave }) => {
           variant="outlined"
           fullWidth
         />
-      </div>
+      </div> */}
       <div className="input">
         <TextField
           label="*City"
