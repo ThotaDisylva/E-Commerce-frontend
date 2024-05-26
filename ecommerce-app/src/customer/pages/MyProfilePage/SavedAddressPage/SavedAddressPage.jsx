@@ -1,29 +1,27 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import AddressCard from '../../../components/SavedAddress/AddressCard';
 import AddAddressCard from '../../../components/CheckoutAddress/AddAddressCard';
+import useAddressInfo from '../../../../hooks/useAddressInfo';
 
 function SavedAddressPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentAddress, setCurrentAddress] = useState(null);
-  const [addresses, setAddresses] = useState([
-    {
-      id: 1,
-      add: {
-        name: "skp",
-        phone: "6371949629",
-        line1: "Aditya Hyundai, Plot No 2132/5132",
-        landmark: "Hal Plot No 342/P, Lewis Road, Dist, BJB Nagar",
-        city: "Bhubaneswar",
-        state: "Odisha",
-        pincode: "751014",
-        type: "Home"
-      }
-    },
-    
-  ]);
+  const {loading, savedAddresses, addAddress, updateAddress} = useAddressInfo();
+  const [addresses, setAddresses] = useState([]);
 
+
+
+  useEffect(() => {
+    if (!loading) {
+        setAddresses(savedAddresses);
+    }
+}, [savedAddresses, loading]);
+
+console.log("address", addresses)
+
+console.log("savedAddresses",savedAddresses)
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
@@ -35,18 +33,10 @@ function SavedAddressPage() {
 
   const handleSave = (newAddress) => {
     if (currentAddress) {
-      // Editing existing address
-      setAddresses(prevAddresses =>
-        prevAddresses.map(address =>
-          address.add.phone === newAddress.phone ? { ...address, add: newAddress } : address
-        )
-      );
+      updateAddress(newAddress)
     } else {
       // Adding a new address
-      setAddresses(prevAddresses => [
-        ...prevAddresses,
-        { id: prevAddresses.length + 1, add: newAddress }
-      ]);
+      addAddress(newAddress)
     }
     togglePopup();
   };
@@ -73,8 +63,8 @@ function SavedAddressPage() {
             </Button>
           </div>
           <div className='w-full lg:w-[90%] h-fit pt-10 pb-5 px-2 md:p-10 space-y-2'>
-            {addresses.map((address) => (
-              <AddressCard key={address.id} address={address.add} onEdit={handleEdit} />
+            {addresses?.map((address) => (
+              <AddressCard key={address.addressId} address={address} onEdit={handleEdit} />
             ))}
           </div>
         </div>

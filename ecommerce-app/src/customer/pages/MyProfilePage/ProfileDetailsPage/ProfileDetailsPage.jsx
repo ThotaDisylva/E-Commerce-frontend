@@ -1,23 +1,34 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import useProfileInfo from "../../../../hooks/useProfileInfo";
+import { useUserInfoContext } from "../../../../context/UserInfoContext";
 
 const ProfileDetailsPage = () => {
+
+  const {profileInfo, loading, updateProfileInfo, deleteUser} = useProfileInfo();
+  const navigate = useNavigate();
+
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "vasu0508@gmail.com",
-    firstName: "Vasu",
-    lastName: "Choudhary",
-    phone: "9934578909"
-  });
+  const [formData, setFormData] = useState({});
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+
+  useEffect(() => {
+    if (!loading) {
+        setFormData(profileInfo);
+    }
+}, [profileInfo, loading]);
+
+// if (loading) {
+//     return <div>Loading...</div>; // Or any other loading indicator
+// }
 
   const handleEdit = () => {
     setIsEditing(true);
   };
 
   const handleSave = () => {
-    console.log("Profile saved", formData);
     setIsEditing(false);
+    updateProfileInfo(formData)
   };
 
   const handleDelete = () => {
@@ -25,8 +36,8 @@ const ProfileDetailsPage = () => {
   };
 
   const confirmDelete = () => {
-    console.log("Account deleted");
     setShowDeletePopup(false);
+    deleteUser();
   };
 
   const cancelDelete = () => {
@@ -42,8 +53,9 @@ const ProfileDetailsPage = () => {
   };
 
   const handleLogout = () => {
-    console.log("User logged out");
     localStorage.clear();
+    setRole(null);
+    navigate("/");
   };
 
   return (
@@ -65,17 +77,7 @@ const ProfileDetailsPage = () => {
         <div className="mb-4 border p-2">
           <label className="text-gray-700 flex space-x-3" htmlFor="email">
             <p className="text-gray-900 font-bold">Email:</p>
-            {isEditing ? (
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="text-gray-900 font-medium"
-              />
-            ) : (
               <p className="text-gray-900 font-medium">{formData.email}</p>
-            )}
           </label>
         </div>
         <div className="lg:flex grid-cols-2 gap-4">
@@ -117,13 +119,13 @@ const ProfileDetailsPage = () => {
               {isEditing ? (
                 <input
                   type="text"
-                  name="phone"
-                  value={formData.phone}
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
                   onChange={handleInputChange}
                   className="text-gray-900 font-medium"
                 />
               ) : (
-                <p className="text-gray-900 font-medium">{formData.phone}</p>
+                <p className="text-gray-900 font-medium">{formData.phoneNumber}</p>
               )}
             </label>
           </div>

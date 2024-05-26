@@ -12,12 +12,12 @@ function AddressCard({ address, onEdit }) {
             <div className='w-full'>
               <Grid style={{ display: 'flex', flexDirection: 'column' }}>
                 <div className='flex justify-around w-full'>
-                  <div className='flex sm:space-x-3 p-4 items-center w-full'>
+                  <div className='flex sm:space-x-3 px-4 py-2 items-center w-full'>
                     <div className='font-semibold'>
                       {address.name}
                     </div>
                     <div className='hidden sm:flex'>
-                      <p className='font-bold text-green-500 border border-solid w-fit p-2 border-green-500 rounded-3xl text-xs align-middle hover:bg-gray-300'>{address.type}</p>
+                      <p className='font-bold text-green-500 border border-solid w-fit p-2 border-green-500 rounded-3xl text-xs align-middle hover:bg-gray-300'>Home</p>
                     </div>
                   </div>
                   <div className='p-4'>
@@ -29,13 +29,13 @@ function AddressCard({ address, onEdit }) {
                 </div>
                 <div className='pl-4 pr-4 text-gray-500'>
                   <Typography style={{ textAlign: 'left', marginTop: '7px' }}>
-                    {address.line1}, {address.landmark},
+                    {address.address},
                   </Typography>
                   <Typography variant="body1" style={{ textAlign: 'left', marginBottom: '8px' }}>
-                    {address.city}, {address.state} ,{address.pincode}
+                    {address.city}, {address.state} -  {address.postalCode}
                   </Typography>
                   <Typography variant="body1" style={{ textAlign: 'left', marginBottom: '8px' }}>
-                    {address.phone}
+                    {address.phoneNumber}
                   </Typography>
                   <p className='font-bold text-green-500 border border-solid w-fit p-2 border-green-500 rounded-3xl text-xs mb-2 sm:hidden hover:bg-gray-30'>{address.type}</p>
                 </div>
