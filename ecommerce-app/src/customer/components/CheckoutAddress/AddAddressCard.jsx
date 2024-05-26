@@ -1,86 +1,87 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Typography,
   TextField,
   Button,
   FormControl,
+  InputLabel,
+  Select,
   MenuItem,
   Divider,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
-import "./Address.css";
-import statesAndUTs from "../CheckoutAddress/states&utdata";
+import "./AddAddressCard.css";
+import statesAndUTs from "./states&utdata";
 
-const AddAddressCard = ({ address, togglePopup, onSave }) => {
-  const [formData, setFormData] = useState({
+const AddAddressCard = ({ handleClose }) => {
+  const [selectedState, setSelectedState] = useState('');
+  const [homeActive, setHomeActive] = useState(false);
+  const [companyActive, setCompanyActive] = useState(false);
+  const [formValues, setFormValues] = useState({
     name: '',
-    phoneNumber: '',
-    address: '',
+    phone: '',
+    addressLine1: '',
     city: '',
-    postalCode: '',
+    pincode: '',
     state: '',
-    type: 'Home'
   });
 
-  useEffect(() => {
-    if (address) {
-      setFormData({...address, type:'Home'});
+  const isNumber = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
     }
-  }, [address]);
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
   };
 
-  const isNumber = (event) => {
-    return /\d/.test(String.fromCharCode(event.keyCode));
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormValues({ ...formValues, [id]: value });
   };
 
   const handleHomeButtonClick = () => {
-    setFormData(prevState => ({
-      ...prevState,
-      type: 'Home'
-    }));
+    setHomeActive(!homeActive);
+    setCompanyActive(false);
   };
 
   const handleCompanyButtonClick = () => {
-    setFormData(prevState => ({
-      ...prevState,
-      type: 'Work'
-    }));
+    setCompanyActive(!companyActive);
+    setHomeActive(false);
   };
 
   const handleSubmit = () => {
-    delete formData.type;
-    onSave(formData);
+    // Perform validation before submitting
+    const requiredFields = ["name", "phone", "addressLine1", "city", "pincode", "state"];
+    for (let field of requiredFields) {
+      if (!formValues[field]) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+    }
+    console.log("Form submitted", formValues);
+    handleClose();
   };
 
   return (
-    <div className="address-container">
+    <div className="address-container wrapper w-full h-42 overflow-y-scroll no-scrollbar z-0">
       <ClearIcon
+        onClick={handleClose}
         style={{
           position: "absolute",
           top: "15px",
           right: "10px",
           cursor: "pointer",
         }}
-        onClick={togglePopup}
       />
       <div className="header">
         <Typography
           style={{
             fontWeight: "bold",
             marginBottom: "10px",
-            className: "form-heading",
             textAlign: "left",
+            overflow: "hidden",
           }}
         >
-          {address ? 'Edit Address' : 'Add New Address'}
+          Add New Address
         </Typography>
       </div>
       <Divider />
@@ -99,28 +100,26 @@ const AddAddressCard = ({ address, togglePopup, onSave }) => {
       <div className="input">
         <TextField
           label="Name"
-          name="name"
+          id="name"
           variant="outlined"
           fullWidth
-          value={formData.name}
-          onChange={handleChange}
           required
+          value={formValues.name}
+          onChange={handleInputChange}
         />
       </div>
       <div className="input">
         <TextField
-          label="Phone number"
-          name="phoneNumber"
+          label="Enter 10 digit number"
+          id="phone"
           variant="outlined"
-          type="number"
           fullWidth
-          autoComplete="off"
-          value={formData.phoneNumber}
-          onChange={handleChange}
-          onPaste={(e) => e.preventDefault()}
-          maxLength="10"
-          onKeyPress={(e) => isNumber(e)}
           required
+          value={formValues.phone}
+          onChange={handleInputChange}
+          autoComplete="off"
+          inputProps={{ maxLength: 10 }}
+          onKeyPress={isNumber}
         />
       </div>
       <div className="input-row">
@@ -137,58 +136,68 @@ const AddAddressCard = ({ address, togglePopup, onSave }) => {
       </div>
       <div className="input">
         <TextField
-          label="Address Line"
-          name="address"
+          label="Address Line 1"
+          id="addressLine1"
           variant="outlined"
           fullWidth
-          value={formData.address}
-          onChange={handleChange}
           required
+          value={formValues.addressLine1}
+          onChange={handleInputChange}
         />
       </div>
+      {/* <div className="input">
+        <TextField
+          label="Landmark"
+          id="landmark"
+          variant="outlined"
+          fullWidth
+          value={formValues.landmark}
+          onChange={handleInputChange}
+        />
+      </div> */}
       <div className="input">
         <TextField
           label="City"
-          name="city"
+          id="city"
           variant="outlined"
           fullWidth
-          value={formData.city}
-          onChange={handleChange}
           required
+          value={formValues.city}
+          onChange={handleInputChange}
         />
       </div>
       <div className="input grid-cols-2 flex space-x-3">
         <TextField
           className="col-span-1 w-2/5"
           label="Pincode"
-          name="postalCode"
-          type="number"
+          id="pincode"
           variant="outlined"
+          required
           autoComplete="off"
-          value={formData.postalCode}
-          onChange={handleChange}
-          onPaste={(e) => e.preventDefault()}
-          maxLength="6"
-          onKeyPress={(e) => isNumber(e)}
-          required
+          inputProps={{ maxLength: 6 }}
+          value={formValues.pincode}
+          onChange={handleInputChange}
+          onKeyPress={isNumber}
         />
-        <FormControl className="col-span-1 w-3/5">
-        <TextField
-          className="col-span-1 w-3/5"
-          select
-          label="State"
-          name="state"
-          value={formData.state}
-          onChange={handleChange}
-          variant="outlined"
-          required
-        >
-          {statesAndUTs.map((state, index) => (
-            <MenuItem key={index} value={state}>
-              {state}
-            </MenuItem>
-          ))}
-        </TextField>
+        <FormControl className="col-span-1 w-3/5" required>
+          <InputLabel id="state-label">State</InputLabel>
+          <Select
+            labelId="state-label"
+            id="state"
+            value={selectedState}
+            label="State"
+            onChange={(e) => {
+              setSelectedState(e.target.value);
+              handleInputChange(e);
+            }}
+            required
+          >
+            {statesAndUTs.map((state, index) => (
+              <MenuItem key={index} value={state}>
+                {state}
+              </MenuItem>
+            ))}
+          </Select>
         </FormControl>
       </div>
       <div className="save-address">
@@ -203,9 +212,9 @@ const AddAddressCard = ({ address, togglePopup, onSave }) => {
             borderRadius: "40px",
             fontSize: "10px",
             marginRight: "10px",
-            backgroundColor: formData.type === 'Home' ? "green" : "#ccc",
-            borderColor: formData.type === 'Home' ? "green" : "#ccc",
-            color: formData.type === 'Home' ? "white" : "initial",
+            backgroundColor: homeActive ? "green" : "#ccc",
+            borderColor: homeActive ? "green" : "#ccc",
+            color: homeActive ? "white" : "initial",
           }}
           onClick={handleHomeButtonClick}
         >
@@ -216,9 +225,9 @@ const AddAddressCard = ({ address, togglePopup, onSave }) => {
           style={{
             borderRadius: "40px",
             fontSize: "10px",
-            backgroundColor: formData.type === 'Work' ? "green" : "#ccc",
-            borderColor: formData.type === 'Work' ? "green" : "#ccc",
-            color: formData.type === 'Work' ? "white" : "initial",
+            backgroundColor: companyActive ? "green" : "#ccc",
+            borderColor: companyActive ? "green" : "#ccc",
+            color: companyActive ? "white" : "initial",
           }}
           onClick={handleCompanyButtonClick}
         >
@@ -239,7 +248,7 @@ const AddAddressCard = ({ address, togglePopup, onSave }) => {
           }}
           onClick={handleSubmit}
         >
-          {address ? 'Update Address' : 'Add Address'}
+          Add Address
         </Button>
       </div>
     </div>
