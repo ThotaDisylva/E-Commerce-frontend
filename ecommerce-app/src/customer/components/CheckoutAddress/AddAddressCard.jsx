@@ -15,18 +15,17 @@ import statesAndUTs from "../CheckoutAddress/states&utdata";
 const AddAddressCard = ({ address, togglePopup, onSave }) => {
   const [formData, setFormData] = useState({
     name: '',
-    phone: '',
-    line1: '',
-    landmark: '',
+    phoneNumber: '',
+    address: '',
     city: '',
-    pincode: '',
+    postalCode: '',
     state: '',
     type: 'Home'
   });
 
   useEffect(() => {
     if (address) {
-      setFormData(address);
+      setFormData({...address, type:'Home'});
     }
   }, [address]);
 
@@ -57,6 +56,7 @@ const AddAddressCard = ({ address, togglePopup, onSave }) => {
   };
 
   const handleSubmit = () => {
+    delete formData.type;
     onSave(formData);
   };
 
@@ -98,26 +98,29 @@ const AddAddressCard = ({ address, togglePopup, onSave }) => {
       </div>
       <div className="input">
         <TextField
-          label="*Name"
+          label="Name"
           name="name"
           variant="outlined"
           fullWidth
           value={formData.name}
           onChange={handleChange}
+          required
         />
       </div>
       <div className="input">
         <TextField
-          label="*Enter 10 digit number"
-          name="phone"
+          label="Phone number"
+          name="phoneNumber"
           variant="outlined"
+          type="number"
           fullWidth
           autoComplete="off"
-          value={formData.phone}
+          value={formData.phoneNumber}
           onChange={handleChange}
           onPaste={(e) => e.preventDefault()}
           maxLength="10"
           onKeyPress={(e) => isNumber(e)}
+          required
         />
       </div>
       <div className="input-row">
@@ -134,46 +137,40 @@ const AddAddressCard = ({ address, togglePopup, onSave }) => {
       </div>
       <div className="input">
         <TextField
-          label="*Address Line 1"
-          name="line1"
+          label="Address Line"
+          name="address"
           variant="outlined"
           fullWidth
-          value={formData.line1}
+          value={formData.address}
           onChange={handleChange}
+          required
         />
       </div>
       <div className="input">
         <TextField
-          label="Landmark"
-          name="landmark"
-          variant="outlined"
-          fullWidth
-          value={formData.landmark}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="input">
-        <TextField
-          label="*City"
+          label="City"
           name="city"
           variant="outlined"
           fullWidth
           value={formData.city}
           onChange={handleChange}
+          required
         />
       </div>
       <div className="input grid-cols-2 flex space-x-3">
         <TextField
           className="col-span-1 w-2/5"
-          label="*Pincode"
-          name="pincode"
+          label="Pincode"
+          name="postalCode"
+          type="number"
           variant="outlined"
           autoComplete="off"
-          value={formData.pincode}
+          value={formData.postalCode}
           onChange={handleChange}
           onPaste={(e) => e.preventDefault()}
           maxLength="6"
           onKeyPress={(e) => isNumber(e)}
+          required
         />
         <FormControl className="col-span-1 w-3/5">
         <TextField
@@ -184,6 +181,7 @@ const AddAddressCard = ({ address, togglePopup, onSave }) => {
           value={formData.state}
           onChange={handleChange}
           variant="outlined"
+          required
         >
           {statesAndUTs.map((state, index) => (
             <MenuItem key={index} value={state}>

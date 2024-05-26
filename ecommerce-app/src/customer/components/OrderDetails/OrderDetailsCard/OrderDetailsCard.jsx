@@ -52,7 +52,7 @@ const OrderDetailsCard = ({orderId, orderDetails}) => {
           Total Amount
         </Typography>
         <Typography variant="body1" className="font-weight: 600">
-          {orderDetails.totalAmount}
+          ₹{orderDetails.totalAmount}
         </Typography>
       </Box>
       <div className="flex justify-end">
