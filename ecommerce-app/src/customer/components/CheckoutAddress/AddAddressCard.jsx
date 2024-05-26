@@ -1,87 +1,86 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   TextField,
   Button,
   FormControl,
-  InputLabel,
-  Select,
   MenuItem,
   Divider,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
-import "./AddAddressCard.css";
-import statesAndUTs from "./states&utdata";
+import "./Address.css";
+import statesAndUTs from "../CheckoutAddress/states&utdata";
 
-const AddAddressCard = ({ handleClose }) => {
-  const [selectedState, setSelectedState] = useState('');
-  const [homeActive, setHomeActive] = useState(false);
-  const [companyActive, setCompanyActive] = useState(false);
-  const [formValues, setFormValues] = useState({
+const AddAddressCard = ({ address, togglePopup, onSave }) => {
+  const [formData, setFormData] = useState({
     name: '',
-    phone: '',
-    addressLine1: '',
+    phoneNumber: '',
+    address: '',
     city: '',
-    pincode: '',
+    postalCode: '',
     state: '',
+    type: 'Home'
   });
 
-  const isNumber = (event) => {
-    const charCode = event.which ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      event.preventDefault();
+  useEffect(() => {
+    if (address) {
+      setFormData({...address, type:'Home'});
     }
+  }, [address]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
-  const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setFormValues({ ...formValues, [id]: value });
+  const isNumber = (event) => {
+    return /\d/.test(String.fromCharCode(event.keyCode));
   };
 
   const handleHomeButtonClick = () => {
-    setHomeActive(!homeActive);
-    setCompanyActive(false);
+    setFormData(prevState => ({
+      ...prevState,
+      type: 'Home'
+    }));
   };
 
   const handleCompanyButtonClick = () => {
-    setCompanyActive(!companyActive);
-    setHomeActive(false);
+    setFormData(prevState => ({
+      ...prevState,
+      type: 'Work'
+    }));
   };
 
   const handleSubmit = () => {
-    // Perform validation before submitting
-    const requiredFields = ["name", "phone", "addressLine1", "city", "pincode", "state"];
-    for (let field of requiredFields) {
-      if (!formValues[field]) {
-        alert("Please fill in all required fields.");
-        return;
-      }
-    }
-    console.log("Form submitted", formValues);
-    handleClose();
+    delete formData.type;
+    onSave(formData);
   };
 
   return (
-    <div className="address-container wrapper w-full h-42 overflow-y-scroll no-scrollbar z-0">
+    <div className="address-container">
       <ClearIcon
-        onClick={handleClose}
         style={{
           position: "absolute",
           top: "15px",
           right: "10px",
           cursor: "pointer",
         }}
+        onClick={togglePopup}
       />
       <div className="header">
         <Typography
           style={{
             fontWeight: "bold",
             marginBottom: "10px",
+            className: "form-heading",
             textAlign: "left",
-            overflow: "hidden",
           }}
         >
-          Add New Address
+          {address ? 'Edit Address' : 'Add New Address'}
         </Typography>
       </div>
       <Divider />
@@ -100,26 +99,28 @@ const AddAddressCard = ({ handleClose }) => {
       <div className="input">
         <TextField
           label="Name"
-          id="name"
+          name="name"
           variant="outlined"
           fullWidth
+          value={formData.name}
+          onChange={handleChange}
           required
-          value={formValues.name}
-          onChange={handleInputChange}
         />
       </div>
       <div className="input">
         <TextField
-          label="Enter 10 digit number"
-          id="phone"
+          label="Phone number"
+          name="phoneNumber"
           variant="outlined"
+          type="number"
           fullWidth
-          required
-          value={formValues.phone}
-          onChange={handleInputChange}
           autoComplete="off"
-          inputProps={{ maxLength: 10 }}
-          onKeyPress={isNumber}
+          value={formData.phoneNumber}
+          onChange={handleChange}
+          onPaste={(e) => e.preventDefault()}
+          maxLength="10"
+          onKeyPress={(e) => isNumber(e)}
+          required
         />
       </div>
       <div className="input-row">
@@ -136,68 +137,58 @@ const AddAddressCard = ({ handleClose }) => {
       </div>
       <div className="input">
         <TextField
-          label="Address Line 1"
-          id="addressLine1"
+          label="Address Line"
+          name="address"
           variant="outlined"
           fullWidth
+          value={formData.address}
+          onChange={handleChange}
           required
-          value={formValues.addressLine1}
-          onChange={handleInputChange}
         />
       </div>
-      {/* <div className="input">
-        <TextField
-          label="Landmark"
-          id="landmark"
-          variant="outlined"
-          fullWidth
-          value={formValues.landmark}
-          onChange={handleInputChange}
-        />
-      </div> */}
       <div className="input">
         <TextField
           label="City"
-          id="city"
+          name="city"
           variant="outlined"
           fullWidth
+          value={formData.city}
+          onChange={handleChange}
           required
-          value={formValues.city}
-          onChange={handleInputChange}
         />
       </div>
       <div className="input grid-cols-2 flex space-x-3">
         <TextField
           className="col-span-1 w-2/5"
           label="Pincode"
-          id="pincode"
+          name="postalCode"
+          type="number"
+          variant="outlined"
+          autoComplete="off"
+          value={formData.postalCode}
+          onChange={handleChange}
+          onPaste={(e) => e.preventDefault()}
+          maxLength="6"
+          onKeyPress={(e) => isNumber(e)}
+          required
+        />
+        <FormControl className="col-span-1 w-3/5">
+        <TextField
+          className="col-span-1 w-3/5"
+          select
+          label="State"
+          name="state"
+          value={formData.state}
+          onChange={handleChange}
           variant="outlined"
           required
-          autoComplete="off"
-          inputProps={{ maxLength: 6 }}
-          value={formValues.pincode}
-          onChange={handleInputChange}
-          onKeyPress={isNumber}
-        />
-        <FormControl className="col-span-1 w-3/5" required>
-          <InputLabel id="state-label">State</InputLabel>
-          <Select
-            labelId="state-label"
-            id="state"
-            value={selectedState}
-            label="State"
-            onChange={(e) => {
-              setSelectedState(e.target.value);
-              handleInputChange(e);
-            }}
-            required
-          >
-            {statesAndUTs.map((state, index) => (
-              <MenuItem key={index} value={state}>
-                {state}
-              </MenuItem>
-            ))}
-          </Select>
+        >
+          {statesAndUTs.map((state, index) => (
+            <MenuItem key={index} value={state}>
+              {state}
+            </MenuItem>
+          ))}
+        </TextField>
         </FormControl>
       </div>
       <div className="save-address">
@@ -212,9 +203,9 @@ const AddAddressCard = ({ handleClose }) => {
             borderRadius: "40px",
             fontSize: "10px",
             marginRight: "10px",
-            backgroundColor: homeActive ? "green" : "#ccc",
-            borderColor: homeActive ? "green" : "#ccc",
-            color: homeActive ? "white" : "initial",
+            backgroundColor: formData.type === 'Home' ? "green" : "#ccc",
+            borderColor: formData.type === 'Home' ? "green" : "#ccc",
+            color: formData.type === 'Home' ? "white" : "initial",
           }}
           onClick={handleHomeButtonClick}
         >
@@ -225,9 +216,9 @@ const AddAddressCard = ({ handleClose }) => {
           style={{
             borderRadius: "40px",
             fontSize: "10px",
-            backgroundColor: companyActive ? "green" : "#ccc",
-            borderColor: companyActive ? "green" : "#ccc",
-            color: companyActive ? "white" : "initial",
+            backgroundColor: formData.type === 'Work' ? "green" : "#ccc",
+            borderColor: formData.type === 'Work' ? "green" : "#ccc",
+            color: formData.type === 'Work' ? "white" : "initial",
           }}
           onClick={handleCompanyButtonClick}
         >
@@ -248,7 +239,7 @@ const AddAddressCard = ({ handleClose }) => {
           }}
           onClick={handleSubmit}
         >
-          Add Address
+          {address ? 'Update Address' : 'Add Address'}
         </Button>
       </div>
     </div>

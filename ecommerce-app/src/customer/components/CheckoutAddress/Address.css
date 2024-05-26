@@ -9,8 +9,7 @@
     justify-content: space-between;
     align-items:right;
     position: relative;
-}
-
+  }
   .header {
     display:flex;
     align-items:center;

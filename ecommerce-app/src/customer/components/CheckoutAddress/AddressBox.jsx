@@ -8,11 +8,10 @@ import EditAddressCard from './EditAddressCard';
 function AddressBox() {
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [editingAddress, setEditingAddress] = useState(null);
-  const [addAddressOpen, setAddAddressOpen] = useState(false); // State for AddAddressCard popup
   const [addresses, setAddresses] = useState([
-    { id: 1, addressObj: { name: 'disylva', type: 'work', addressline1: 'Aditya Hyundai, Plot No 2132/5132, Hal Plot No 342/P, Lewis Road, Dist, BJB Nagar', city: 'bhubaneswar', state: 'Odisha', pincode: '751014', phoneNo: '6371949629' } },
-    { id: 2, addressObj: { name: 'swasthik', type: 'home', addressline1: 'GIPC, Plot No 2132/5132, Hal Plot No 342/P, Lewis Road, Dist, BJB Nagar', city: 'bhubaneswar', state: 'Odisha', pincode: '751014', phoneNo: '6371949629' } },
-    { id: 3, addressObj: { name: 'vasu', type: 'home', addressline1: 'Dominos, Plot No 2132/5132, Hal Plot No 342/P, Lewis Road, Dist, BJB Nagar', city: 'bhubaneswar', state: 'O', pincode: '751014', phoneNo: '6371949629' } }
+    { id: 1, addressObj: { name:'disylva', type:'work', addressline1: 'Aditya Hyundai, Plot No 2132/5132, Hal Plot No 342/P, Lewis Road, Dist, BJB Nagar', city: 'bhubaneswar', state: 'Odisha', pincode: '751014', phoneNo: '6371949629' } },
+    { id: 2, addressObj: { name:'swasthik', type:'home', addressline1: 'GIPC, Plot No 2132/5132, Hal Plot No 342/P, Lewis Road, Dist, BJB Nagar', city: 'bhubaneswar', state: 'Odisha', pincode: '751014', phoneNo: '6371949629' } },
+    { id: 3, addressObj: { name:'vasu', type:'home', addressline1: 'Dominos, Plot No 2132/5132, Hal Plot No 342/P, Lewis Road, Dist, BJB Nagar', city: 'bhubaneswar', state: 'O', pincode: '751014', phoneNo: '6371949629' } }
   ]);
 
   const handleAddressChange = (id) => {
@@ -27,9 +26,6 @@ function AddressBox() {
   const handleCloseEdit = () => {
     setEditingAddress(null);
   };
-  const handleCloseEdit2 = () => {
-    setAddingAddress(null);
-  };
 
   const handleSaveEdit = (updatedAddress) => {
     setAddresses((prevAddresses) =>
@@ -40,17 +36,8 @@ function AddressBox() {
     setEditingAddress(null);
   };
 
-  const handleClose=()=>{
-    setAddAddressOpen(false);
-    console.log("addressStae",addAddressOpen);
-  }
-
   return (
     <div>
-      {!addAddressOpen && 
-    <div>
-      {!editingAddress && 
-      <div>
       {addresses.map((address) => (
         <CheckoutAddressCard
           key={address.id}
@@ -61,8 +48,11 @@ function AddressBox() {
         />
       ))}
 
-      <div className="popup-content hide-scrollbar">
-      <Button
+      <div>
+        <Popup
+          modal
+          trigger={
+            <Button
               variant="outlined"
               style={{
                 border: '1px dashed #B3B3B3',
@@ -80,23 +70,37 @@ function AddressBox() {
                 justifyContent: 'center',
                 alignItems: 'center'
               }}
-              onClick={() =>{
-                setAddAddressOpen(true)
-                console.log("state",addAddressOpen)
-              } }
             >
               + Add New Address
             </Button>
-              </div>
-            </div>
-      }
-            
-            {editingAddress &&    
-        <div
+          }
+          contentStyle={{
+            width: '50vw',
+            height: '100vh',
+            margin: 'auto',
+            overflowY: 'scroll',
+            borderRadius: '10px',
+            padding: '65px'
+          }}
+          overlayStyle={{
+            display: 'flex',
+            position: 'absolute',
+            zIndex: "1000",
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(0, 0, 0, 0.5)',
+          }}
+          lockScroll
+        >
+          <div className="popup-content hide-scrollbar">
+            <AddAddressCard />
+          </div>
+        </Popup>
+
+        <Popup
           modal
           open={!!editingAddress}
           onClose={handleCloseEdit}
-          closeOnDocumentClick={false}
           contentStyle={{
             width: '46vw',
             height: '100vh',
@@ -108,7 +112,8 @@ function AddressBox() {
           }}
           overlayStyle={{
             display: 'flex',
-            zIndex: "0",
+            position: 'absolute',
+            zIndex: "1000",
             alignItems: 'center',
             justifyContent: 'center',
             background: 'rgba(0, 0, 0, 0.5)',
@@ -116,52 +121,18 @@ function AddressBox() {
           lockScroll
         >
           <div className="popup-content hide-scrollbar">
-             
+            {editingAddress && (
               <EditAddressCard
                 address={editingAddress.addressObj}
                 onClose={handleCloseEdit}
                 onSave={handleSaveEdit}
               />
-            
+            )}
           </div>
-        </div>}
+        </Popup>
       </div>
-}
-    <div>
-    {
-      addAddressOpen && <div
-      modal
-      open={addAddressOpen}
-      onClose={handleClose}
-      closeOnDocumentClick={false}
-      // className='w-full flex justify-end'
-      contentStyle={{
-        width: '46vw',
-        height: '100vh',
-        margin: 'auto',
-        overflowY: 'scroll',
-        borderRadius: '10px',
-        padding: '20px'
-      }}
-      overlayStyle={{
-        display: 'flex',
-        zIndex: "0",
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'rgba(0, 0, 0, 0.5)',
-      }}
-      lockScroll
-    >
-     <div className="flex justify-center popup-content hide-scrollbar">
-      <AddAddressCard handleClose={handleClose} />
-      </div> 
-    </div> }
     </div>
-    </div>
-
   );
 }
 
 export default AddressBox;
-
-
