@@ -7,7 +7,7 @@ const ProfileDetailsPage = () => {
 
   const {profileInfo, loading, updateProfileInfo, deleteUser} = useProfileInfo();
   const navigate = useNavigate();
-
+  const {setRole} = useUserInfoContext();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
   const [showDeletePopup, setShowDeletePopup] = useState(false);

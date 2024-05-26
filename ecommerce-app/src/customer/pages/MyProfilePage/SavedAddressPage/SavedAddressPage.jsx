@@ -11,8 +11,6 @@ function SavedAddressPage() {
   const {loading, savedAddresses, addAddress, updateAddress} = useAddressInfo();
   const [addresses, setAddresses] = useState([]);
 
-
-
   useEffect(() => {
     if (!loading) {
         setAddresses(savedAddresses);
@@ -64,7 +62,7 @@ console.log("savedAddresses",savedAddresses)
           </div>
           <div className='w-full lg:w-[90%] h-fit pt-10 pb-5 px-2 md:p-10 space-y-2'>
             {addresses?.map((address) => (
-              <AddressCard key={address.addressId} address={address} onEdit={handleEdit} />
+              <AddressCard key={address.addressId} address={address} onEdit={handleEdit} editable={true}/>
             ))}
           </div>
         </div>

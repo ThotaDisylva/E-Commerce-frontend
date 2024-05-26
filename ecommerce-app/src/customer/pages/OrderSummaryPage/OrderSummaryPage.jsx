@@ -1,86 +1,80 @@
-import React, { useEffect } from 'react';
-import { Box, Stepper, Step, StepLabel, Typography } from '@mui/material';
-import productsData from '../../components/ProductCard/ProductsData';
-import CartItem from '../../components/OrderSummary/CartItem';
-import Price from '../../components/OrderSummary/Price';
-import { useUserInfoContext } from '../../../context/UserInfoContext';
-
-
-
-const steps = ['Login', 'Address', 'Order Summary', 'Payment'];
+import React, { useEffect } from "react";
+import { Box, Stepper, Step, StepLabel, Typography } from "@mui/material";
+import productsData from "../../components/ProductCard/ProductsData";
+import CartItem from "../../components/OrderSummary/CartItem";
+import Price from "../../components/OrderSummary/Price";
+import { useUserInfoContext } from "../../../context/UserInfoContext";
+import { useLocation } from "react-router-dom";
+import AddressCard from "../../components/SavedAddress/AddressCard";
 
 export default function OrderSummaryPage() {
-
-
-  const {choosedAddress, cartItemsInfo,setCartItemsInfo,  priceDetails, setPriceDetails} = useUserInfoContext();
+  const steps = ["Login", "Address", "Order Summary", "Payment"];
+  const {
+    choosedAddress,
+    cartItemsInfo,
+    setCartItemsInfo,
+    priceDetails,
+    setPriceDetails,
+  } = useUserInfoContext();
   // console.log("cartItem inside ordersummary -> ",cartItemsInfo);
   // console.log("priceDetails inside ordersummary -> ",priceDetails)
 
-
-function isObjEmpty (obj) {
+  function isObjEmpty(obj) {
     return Object.keys(obj).length === 0;
-}
+  }
 
-  useEffect(()=>{
-    if(isObjEmpty(cartItemsInfo)){
-      setCartItemsInfo(JSON.parse(localStorage.getItem("cart_items_info")))
+  useEffect(() => {
+    if (isObjEmpty(cartItemsInfo)) {
+      setCartItemsInfo(JSON.parse(localStorage.getItem("cart_items_info")));
     }
-      
 
-    if(isObjEmpty(priceDetails)){
-      setPriceDetails(JSON.parse(localStorage.getItem("cart_price_details")))
+    if (isObjEmpty(priceDetails)) {
+      setPriceDetails(JSON.parse(localStorage.getItem("cart_price_details")));
     }
-  },[]);
+  }, []);
+
+  const location = useLocation();
+  const selectedAddress = location.state;
+
+  console.log("selectedAddress", selectedAddress)
 
   return (
     <div>
-      <Box sx={{ padding: {md:'0px 5rem'},  }}>
-        <Stepper activeStep={3}>
-          {steps.map((index, label) => {
-            return (
-              <Step key={index}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
+      <div className="px-2 md:px-20">
+        <div >
+          <Stepper activeStep={2}>
+            {steps.map((label) => {
+              return (
+                <Step>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
+        </div>
 
-
-          
+        <div className="mt-10">
           <div>
-            <div>
-              <div className='' style={{ border: '1px solid #ccc', padding: '5px', position: 'relative', boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px", marginTop: '30px' }}>
-                <Typography variant="body1" style={{ fontWeight: 'bold', textAlign: 'left', marginBottom: '3px',marginTop:'5px',marginLeft:'10px' }}>{choosedAddress.name}</Typography>
-                <Typography variant="body1" style={{ textAlign: 'left', fontSize: '15px', marginBottom: '8px', marginLeft: '10px',marginTop:'7px' }}>
-                  Mumbai,chincholi bandar,
-                  Mind space,400001 Mumbai maharastra 400001
-                </Typography>
-                <Typography variant="body1" style={{fontWeight:'bold',textAlign:'left',marginLeft:'10px'}}>Phone Number</Typography>
-                <Typography variant="body1" style={{textAlign:'left',marginLeft:'10px'}}>{choosedAddress.phoneNumber}</Typography>
-              </div>
+          <AddressCard key={selectedAddress.addressId} address={selectedAddress} onEdit={()=>{}} editable={false}/>
+          </div>
+          <div className="mt-5 lg:flex">
+            <div className="lg:w-[71%] lg:mr-5 ">
+              {cartItemsInfo.cartItems?.map((cart) => (
+                <CartItem key={cart.cartId} ProductsData={cart} />
+              ))}
             </div>
-            <div className='mt-5 lg:flex'>
-              <div className='lg:w-[71%] lg:mr-5 '>
-                {cartItemsInfo.cartItems?.map((cart)=>(
-                  
-                  <CartItem key={cart.cartId} ProductsData={cart} />
-                ))}
-                
-              </div>
-              <div >
-              <Price 
-                        actualTotalPrice={priceDetails.actualTotalPrice} 
-                        totalDisountedPrice={priceDetails.totalDiscountedPrice} 
-                        totalDeliveryCharges={priceDetails.totalDeliveryCharge} 
-                        totalPayableAmount={priceDetails.totalPayablePrice}
-                        buttonText={'Checkout'}
-                    />
-              </div>
+            <div>
+              <Price
+                actualTotalPrice={priceDetails.actualTotalPrice}
+                totalDisountedPrice={priceDetails.totalDiscountedPrice}
+                totalDeliveryCharges={priceDetails.totalDeliveryCharge}
+                totalPayableAmount={priceDetails.totalPayablePrice}
+                buttonText={"Payment"}
+              />
             </div>
           </div>
-        
-      </Box>
+        </div>
+      </div>
     </div>
   );
 }
-

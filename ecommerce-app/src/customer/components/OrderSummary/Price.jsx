@@ -1,6 +1,14 @@
 import React from 'react';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 const Price = ({actualTotalPrice, totalDisountedPrice, totalDeliveryCharges, totalPayableAmount, buttonText}) => {
+
+  const navigate = useNavigate();
+
+  const handlePaymentClick = () =>{
+    navigate("/profile")
+  }
+
   return (
     <div className='w-full'>
         <Box sx={{backgroundColor:'white  ' ,padding: '10px',minWidth:"18rem", boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px", borderRadius:"5px"}}>
@@ -27,7 +35,7 @@ const Price = ({actualTotalPrice, totalDisountedPrice, totalDeliveryCharges, tot
             </Box>
           </Box>
         <Grid item xs={12} md={12} sx={{ display: 'flex', alignItems: 'flex-end' }}>
-        <Button variant="contained" sx={{ backgroundColor:'#2196f3', color: 'white', fontWeight: 'bold', padding: '8px 16px', borderRadius: '5px', border: 'none', width: '100%',marginTop:'10px', '&:hover': {backgroundColor: '#4a90e2', color: 'white',} }}>
+        <Button variant="contained" onClick={handlePaymentClick} sx={{ backgroundColor:'#2196f3', color: 'white', fontWeight: 'bold', padding: '8px 16px', borderRadius: '5px', border: 'none', width: '100%',marginTop:'10px', '&:hover': {backgroundColor: '#4a90e2', color: 'white',} }}>
           {buttonText}
         </Button>
       </Grid>
