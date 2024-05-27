@@ -28,7 +28,7 @@ const OrderInAdmin = ({orders}) => {
             <TableCell align="center">
                 <AvatarGroup max={3} sx={{ justifyContent: "start" }}>
                     {orders.map((order, index) => (
-                        <Avatar key={index} src={order.image} alt={order.title} />
+                        <Avatar key={index} src={order.imageUrl} alt={order.title} />
                     ))}
                 </AvatarGroup>
             </TableCell>
@@ -41,15 +41,6 @@ const OrderInAdmin = ({orders}) => {
             </TableCell>
             <TableCell align="center">{orders.map((order) => order.id)}</TableCell>
             <TableCell align="center">{totalPrice}</TableCell>
-
-            {/* <TableCell align="right">
-                <span className={`text-white px-5 py-2 
-                $(order.selectedStatus===" CONFIRMED"?"bg-yellow":
-                order.selectedStatus===" SHIPPED"?"bg-blue":
-                order.selectedStatus===" DELIVERED"?"bg-green":}`
-             }/>
-                {selectedStatus}
-            </span></TableCell> */}
             <TableCell align="center">{selectedStatus}</TableCell>
 
             <TableCell align="center">
@@ -63,7 +54,7 @@ const OrderInAdmin = ({orders}) => {
                         horizontal: 'left',
                     }}>
                     <List>
-                        {['Confirmed', 'Shipped', 'Delivered'].map((status) => (
+                        {['Confirmed', 'Shipped', 'Out For Delivery', 'Delivered'].map((status) => (
                             <ListItem key={status} disablePadding>
                                 <ListItemButton onClick={() => handleStatusSelect(status)} variant = "outlined">
                                     <Typography>{status}</Typography>
@@ -73,7 +64,7 @@ const OrderInAdmin = ({orders}) => {
                     </List>
                 </Popover>
             </TableCell>
-            {/* <TableCell align="center"><Button variant="contained" onClick={handleDelete}>Delete</Button></TableCell> */}
+            
 </TableRow></>
     );
 }

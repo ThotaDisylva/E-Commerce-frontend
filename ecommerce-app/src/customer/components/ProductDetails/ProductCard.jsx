@@ -4,11 +4,10 @@ import useCartPageInfo from "../../../hooks/useCartPageInfo";
 import toast from "react-hot-toast";
 
 const ProductCard = ({ product }) => {
-  console.log(product);
   const { productId,imageUrl,title,brand,discountPercent,price,subtitle} = product;
 
   const navigate = useNavigate();
-  const {addCartItem}= useCartPageInfo();
+  const {loading, addCartItem}= useCartPageInfo();
 
   const handleProductClick = () =>{
     navigate(`/productDetails/${product.productId}`)
@@ -18,7 +17,11 @@ const ProductCard = ({ product }) => {
 
   const handleAddToCart = (e) =>{
     e.stopPropagation();
-    addCartItem(productId)
+    addCartItem(productId);
+    if(!loading){
+      toast.success("Added to Cart");
+    }
+
   }
 
 

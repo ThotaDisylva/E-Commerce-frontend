@@ -40,7 +40,7 @@ export const ProductInAdmin = ({product,onUpdate}) => {
         <>
              {/* {initialState.products.map(product => ( */}
                 <TableRow key={product.id}>
-                  <TableCell align="center" ><img src={product.image} alt="product image" style={{ maxWidth: '50px', maxHeight: '50px' ,borderRadius:'50%'}}/></TableCell>
+                  <TableCell align="center" ><img src={product.imageUrl} alt="product image" style={{ maxWidth: '50px', maxHeight: '50px'}}/></TableCell>
                   <TableCell align="center">{product.title}</TableCell>
                   <TableCell align="center">{product.categoryName}</TableCell>
                   <TableCell align="center">{product.subCategoryName}</TableCell>

@@ -9,6 +9,7 @@ const useSignin = () => {
     const [loading, setLoading] = useState(false);
     const {setRole} = useUserInfoContext();
     const navigate = useNavigate();
+    const {cartPageInfo} = useCartPageInfo();
 
     const signin = async ({ email, password }) => {
         const success = handleInputErrors({email, password});
@@ -39,7 +40,7 @@ const useSignin = () => {
             if(data.role === "admin"){
                 navigate("/admin")
             }else{
-                const {loading, cartPageInfo} = useCartPageInfo();
+                cartPageInfo();
                 navigate("/")
             }
 
