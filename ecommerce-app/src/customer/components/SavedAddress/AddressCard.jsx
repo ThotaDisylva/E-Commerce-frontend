@@ -1,9 +1,11 @@
 
 import React from 'react';
-import { Typography, Grid, Button } from '@mui/material';
+import { Typography, Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-
-function AddressCard({ address, onEdit, editable }) {
+import Chip from '@mui/material/Chip';
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+function AddressCard({ address, onEdit, editable,onDelete }) {
   return (
     <div className="rounded-lg text-sm md:text-xl w-full">
       <div className='bg-white' style={{ border: '1px solid #ccc', boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}>
@@ -25,6 +27,9 @@ function AddressCard({ address, onEdit, editable }) {
                       <EditIcon style={{ color: '#1976D2', fontSize: '12px' }} />
                       Edit
                     </Button>
+                    <div className='p-2'>
+                      <DeleteIcon style={{ color: '#D32F2F', fontSize: '28px' }}  onClick={() => onDelete(address.id)} />
+                  </div>
                   </div>)}
                 </div>
                 <div className='pl-4 pr-4 text-gray-500'>
