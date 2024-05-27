@@ -6,9 +6,9 @@ import axios from 'axios';
 const useCartPageInfo = () => {
     const { cartItemsInfo, setCartItemsInfo, cartItemCount, setCartItemCount, setPriceDetails } = useUserInfoContext();
     const [loading, setLoading] = useState(false);
+    const jwtToken = localStorage.getItem('jwtToken');
 
     const cartPageInfo = async () => {
-        const jwtToken = localStorage.getItem('jwtToken');
 
         setLoading(true)
         if (jwtToken) {
@@ -22,8 +22,8 @@ const useCartPageInfo = () => {
                 const data = response.data;
                 console.log("cartitem from data",data)
                 localStorage.setItem("cart_items_info",JSON.stringify(data))
-                setCartItemsInfo(data);
-                console.log("cartitem",cartItemsInfo)
+                setCartItemsInfo(data.cartItems);
+                console.log("cartitem",cartItemsInfo);
                 calculatePriceDetails(data.cartItems);
 
             } catch (error) {
@@ -68,7 +68,8 @@ const useCartPageInfo = () => {
     };
 
     const reduceCartItem = async (cartId) => {
-        const jwtToken = localStorage.getItem('jwtToken');
+        
+        setLoading(true)
         if (jwtToken) {
             try {
                 const response = await axios.put(`http://localhost:8080/api/cart/reduce/${cartId}`, {}, {
@@ -80,7 +81,7 @@ const useCartPageInfo = () => {
                 if (response.status === 200) {
                     console.log('Item quantity reduced successfully');
 
-                    const updatedCartItems = cartItemsInfo.map(item => {
+                    const updatedCartItems = cartItemsInfo?.map(item => {
                         if (item.cartId === cartId && item.quantity > 1) {
                             return { ...item, quantity: item.quantity - 1 };
                         }
@@ -97,12 +98,18 @@ const useCartPageInfo = () => {
                 }
             } catch (error) {
                 console.error('Error reducing cart item quantity:', error);
+            }finally {
+                setLoading(false)
             }
+
+        } else {
+            console.error("JWT Token not found in local storage");
+            setLoading(false);
         }
     };
 
     const addCartItem = async (productId) => {
-        const jwtToken = localStorage.getItem('jwtToken');
+
         setLoading(true)
         if (jwtToken) {
             try {
@@ -114,7 +121,7 @@ const useCartPageInfo = () => {
 
                 if (response.status === 201) {
                     console.log('Item added to cart successfully'); 
-
+                    console.log("cartItems inside add",cartItemsInfo)
                     const updatedCartItems = cartItemsInfo?.map(item => {
                         if (item.productId === productId) {
                             return { ...item, quantity: item.quantity + 1 };
@@ -123,6 +130,7 @@ const useCartPageInfo = () => {
                     });
 
                     setCartItemCount(prevCount => prevCount + 1);
+                    console.log("after",cartItemCount)
                     setCartItemsInfo(updatedCartItems);
                     calculatePriceDetails(updatedCartItems);
 
@@ -142,7 +150,8 @@ const useCartPageInfo = () => {
     };
 
     const removeCartItem = async (cartId, quantity) => {
-        const jwtToken = localStorage.getItem('jwtToken');
+
+        setLoading(true)
         if (jwtToken) {
             try {
                 const response = await axios.delete(`http://localhost:8080/api/cart/remove/${cartId}`, {
@@ -154,7 +163,9 @@ const useCartPageInfo = () => {
                 if (response.status === 200) {
                     console.log('Item removed from cart successfully');
 
-                    const updatedCartItems = cartItemsInfo.filter(item => item.cartId !== cartId);
+                    const updatedCartItems = cartItemsInfo?.filter(item => item.cartId !== cartId);
+
+                    console.log("updatedCartItems", updatedCartItems);
 
                     setCartItemsInfo(updatedCartItems);
                     setCartItemCount(prevCount => prevCount - quantity);
@@ -165,7 +176,13 @@ const useCartPageInfo = () => {
                 }
             } catch (error) {
                 console.error('Error removing cart item:', error);
+            }finally {
+                setLoading(false)
             }
+
+        } else {
+            console.error("JWT Token not found in local storage");
+            setLoading(false);
         }
     };
 

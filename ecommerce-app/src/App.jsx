@@ -13,9 +13,9 @@ import CheckoutAddressPage from "./customer/pages/CheckoutAddressPage/CheckoutAd
 import OrderSummaryPage from "./customer/pages/OrderSummaryPage/OrderSummaryPage";
 import MyProfilePage from "./customer/pages/MyProfilePage/MyProfilePage";
 import ProductDetailsPage from "./customer/pages/ProductDetailsPage/ProductDetailsPage";
-import AdminPage from "./Admin/pages/AdminPage/AdminPage";
 import { useUserInfoContext } from "./context/UserInfoContext";
 import useNavbar from "./hooks/useNavbar";
+import { AdminPage } from "./Admin/pages/AdminPage/AdminPage";
 
 function App() {
 
