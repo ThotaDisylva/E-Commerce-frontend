@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import useCartPageInfo from './useCartPageInfo';
 import toast from 'react-hot-toast';
+import usePaymentSuccessfull from './usePaymentSuccessfull';
 
 const useOrderDetails = () => {
     const [orderDetails, setOrderDetails] = useState([]);
     const {removeAllCartItems} = useCartPageInfo();
     const [loading, setLoading] = useState(false);
     const jwtToken = localStorage.getItem('jwtToken');
+    const {prePaymmentRequest}= usePaymentSuccessfull();
 
     const loadOrderDetailsPage = async (orderId) => {
-        
-      
+        setLoading(true);
         if (jwtToken) {
             try {
                 const response = await axios.get(`http://localhost:8080/api/order/${orderId}`, {
@@ -19,11 +20,17 @@ const useOrderDetails = () => {
                         Authorization: `Bearer ${jwtToken}`
                     }
                 });
-                console.log(response.data);
+                console.log("orderDetails inside order details hook before",response.data);
                 setOrderDetails(response.data);
+                console.log("orderDetails inside order details hook after",orderDetails);
             } catch (error) {
-                console.error('Error fetching orders:', error);
+                console.error("Error load order details :", error.response ? error.response.data : error.message);
+            } finally {
+                setLoading(false);
             }
+        } else {
+            console.error("JWT Token not found in local storage");
+            setLoading(false);
         }
     }
 
@@ -52,7 +59,8 @@ const useOrderDetails = () => {
                     console.log("Order Details added successfully!");
                     toast.success("Order Details added successfully!");
                     setOrderDetails(prevOrderDetails => [...prevOrderDetails,orderDetailsInfo ]);
-                    removeAllCartItems();
+                    await removeAllCartItems();
+                    prePaymmentRequest(orderDetailsInfo.orderId);
 
                 } else {
                     console.error("Unexpected response status:", response.status);
@@ -68,7 +76,7 @@ const useOrderDetails = () => {
         }
     }
 
-    return { orderDetails, loadOrderDetailsPage, createOrderDetails };
+    return { loading,orderDetails, loadOrderDetailsPage, createOrderDetails };
 }
 
 export default useOrderDetails

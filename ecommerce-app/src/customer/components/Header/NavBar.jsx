@@ -185,7 +185,7 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
             </Link>
           </div>
           <div className="flex items-center hover:bg-[#F1F2F4] cursor-pointer px-5">
-            <div className="my-3" onClick={openPopup}>
+            <div className="my-3" onClick={role ? ()=>{navigate("/profile")}:openPopup}>
               <AccountCircle fontSize="medium" />
               <span className="ml-2">{role ? "User":"SIGN IN"}</span>
             </div>

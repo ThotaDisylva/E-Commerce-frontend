@@ -122,7 +122,41 @@ const useAddressInfo = () => {
 
 
     }
-  return {loading, savedAddresses, addAddress, updateAddress}
+
+    const deleteAddress= async(addressId) =>{
+
+        setLoading(true);
+        if (jwtToken) {
+            try {
+                const response = await axios.delete(`http://localhost:8080/api/addresses/delete/${addressId}`, {
+                    headers: {
+                        Authorization: `Bearer ${jwtToken}`
+                    }
+                });
+                if (response.status === 200) {
+                    
+                    console.log("Addresses deleted successfully");
+                    setSavedAddresses(prevAddresses =>
+                        prevAddresses.filter(address => address.addressId !== addressId)
+                      );
+
+                } else {
+                    console.error("Unexpected response status:", response.status);
+                }
+            } catch (error) {
+                console.error("Error deleting address info:", error.response ? error.response.data : error.message);
+            } finally {
+                setLoading(false);
+            }
+        } else {
+            console.error("JWT Token not found in local storage");
+            setLoading(false);
+        }
+    }
+
+
+
+  return {loading, savedAddresses, addAddress, updateAddress, deleteAddress}
 }
 
 export default useAddressInfo

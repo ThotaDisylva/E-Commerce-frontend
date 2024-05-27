@@ -16,7 +16,7 @@ import ProductDetailsPage from "./customer/pages/ProductDetailsPage/ProductDetai
 import { useUserInfoContext } from "./context/UserInfoContext";
 import useNavbar from "./hooks/useNavbar";
 import { AdminPage } from "./Admin/pages/AdminPage/AdminPage";
-import PaymentSuccessfullPage from "./customer/pages/PaymentSuccessfull/PaymentSuccessfullPage";
+import PaymentSuccessfullPage from "../src/customer/pages/PaymentSuccessfull/PaymentSuccessfullPage"
 
 function App() {
 

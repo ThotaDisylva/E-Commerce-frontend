@@ -51,9 +51,7 @@ export default function OrderSummaryPage() {
 
   const handlePaymentClick = async() =>{
     await createOrder(orderInfo)
-    navigate("/profile")
-    // window.location.replace("https://mail.google.com/mail/u/0/?ogbl#inbox/FMfcgzQVwnTCHFjbMppnLlbMsrmLltdC");
-
+    
   }
 
 
