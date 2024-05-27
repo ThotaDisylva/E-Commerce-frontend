@@ -2,11 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { useUserInfoContext } from '../context/UserInfoContext';
 import axios from 'axios';
+import usePaymentSuccessfull from './usePaymentSuccessfull';
 
 const useCartPageInfo = () => {
     const { cartItemsInfo, setCartItemsInfo, cartItemCount, setCartItemCount, setPriceDetails } = useUserInfoContext();
     const [loading, setLoading] = useState(false);
     const jwtToken = localStorage.getItem('jwtToken');
+    
 
     const cartPageInfo = async () => {
 
@@ -208,6 +210,8 @@ const useCartPageInfo = () => {
 
                     localStorage.setItem("cart_items_count", cartItemCount)
                     localStorage.setItem("cart_items_info", JSON.stringify(cartItemsInfo))
+
+                    
                 }
             } catch (error) {
                 console.error('Error removing all cart item:', error);

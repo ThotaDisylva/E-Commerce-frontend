@@ -8,33 +8,31 @@ import { useLocation, useParams } from "react-router-dom";
 import useOrderDetails from "../../../hooks/useOrderDetails";
 import usePaymentSuccessfull from "../../../hooks/usePaymentSuccessfull";
 
-
-
-const steps ={
-  "Processing":1,
-  "Placed":1,
-  "Order Confirmed":2,
-  "Shipped":3,
-  "Out For Delivery":4,
-  "Delivered":5,
-}
-
-
-
 const PaymentSuccessfullPage = () => {
-  const queryParameters = new URLSearchParams(window.location.search)
-  const paymentId = queryParameters.get("razorpay_payment_id")
-  const {orderId}=useParams();
+  
+    const queryParameters = new URLSearchParams(window.location.search)
+    const paymentId = queryParameters.get("razorpay_payment_id")
+    const {orderId}=useParams();
+
+
   console.log(orderId);
   console.log(paymentId);
-  const {postPaymentRequest} = usePaymentSuccessfull(paymentId,orderId);
-  const {orderDetails,loadOrderDetailsPage}=useOrderDetails(orderId);
-  if(orderDetails.orderStatus=="Processing"){
-    postPaymentRequest();
-  }
-  // const location = useLocation();
-  
-  // const { fromOrder } = location.state;
+  const {postPaymentRequest} = usePaymentSuccessfull();
+  const {loading,orderDetails,loadOrderDetailsPage}=useOrderDetails();
+
+  useEffect(()=>{
+    loadOrderDetailsPage(orderId);
+    postPaymentRequest(paymentId,orderId);
+  },[])
+
+  const steps = {
+    Placed: 1,
+    "Order Confirmed": 2,
+    Shipped: 3,
+    "Out For Delivery": 4,
+    Delivered: 5,
+    Cancelled:6
+  };
 
 
   return (
@@ -44,6 +42,7 @@ const PaymentSuccessfullPage = () => {
         <OrderDetailsCard orderDetails={orderDetails} orderId={orderId}/>
       </div>
 
+      
       <div className="">
         <OrderAddressCard address={orderDetails?.orderAddress?.address} name={orderDetails?.orderAddress?.name} city={orderDetails?.orderAddress?.city} state={orderDetails?.orderAddress?.state} postalCode={orderDetails?.orderAddress?.postalCode} phoneNumber={orderDetails?.orderAddress?.phoneNumber}/>
       </div>

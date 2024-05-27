@@ -14,7 +14,7 @@ const ProductCardSummary=({product})=>{
                         <p className="font-semibold float-right">{title}</p>
                     </div>
                     <div>
-                        <p className="py-1 px-7 border font-semibold rounded-sm">x1</p>
+                        <p className="py-1 px-7 border font-semibold rounded-sm">x{quantity}</p>
                     </div>
                     </div>
                     <p className="opacity-70">{subtitle}</p>

@@ -11,6 +11,7 @@ function SavedAddressPage() {
   const {loading, savedAddresses, addAddress, updateAddress} = useAddressInfo();
   const [addresses, setAddresses] = useState([]);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
+  const {deleteAddress} = useAddressInfo();
 
   useEffect(() => {
     if (!loading) {

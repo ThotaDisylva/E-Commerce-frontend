@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Grid } from "@mui/material";
+import { Typography, Grid, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
@@ -28,7 +28,7 @@ function AddressCard({ address, onEdit, editable, onDelete }) {
                     </div>
                   </div>
                   {editable && (
-                    <div className="py-4 px-2 flex">
+                    <div className="py-4 px-2 flex items-center">
                       <Button
                         className=""
                         variant="outlined"
@@ -40,12 +40,9 @@ function AddressCard({ address, onEdit, editable, onDelete }) {
                         />
                         Edit
                       </Button>
-                      <div className="p-2">
-                        <DeleteIcon color="primary"
-                          style={{ fontSize: "28px" }}
-                          onClick={() => onDelete(address.id)}
-                        />
-                      </div>
+                        <IconButton aria-label="delete" onClick={() => onDelete(address.addressId)} size="large">
+                          <DeleteIcon color="primary" fontSize="inherit" />
+                        </IconButton>
                     </div>
                   )}
                 </div>
@@ -66,7 +63,7 @@ function AddressCard({ address, onEdit, editable, onDelete }) {
                     {address.phoneNumber}
                   </Typography>
                   <p className="font-bold text-green-500 border border-solid w-fit p-2 border-green-500 rounded-3xl text-xs mb-2 sm:hidden hover:bg-gray-30">
-                    {address.type}
+                    Home
                   </p>
                 </div>
               </Grid>

@@ -67,7 +67,7 @@ const useMyOrderPage = () => {
                             orderProductsInfo: cartItemsInfo.map(cartItem => ({
                                 productId: cartItem.productId,
                                 quantity: cartItem.quantity,
-                                price: Math.ceil(cartItem.price-(cartItem.price*cartItem.discountPercent/100)),
+                                discountedPrice: Math.ceil(cartItem.price-(cartItem.price*cartItem.discountPercent/100)),
                             }))
                         };
                    createOrderDetails(requestOrderDetails);
