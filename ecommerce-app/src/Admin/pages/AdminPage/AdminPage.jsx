@@ -7,6 +7,7 @@ import { Addproducts } from "../AddProductsPage/Addproducts";
 import { Orders } from "../OrdersPage/Orders";
 import { Route, Routes } from "react-router-dom";
 import { Adminsidebar } from "../../Adminsidebar";
+import AdminProfile from "../AdminProfilePage/AdminProfile";
 
 const AdminPage = () => {
   return (
@@ -17,10 +18,11 @@ const AdminPage = () => {
       </div>
       <div className="w-[85%]">
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/addproduct" element={<Addproducts />} />
+        <Route path="/" element={<Dashboard />} />
+          <Route path="products" element={<Products />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="addproduct" element={<Addproducts />} />
+          <Route path="account" element={<AdminProfile />} />
         </Routes>
       </div>
     </div>

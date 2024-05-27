@@ -10,10 +10,10 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 const drawerWidth = 240;
 const menu = [
-    { name: "Dashboard", path: "/", icon: <DashboardIcon /> },
-    { name: "Products", path: "/products", icon: <ShoppingCartIcon /> },
-    { name: "Orders", path: "/orders", icon: <LocalGroceryStoreIcon /> },
-    { name: "Add Products", path: "/addproduct", icon: <AddShoppingCartIcon /> }
+    { name: "Dashboard", path: "/admin", icon: <DashboardIcon /> },
+    { name: "Products", path: "/admin/products", icon: <ShoppingCartIcon /> },
+    { name: "Orders", path: "/admin/orders", icon: <LocalGroceryStoreIcon /> },
+    { name: "Add Products", path: "/admin/addproduct", icon: <AddShoppingCartIcon /> }
 ];
 
 export const Adminsidebar = ({ children }) => {
@@ -47,7 +47,7 @@ export const Adminsidebar = ({ children }) => {
             </List>
             <List>
                 <ListItem disablePadding>
-                    <Link to="/account" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <Link to="/admin/account" style={{ textDecoration: 'none', color: 'inherit' }}>
                         <ListItemButton>
                             <ListItemIcon>
                                 <AccountCircleIcon />

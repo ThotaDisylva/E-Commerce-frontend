@@ -26,7 +26,7 @@ const useProfileInfo = () => {
 
                 const data = response.data;
                 setProfileInfo(data);
-                console.log(profileInfo);
+                console.log("profileInfo inside hook", profileInfo);
 
             } catch (error) {
                 console.error("Error fetching profile page info:",error)
@@ -34,6 +34,9 @@ const useProfileInfo = () => {
                 setLoading(false)
             }
 
+        } else {
+            console.error("JWT Token not found in local storage");
+            setLoading(false);
         }
     }
 

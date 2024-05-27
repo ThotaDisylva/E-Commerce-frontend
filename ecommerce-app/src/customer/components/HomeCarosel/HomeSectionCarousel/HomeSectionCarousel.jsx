@@ -34,9 +34,7 @@ const HomeSectionCarousel = ({subCategory, productsData}) => {
   console.log(productsData);
   const items = productsData.map((product, index) => (
     <div key={index} className="flex justify-center">
-      <Link to={`/productDetails/${product.productId}`}>
         <ProductCard product={product} />
-      </Link>
     </div>
   ));
 
