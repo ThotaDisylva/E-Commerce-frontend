@@ -7,7 +7,7 @@ import { Productsindashboard } from '../../components/Dashboard/Productsindashbo
 
 export const Dashboard = () => {
   return (
-    <div>
+    <div className='bg-white'>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
             <div className='shadow-lg shadow-gray-400'>

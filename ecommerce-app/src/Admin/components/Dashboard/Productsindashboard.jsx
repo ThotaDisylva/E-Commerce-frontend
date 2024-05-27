@@ -6,32 +6,22 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import {useSelector, useDispatch} from 'react-redux';
 import { useEffect } from 'react';
 import { ProductsindashboardIndiv } from './ProductsindashboardIndiv';
+import { fetchProducts } from '../../../hooks/UseProductsSlice';
 
 export const Productsindashboard = () => {
-  // const dispatch=useDispatch();
+  const dispatch=useDispatch();
   // const {products} = useSelector(store=>store);
-//   const {products} = useSelector(state=>state.products);
-//   const handleDelete = () => {
-//     onDelete(); // Call the onDelete callback passed from the parent component
-// };
-
-  // console.log("Products -----",products)
+  const {products,status,error} = useSelector((state)=>state.products);
 
   useEffect(() => {
-    const data={
-      category:'Mobile',
-      minPrice:100,
-      maxPrice:1000,
-      minDiscount:10,
-      sort:"price_low",
-      pageNumber:1,
-      pageSize:10,
-      stock:"90"
+    if (status === 'idle'){
+      dispatch(fetchProducts());
     }
-    // dispatchEvent(findProducts(data))
-  })
+  },[status,dispatch]);
+  
   return (
       <div className="w-full" >
         <div className='font-bold text-3xl text-center'>Products</div>
@@ -51,9 +41,9 @@ export const Productsindashboard = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-              <ProductsindashboardIndiv/>
-              <ProductsindashboardIndiv/>
-              <ProductsindashboardIndiv/>
+              {products && products.slice(0,3).map((product) => (
+                <ProductsindashboardIndiv key={product.id} product={product}/>
+              ))}
         </TableBody>
       </Table>
     </TableContainer>

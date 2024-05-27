@@ -37,7 +37,7 @@ export const Orders = () => {
     }
   ];
   return (
-    <div className="w-full" >
+    <div className="w-full bg-white" >
         <div className='font-bold text-3xl text-center'>Orders</div>
         <hr />
         <div className='max-w-full mx-auto'>
@@ -52,7 +52,6 @@ export const Orders = () => {
             <TableCell align="center">Price</TableCell>
             <TableCell align="center">Status</TableCell>
             <TableCell align="center">Update</TableCell>
-            {/* <TableCell align="center">Delete</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>

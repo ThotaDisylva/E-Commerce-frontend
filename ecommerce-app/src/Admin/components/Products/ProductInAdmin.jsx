@@ -4,12 +4,15 @@ import { Box, Button, Typography, Popover, List, ListItem, ListItemButton } from
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import {Updateproduct} from './Updateproduct';
-import initialState from "../productsReducer";
+import { useDispatch } from "react-redux";
+import { deleteProduct } from "../../../hooks/UseProductsSlice";
 
 export const ProductInAdmin = ({product,onUpdate}) => {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
+
+    const dispatch = useDispatch();
 
   const handleUpdateClick = () => {
     setOpenUpdateDialog(true);
@@ -24,39 +27,45 @@ export const ProductInAdmin = ({product,onUpdate}) => {
     handleCloseUpdateDialog();
   };
 
+  const handleUpdateProduct = (updatedProduct) => {
+    dispatch(updatedProduct(updatedProduct));
+    handleCloseUpdateDialog();
+  }
     const handleDelete = () => {
-        onDelete(); 
+        dispatch(deleteProduct(product.productId));
+        window.location.reload();
     };
 
     return (
         <>
-             {initialState.products.map(product => (
+             {/* {initialState.products.map(product => ( */}
                 <TableRow key={product.id}>
                   <TableCell align="center" ><img src={product.image} alt="product image" style={{ maxWidth: '50px', maxHeight: '50px' ,borderRadius:'50%'}}/></TableCell>
                   <TableCell align="center">{product.title}</TableCell>
-                  <TableCell align="center">{product.category}</TableCell>
-                  <TableCell align="center">{product.subCategory}</TableCell>
+                  <TableCell align="center">{product.categoryName}</TableCell>
+                  <TableCell align="center">{product.subCategoryName}</TableCell>
                   <TableCell align="center">{product.price}</TableCell>
-                  <TableCell align="center">{product.quantity}</TableCell>
+                  <TableCell align="center">{product.quantityAvailable}</TableCell>
                   <TableCell align="center">
                     {/* <Button variant="contained" onClick={handleUpdateClick}>Update</Button> */}
                     <Updateproduct
-                        open={openUpdateDialog}
-                        onClose={handleCloseUpdateDialog}
+                        // open={openUpdateDialog}
+                        // onClose={handleCloseUpdateDialog}
                         product={product}
-                        onUpdate={handleProductUpdate}
-                        readOnly = {false} 
-
+                        onUpdate={handleUpdateProduct}
+                        // readOnly = {false} 
                     />
                     </TableCell>
                   <TableCell align="center"><Button variant="contained" onClick={handleDelete}>Delete</Button></TableCell>
                 </TableRow>
-               ))}
+               
+               {/* ))} */}
             <hr />
         </>
     );
 
 
 }
+export default ProductInAdmin;
 
 
