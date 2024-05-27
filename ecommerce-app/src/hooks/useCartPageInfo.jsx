@@ -21,7 +21,7 @@ const useCartPageInfo = () => {
 
                 const data = response.data;
                 console.log("cartitem from data",data)
-                localStorage.setItem("cart_items_info",JSON.stringify(data))
+                localStorage.setItem("cart_items_info",JSON.stringify(data.cartItems))
                 setCartItemsInfo(data.cartItems);
                 console.log("cartitem",cartItemsInfo);
                 calculatePriceDetails(data.cartItems);
@@ -39,7 +39,10 @@ const useCartPageInfo = () => {
     };
 
     useEffect(() => {
-        cartPageInfo();   
+        if(jwtToken){
+            cartPageInfo();  
+        }
+         
     }, []);
 
     const calculatePriceDetails = (cartItems) => {
@@ -186,7 +189,39 @@ const useCartPageInfo = () => {
         }
     };
 
-    return { loading, cartPageInfo, reduceCartItem, addCartItem, removeCartItem };
+    const removeAllCartItems = async() =>{
+        setLoading(true)
+        if (jwtToken) {
+            try {
+                const response = await axios.delete(`http://localhost:8080/api/cart/remove/all`, {
+                    headers: {
+                        Authorization: `Bearer ${jwtToken}`
+                    }
+                });
+
+                if (response.status === 200) {
+                    console.log('All items removed from cart successfully');
+
+                    setCartItemsInfo([]);
+                    setCartItemCount(0);
+                    calculatePriceDetails([]);
+
+                    localStorage.setItem("cart_items_count", cartItemCount)
+                    localStorage.setItem("cart_items_info", JSON.stringify(cartItemsInfo))
+                }
+            } catch (error) {
+                console.error('Error removing all cart item:', error);
+            }finally {
+                setLoading(false)
+            }
+
+        } else {
+            console.error("JWT Token not found in local storage");
+            setLoading(false);
+        }
+    }
+
+    return { loading, cartPageInfo, reduceCartItem, addCartItem, removeCartItem, removeAllCartItems };
 }
 
 export default useCartPageInfo;

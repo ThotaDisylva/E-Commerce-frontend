@@ -27,7 +27,14 @@ const OrderDetailsPage = () => {
   const { fromOrder } = location.state;
 
 
-  const {orderDetails} = useOrderDetails(fromOrder?.orderId);
+  const {orderDetails, loadOrderDetailsPage} = useOrderDetails();
+  
+  useEffect(() => {
+    const load = async()=>{
+       await loadOrderDetailsPage(fromOrder?.orderId);
+    }
+    load(); 
+}, []);
 
 
   return (

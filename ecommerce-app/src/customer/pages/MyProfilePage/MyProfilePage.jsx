@@ -42,15 +42,7 @@ function a11yProps(index) {
 }
 
 export default function MyProfilePage() {
-  const product = {
-    brand: "Arctic Fox",
-    name: "Wired Gaming Mouse",
-    subtitle: "Breathing Lights and DPI Upto 360",
-    image: "https://rukminim1.flixcart.com/image/300/300/xif0q/mouse/d/l/l/wired-usb-gaming-mouse-with-breathing-lights-and-dpi-upto-3600-original-imagg6btapfaxtzh.jpeg",
-    price: 59954,
-    discount: 59,
-    delivery: 100
-  };
+
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {

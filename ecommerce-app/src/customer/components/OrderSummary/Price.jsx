@@ -1,13 +1,7 @@
 import React from 'react';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-const Price = ({actualTotalPrice, totalDisountedPrice, totalDeliveryCharges, totalPayableAmount, buttonText}) => {
+const Price = ({actualTotalPrice, totalDisountedPrice, totalDeliveryCharges, totalPayableAmount, buttonText, handlePaymentClick}) => {
 
-  const navigate = useNavigate();
-
-  const handlePaymentClick = () =>{
-    navigate("/profile")
-  }
 
   return (
     <div className='w-full'>
