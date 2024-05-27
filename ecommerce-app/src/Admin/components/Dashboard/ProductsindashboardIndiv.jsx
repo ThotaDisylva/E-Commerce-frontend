@@ -26,7 +26,7 @@ export const ProductsindashboardIndiv = ({product}) => {
         <>
              {/* {initialState.products.map(product => ( */}
                 <TableRow key={product.id}>
-                  <TableCell align="right" ><img src={product.image} alt="product image" style={{ maxWidth: '50px', maxHeight: '50px',borderRadius:'50%' }}/></TableCell>
+                  <TableCell align="right" ><img src={product.imageUrl} alt="product image" style={{ maxWidth: '50px', maxHeight: '50px'}}/></TableCell>
                   <TableCell align="right">{product.title}</TableCell>
                   <TableCell align="right">{product.categoryName}</TableCell>
                   <TableCell align="right">{product.subCategoryName}</TableCell>

@@ -20,9 +20,10 @@ import CategoryButton from "./CategoryButton/CategoryButton";
 import SignIn from "./AuthPopup/SignIn";
 import SignUp from "./AuthPopup/SignUp";
 import Popup from "reactjs-popup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUserInfoContext } from "../../../context/UserInfoContext";
 import useHomePageInfo from "../../../hooks/useHomePageInfo";
+import toast from "react-hot-toast";
 
 const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
   const [cardOpen, setCardOpen] = useState(false);
@@ -34,6 +35,8 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
 
   const { role } = useUserInfoContext();
   const { loadHomePageInfo } = useHomePageInfo();
+
+  const navigate = useNavigate();
   
 
   useEffect(() => {
@@ -57,28 +60,6 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
 
   const formattedCategories = {};
 
-  // useEffect(()=>{
-
-
-  
-
-  //   // Iterate over each object in categoriesDetails
-  //   categoriesDetails.forEach(category => {
-  //       // Extract categoryName and subCategories
-  //       const { categoryName, subCategories } = category;
-    
-  //       // Initialize an array to store the subcategory names
-  //       const subCategoryNames = [];
-    
-  //       // Iterate over each subcategory and push its name to subCategoryNames array
-  //       subCategories.forEach(subCategory => {
-  //           subCategoryNames.push(subCategory.subCategoryName);
-  //       });
-    
-  //       // Add the category and its subcategory names to the formattedCategories object
-  //       formattedCategories[categoryName] = subCategoryNames;
-  //   });
-  // },[])
 
   const handleClick = () => {
     setMenuOpen(!menuOpen);
@@ -108,6 +89,17 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
       setCardOpen(false);
     }
   };
+
+  const jwtToken = localStorage.getItem("jwtToken");
+
+  const handleCartIconClick = () =>{
+    if(jwtToken){
+      navigate("/cart");
+    }else{
+      toast.error("Login to access cart")
+      openPopup();
+    }
+  }
 
   const handleProfileClick = () =>{
 
@@ -145,13 +137,11 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
           <CategoryButton categoriesDetails={categoriesDetails} filters={filters} setFilters={setFilters}/>
         </div>
         <div className="lg:flex lg:flex-row lg:items-center lg:justify-end hidden">
-          <Link to={"/cart"}>
-            <IconButton size="large" aria-label="cart" color="inherit">
+            <IconButton size="large" onClick={handleCartIconClick} aria-label="cart" color="inherit">
               <Badge badgeContent={cartItemCount} color="primary">
                 <ShoppingCartOutlinedIcon fontSize="inherit" />
               </Badge>
             </IconButton>
-          </Link>
           {!role ? (
             <Button variant="contained" onClick={openPopup}>
               SIGN IN

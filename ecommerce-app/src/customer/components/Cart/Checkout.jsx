@@ -1,12 +1,21 @@
 import React from 'react';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
+import { useUserInfoContext } from '../../../context/UserInfoContext';
+import toast from 'react-hot-toast';
 const Checkout = ({actualTotalPrice, totalDisountedPrice, totalDeliveryCharges, totalPayableAmount}) => {
+
+  const { cartItemCount} = useUserInfoContext();
 
   const navigate = useNavigate();
 
   const handleCheckOut = () =>{
-    navigate("/checkoutAddress")
+    if(cartItemCount>0){
+      navigate("/checkoutAddress")
+    }else{
+      toast.error("Cart is empty")
+    }
+    
   }
 
 

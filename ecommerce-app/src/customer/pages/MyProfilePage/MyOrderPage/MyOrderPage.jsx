@@ -4,10 +4,16 @@ import useMyOrderPage from "../../../../hooks/useMyOrderPage";
 import { Link } from "react-router-dom";
 function MyOrderPage(){
 
-    const { orders } = useMyOrderPage();
+    const { orders, loadOrderPage } = useMyOrderPage();
     console.log(orders);
 
 
+    useEffect(() => {
+        const load = async()=>{
+           await loadOrderPage();
+        }
+        load(); 
+    }, []);
 
     return(
     <div className="lg:px-60 ">

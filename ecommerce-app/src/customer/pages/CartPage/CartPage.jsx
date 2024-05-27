@@ -17,6 +17,7 @@ const CartPage=()=>{
         cartPageInfo();
     },[])
  
+    console.log(cartItemsInfo)
     return(
         <div>
             <div className='lg:grid grid-cols-3 lg:px-16 relative lg:space-x-10'>

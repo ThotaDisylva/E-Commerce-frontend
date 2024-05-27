@@ -4,8 +4,9 @@ import productsData from "../../components/ProductCard/ProductsData";
 import CartItem from "../../components/OrderSummary/CartItem";
 import Price from "../../components/OrderSummary/Price";
 import { useUserInfoContext } from "../../../context/UserInfoContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AddressCard from "../../components/SavedAddress/AddressCard";
+import useMyOrderPage from "../../../hooks/useMyOrderPage";
 
 export default function OrderSummaryPage() {
   const steps = ["Login", "Address", "Order Summary", "Payment"];
@@ -38,6 +39,24 @@ export default function OrderSummaryPage() {
 
   console.log("selectedAddress", selectedAddress)
 
+  const navigate = useNavigate();
+  const {createOrder} = useMyOrderPage();
+
+  const orderInfo = {
+    orderStatus: "Cancelled",
+    deliveryCharges: priceDetails.totalDeliveryCharge,
+    totalAmount: priceDetails.totalPayablePrice,
+    addressId: selectedAddress.addressId
+  }
+
+  const handlePaymentClick = async() =>{
+    await createOrder(orderInfo)
+    navigate("/profile")
+    // window.location.replace("https://mail.google.com/mail/u/0/?ogbl#inbox/FMfcgzQVwnTCHFjbMppnLlbMsrmLltdC");
+
+  }
+
+
   return (
     <div>
       <div className="px-2 md:px-20">
@@ -59,7 +78,7 @@ export default function OrderSummaryPage() {
           </div>
           <div className="mt-5 lg:flex">
             <div className="lg:w-[71%] lg:mr-5 ">
-              {cartItemsInfo.cartItems?.map((cart) => (
+              {cartItemsInfo?.map((cart) => (
                 <CartItem key={cart.cartId} ProductsData={cart} />
               ))}
             </div>
@@ -70,6 +89,7 @@ export default function OrderSummaryPage() {
                 totalDeliveryCharges={priceDetails.totalDeliveryCharge}
                 totalPayableAmount={priceDetails.totalPayablePrice}
                 buttonText={"Payment"}
+                handlePaymentClick={handlePaymentClick}
               />
             </div>
           </div>
