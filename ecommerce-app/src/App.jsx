@@ -16,6 +16,7 @@ import ProductDetailsPage from "./customer/pages/ProductDetailsPage/ProductDetai
 import { useUserInfoContext } from "./context/UserInfoContext";
 import useNavbar from "./hooks/useNavbar";
 import { AdminPage } from "./Admin/pages/AdminPage/AdminPage";
+import PaymentSuccessfullPage from "./customer/pages/PaymentSuccessfull/PaymentSuccessfullPage";
 
 function App() {
 
@@ -57,6 +58,7 @@ function App() {
             <Route path="/orderDetails" element=<OrderDetailsPage />/> 
             <Route path="/search" element=<SearchPage/> filters={filters} setFilters={setFilters}/>
             <Route path="/productDetails/:productId" element=<ProductDetailsPage />/>
+            <Route path="/paymentsuccessfull/:orderId" element=<PaymentSuccessfullPage/>/>
             <Route path="/admin/*" element={(role!=="admin") ? <Navigate to="/"/> : <AdminPage/>}/>
         </Routes>
         
