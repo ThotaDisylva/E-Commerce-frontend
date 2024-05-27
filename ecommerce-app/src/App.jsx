@@ -47,7 +47,7 @@ function App() {
       <div className={(role==="admin")? "pt-[2rem]":"pt-[6rem]"}>
       <Toaster/>
         <Routes>
-            <Route path="/" element=<Home />/>
+            <Route path="/" element={(role==="admin") ? <Navigate to="/admin"/> : <Home/>}/>
             <Route path="/cart" element=<CartPage />/>
             <Route path="/checkoutAddress" element=<CheckoutAddressPage/>/>
             <Route path="/orderSummary" element=<OrderSummaryPage />/>
@@ -57,7 +57,7 @@ function App() {
             <Route path="/orderDetails" element=<OrderDetailsPage />/> 
             <Route path="/search" element=<SearchPage/> filters={filters} setFilters={setFilters}/>
             <Route path="/productDetails/:productId" element=<ProductDetailsPage />/>
-            <Route path="/admin" element={(role!=="admin") ? <Navigate to="/"/> : <AdminPage/>}/>
+            <Route path="/admin/*" element={(role!=="admin") ? <Navigate to="/"/> : <AdminPage/>}/>
         </Routes>
         
       </div>

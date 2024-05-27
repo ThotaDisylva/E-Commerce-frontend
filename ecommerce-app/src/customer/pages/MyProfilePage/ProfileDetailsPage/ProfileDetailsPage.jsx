@@ -18,6 +18,8 @@ const ProfileDetailsPage = () => {
     }
 }, [profileInfo, loading]);
 
+console.log("formData", formData)
+
 // if (loading) {
 //     return <div>Loading...</div>; // Or any other loading indicator
 // }

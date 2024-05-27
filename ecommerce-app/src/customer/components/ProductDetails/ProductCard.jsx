@@ -1,11 +1,29 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import useCartPageInfo from "../../../hooks/useCartPageInfo";
+import toast from "react-hot-toast";
 
 const ProductCard = ({ product }) => {
   console.log(product);
   const { productId,imageUrl,title,brand,discountPercent,price,subtitle} = product;
 
+  const navigate = useNavigate();
+  const {addCartItem}= useCartPageInfo();
+
+  const handleProductClick = () =>{
+    navigate(`/productDetails/${product.productId}`)
+  }
+
+
+
+  const handleAddToCart = (e) =>{
+    e.stopPropagation();
+    addCartItem(productId)
+  }
+
+
   return (
-    <div className="product-card w-64 max-w-sm h-100 p-4 border rounded-lg shadow-md">
+    <div className="product-card w-64 max-w-sm h-100 p-4 border rounded-lg shadow-md" onClick={handleProductClick}>
       <div className="brand text-xs bg-gray-200 px-2 py-1 rounded-full">
         {brand}
       </div>
@@ -29,7 +47,7 @@ const ProductCard = ({ product }) => {
           <span className="discount text-base text-green-600 ml-2">{discount}% off</span> */}
         </div>
         <div className="mt-4 text-center">
-          <button className="add-to-cart-button w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">Add to Cart</button>
+          <button onClick={handleAddToCart} className="add-to-cart-button w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">Add to Cart</button>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import AliceCarousel from "react-alice-carousel";
+import AliceCarousel, { Link } from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";

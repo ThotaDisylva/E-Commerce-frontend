@@ -8,20 +8,13 @@ import OrderSummaryPage from '../OrderSummaryPage/OrderSummaryPage';
 const CartPage=()=>{
 
 
-    const {cartPageInfo} = useCartPageInfo();
-    const {cartItemsInfo,setCartItemsInfo, priceDetails} = useUserInfoContext();
+    
+    const {cartItemsInfo, priceDetails} = useUserInfoContext();
 
     // console.log("data-->",cartItemsInfo)
 
     //later fix: it should not fetch data from backend, everytime a user open cart who have not added any product to cart 
-    useEffect(() => {
-        const load = async () =>{
-            await cartPageInfo();
-            console.log("cartpage item data",cartItemsInfo)
-        }
-            load();
-            
-    }, []);
+    
     
 
     // //API call after page reload
@@ -39,7 +32,7 @@ const CartPage=()=>{
         <div>
             <div className='lg:grid grid-cols-3 lg:px-16 relative lg:space-x-10'>
                 <div className='col-span-2 '>
-                    {cartItemsInfo.cartItems?.map((cartItem) => (
+                    {cartItemsInfo?.cartItems?.map((cartItem) => (
                         <ProductCardCart key={cartItem.cartId} cartItem={cartItem}/>
                     ))}
                 </div>

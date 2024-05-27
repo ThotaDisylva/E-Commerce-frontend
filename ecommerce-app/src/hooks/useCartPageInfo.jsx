@@ -1,13 +1,16 @@
 // hooks/useCartPageInfo.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useUserInfoContext } from '../context/UserInfoContext';
 import axios from 'axios';
 
 const useCartPageInfo = () => {
     const { cartItemsInfo, setCartItemsInfo, cartItemCount, setCartItemCount, setPriceDetails } = useUserInfoContext();
+    const [loading, setLoading] = useState(false);
 
     const cartPageInfo = async () => {
         const jwtToken = localStorage.getItem('jwtToken');
+
+        setLoading(true)
         if (jwtToken) {
             try {
                 const response = await axios.get('http://localhost:8080/api/cart/items', {
@@ -23,15 +26,21 @@ const useCartPageInfo = () => {
                 console.log("cartitem",cartItemsInfo)
                 calculatePriceDetails(data.cartItems);
 
-                
-                
-
-
             } catch (error) {
                 console.error('Error fetching cart page info:', error);
+            }finally {
+                setLoading(false)
             }
+
+        } else {
+            console.error("JWT Token not found in local storage");
+            setLoading(false);
         }
     };
+
+    useEffect(() => {
+        cartPageInfo();   
+    }, []);
 
     const calculatePriceDetails = (cartItems) => {
         let actualTotalPrice = 0;
@@ -94,6 +103,7 @@ const useCartPageInfo = () => {
 
     const addCartItem = async (productId) => {
         const jwtToken = localStorage.getItem('jwtToken');
+        setLoading(true)
         if (jwtToken) {
             try {
                 const response = await axios.post(`http://localhost:8080/api/cart/add/${productId}`, {}, {
@@ -103,9 +113,9 @@ const useCartPageInfo = () => {
                 });
 
                 if (response.status === 201) {
-                    console.log('Item added to cart successfully');
+                    console.log('Item added to cart successfully'); 
 
-                    const updatedCartItems = cartItemsInfo.map(item => {
+                    const updatedCartItems = cartItemsInfo?.map(item => {
                         if (item.productId === productId) {
                             return { ...item, quantity: item.quantity + 1 };
                         }
@@ -121,7 +131,13 @@ const useCartPageInfo = () => {
                 }
             } catch (error) {
                 console.error('Error adding cart item:', error);
+            }finally {
+                setLoading(false)
             }
+
+        } else {
+            console.error("JWT Token not found in local storage");
+            setLoading(false);
         }
     };
 
@@ -153,7 +169,7 @@ const useCartPageInfo = () => {
         }
     };
 
-    return { cartPageInfo, reduceCartItem, addCartItem, removeCartItem };
+    return { loading, cartPageInfo, reduceCartItem, addCartItem, removeCartItem };
 }
 
 export default useCartPageInfo;
