@@ -67,7 +67,7 @@ function CategoryButton({categoriesDetails,filters,setFilters}) {
       {isOpen && (
         <div className="absolute top-full left-0 w-64 bg-white shadow-md">
         <ul className="max-h-[35rem] overflow-y-auto">
-  {categoriesDetails.map((category) => (
+  {categoriesDetails?.map((category) => (
     <li
       key={category.categoryId}
       className={`px-4 py-2 ${activeSubMenu && activeSubMenu.categoryId === category.categoryId ? 'bg-[#b9ccf1]' : 'hover:bg-[#b9ccf1]'}`}

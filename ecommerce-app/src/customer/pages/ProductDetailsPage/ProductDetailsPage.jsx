@@ -4,13 +4,22 @@ import Caroussel from '../../components/ProductDetails/Caroussel'
 import useProductDetails from '../../../hooks/useProductDetails';
 import useCartPageInfo from '../../../hooks/useCartPageInfo';
 import { useParams } from 'react-router-dom';
+import useHomePageInfo from '../../../hooks/useHomePageInfo';
+import HomeSectionCarousel from '../../components/HomeCarosel/HomeSectionCarousel/HomeSectionCarousel';
 
 
 export default function ProductDetailsPage() {
   const { productId } = useParams();
   console.log(productId);
-
-
+  const {categoryInfo, loadHomePageInfo} = useHomePageInfo();
+  useEffect(() => {
+    const fetchData=async()=>{
+      await loadHomePageInfo();
+    }
+    fetchData();
+  }, []);
+  
+  console.log(categoryInfo);
   const {productInfo, productPageInfo} = useProductDetails();
   
   const {addCartItem}= useCartPageInfo();
@@ -84,7 +93,13 @@ export default function ProductDetailsPage() {
           
         </div>
         <div className="mx-auto my-auto mt-6 h-fit bg-white pt-6 max-w-2xl sm:px-6 pb-12 lg:max-w-7xl lg:gap-x-8 lg:px-8">
-        <Caroussel />
+        {categoryInfo?.map((subCategory) => (
+          <Caroussel
+            key={subCategory.subCategoryId}
+            subCategory={subCategory.subCategoryName}
+            productsData={subCategory.products}
+          />
+        ))}
         </div>
       </div>
       

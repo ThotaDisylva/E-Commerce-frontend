@@ -9,14 +9,20 @@ import ProductCard from "../../ProductDetails/ProductCard";
 import { Link } from "react-router-dom";
 
 const HomeSectionCarousel = ({subCategory, productsData}) => {
+  const [filters, setFilters] = useState({
+    keyword: '',
+    category: '',
+    subcategory:`${subCategory}`,
+    sortByPrice: -1,
+    sortByDate: -1,
+  });
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef();
 
   const responsive = {
     0: { items: 1 },
-    750: { items: 2 },
-    850: { items: 3 },
-    1020:{ items: 3.5 },
+    720: { items: 2 },
+    1020:{ items: 3 },
     1200: { items: 4 },
   };
 
@@ -42,9 +48,11 @@ const HomeSectionCarousel = ({subCategory, productsData}) => {
     <div className="relative border bg-white">
     <div className="flex items-center justify-between w-full px-6 py-5">
       <h2 className="text-2xl font-extrabold text-gray-800  ">{subCategory}</h2>
+      <Link to={"/search"} state={{fromSearchBar:{filters:filters}}}>
       <IconButton color="primary" sx={{backgroundColor:"blue", height:"25px", width:"25px", '&:hover':{backgroundColor:"blue"}}}>
           <ChevronRightRoundedIcon sx={{color:"white"}}/>
       </IconButton>
+      </Link>
     </div>
       <div className="p-5">
         <AliceCarousel
@@ -74,6 +82,7 @@ const HomeSectionCarousel = ({subCategory, productsData}) => {
           <KeyboardArrowLeftIcon
             sx={{ transform: "rotate(90deg)", color: "black" }}
           />
+          
         </Button>
       )}
       {activeIndex !== 0 && (<Button

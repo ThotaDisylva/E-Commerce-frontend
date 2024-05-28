@@ -1,21 +1,28 @@
 import React, { useState, useRef } from "react";
-import AliceCarousel, { Link } from "react-alice-carousel";
+import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { Button, IconButton } from "@mui/material";
-import productsData from "../ProductCard/ProductsData";
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
 
-const Caroussel = () => {
+const Caroussel = ({subCategory, productsData}) => {
+  const [filters, setFilters] = useState({
+    keyword: '',
+    category: '',
+    subcategory:`${subCategory}`,
+    sortByPrice: -1,
+    sortByDate: -1,
+  });
   const [activeIndex, setActiveIndex] = useState(0);
   const carouselRef = useRef();
 
   const responsive = {
     0: { items: 1 },
-    750: { items: 2 },
-    850: { items: 3 },
-    1020:{ items: 3.5 },
+    850: { items: 2 },
+    1020:{ items: 3 },
     1200: { items: 4 },
   };
 
@@ -30,27 +37,24 @@ const Caroussel = () => {
   };
 
   const syncActiveIndex = ({ item }) => setActiveIndex(item);
-
+  console.log(productsData);
   const items = productsData.map((product, index) => (
-    <div key={index} className="flex justify-center mr-3">
-      <Link to={`/productDetails/${product.productId}`}>
-      <ProductCard product={product} />
-      </Link>
+    <div key={index} className="flex justify-center">
+        <ProductCard product={product} />
     </div>
   ));
 
   return (
-    <div className="relative bg-white h-full">
-    <div className="flex items-center justify-between w-full px-6">
+    <div className="relative border bg-white">
+    <div className="flex items-center justify-between w-full px-6 py-5">
       <h2 className="text-2xl font-extrabold text-gray-800  ">Similar Items</h2>
       
     </div>
-      <div className="p-5 h-full">
+      <div className="p-5">
         <AliceCarousel
           items={items}
           disableButtonsControls
           disableDotsControls
-          
           responsive={responsive}
           onSlideChanged={syncActiveIndex}
           activeIndex={activeIndex}
@@ -74,6 +78,7 @@ const Caroussel = () => {
           <KeyboardArrowLeftIcon
             sx={{ transform: "rotate(90deg)", color: "black" }}
           />
+          
         </Button>
       )}
       {activeIndex !== 0 && (<Button

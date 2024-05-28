@@ -8,7 +8,6 @@ import { Provider } from "react-redux";
 import store from './hooks/UseStore.js'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
     <BrowserRouter>
       <UserInfoContextProvider>
       <Provider store={store}>
@@ -16,5 +15,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </Provider>
       </UserInfoContextProvider>
     </BrowserRouter>
-  </React.StrictMode>
 )
