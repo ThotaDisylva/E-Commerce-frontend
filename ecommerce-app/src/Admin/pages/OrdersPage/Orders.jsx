@@ -7,35 +7,21 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import OrderInAdmin from '../../components/Orders/OrderInAdmin';
-// import OrderInAdmin from '../components/Orders/OrderInAdmin';
+import { useDispatch, useSelector} from 'react-redux';
+import { useEffect, useState } from 'react';
+import {fetchOrders} from '../../../hooks/UseOrdersSlice'
+
 
 export const Orders = () => {
-  const orders = [
-    {
-      id: 10,
-      image: "https://m.media-amazon.com/images/I/71d7rfSl0wL._AC_UF1000,1000_QL80_DpWeblab_.jpg",
-      title: "Samsung",
-      price: 100000
-    },
-    {
-      id: 11,
-      image: "https://m.media-amazon.com/images/I/71d7rfSl0wL._AC_UF1000,1000_QL80_DpWeblab_.jpg",
-      title: "Samsung1",
-      price: 1000
-    },
-    {
-      id: 11,
-      image: "https://m.media-amazon.com/images/I/71d7rfSl0wL._AC_UF1000,1000_QL80_DpWeblab_.jpg",
-      title: "Samsung2",
-      price: 1000
-    },
-    {
-      id: 11,
-      image: "https://m.media-amazon.com/images/I/71d7rfSl0wL._AC_UF1000,1000_QL80_DpWeblab_.jpg",
-      title: "Samsung3",
-      price: 1000
+  const {orders, status, error} = useSelector((state) => state.orders);
+  const dispatch=useDispatch();
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchOrders());
     }
-  ];
+  }, [status,dispatch]);
+  
+ 
   return (
     <div className="w-full bg-white" >
         <div className='font-bold text-3xl text-center'>Orders</div>
@@ -55,9 +41,9 @@ export const Orders = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          <OrderInAdmin orders = {orders}/>
-          <OrderInAdmin orders={orders}/>
-          <OrderInAdmin orders={orders}/>
+          {orders && orders.map((order) => (
+            <OrderInAdmin key={order?.orderId} order = {order} />
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

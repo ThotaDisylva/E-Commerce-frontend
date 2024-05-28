@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Box, Button, Typography, Popover, List, ListItem, ListItemButton, AvatarGroup, Avatar } from '@mui/material';
-import {useSelector, useDispatch} from 'react-redux';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
+import updateOrderService from "../../../hooks/UseUpdateOrder";
 
-const OrderInAdmin = ({orders}) => {
-    const totalPrice = orders.reduce((acc, order) => acc + order.price, 0);
-  const [anchorEl, setAnchorEl] = useState(null);
-    const [selectedStatus, setSelectedStatus] = useState("Confirmed");
+const OrderInAdmin = ({order}) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedStatus, setSelectedStatus] = useState({
+      orderStatus:''
+    });
 
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -15,57 +16,63 @@ const OrderInAdmin = ({orders}) => {
   const handleClose = () => {
       setAnchorEl(null);
   };
-  const handleStatusSelect = (status) => {
+  const handleStatusSelect = async(status) => {
       setSelectedStatus(status);
-      setAnchorEl(null);
+      try{
+        const setSelectedStatus = await updateOrderService().updateOrder({
+          orderStatus:status
+        },order.orderId)
+        window.location.reload();
+      }catch(error){
+        console.error(error);
+      }
   };
     const handleDelete = () => {
         onDelete(); 
     };
 
     return (
-    <><TableRow>
-            <TableCell align="center">
-                <AvatarGroup max={3} sx={{ justifyContent: "start" }}>
-                    {orders.map((order, index) => (
-                        <Avatar key={index} src={order.imageUrl} alt={order.title} />
-                    ))}
-                </AvatarGroup>
-            </TableCell>
-            <TableCell align="center">
-                {orders.map((order, index) => (
-                    <React.Fragment key={index}>
-                        <p>{order.title}</p>
-                    </React.Fragment>
+<>
+    <TableRow key={order.orderId}>
+      <TableCell align="center">
+        <AvatarGroup max={3} sx={{ justifyContent: "start" }}>
+        {order.orderDetails.map((orderDetail) => (
+        <Avatar key={orderDetail.productId} src={orderDetail.productImage} alt={orderDetail.productTitle} />
+      ))}
+        </AvatarGroup>
+      </TableCell>
+      <TableCell align="center"><p>
+      {order.orderDetails.map((orderDetail) => (
+      <p key={orderDetail.productId}>{orderDetail.productTitle}</p>
+    ))}
+        </p></TableCell>
+      <TableCell align="center">{order.orderId}</TableCell>
+      <TableCell align="center">{order.totalPrice}</TableCell>
+      <TableCell align="center">{order.orderStatus}</TableCell>
+      <TableCell align="center">
+            <Button variant="center" onClick={handleClick}>Status</Button>
+            <Popover
+              open={Boolean(anchorEl)}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}>
+              <List>
+                {['Confirmed', 'Shipped', 'Delivered'].map((status) => (
+                  <ListItem key={status} disablePadding>
+                    <ListItemButton onClick={() => handleStatusSelect(status)} value={status} variant="outlined">
+                      <Typography>{status}</Typography>
+                    </ListItemButton>
+                  </ListItem>
                 ))}
-            </TableCell>
-            <TableCell align="center">{orders.map((order) => order.id)}</TableCell>
-            <TableCell align="center">{totalPrice}</TableCell>
-            <TableCell align="center">{selectedStatus}</TableCell>
+              </List>
+            </Popover>
+          </TableCell>
 
-            <TableCell align="center">
-                <Button variant="center" onClick={handleClick}>Status</Button>
-                <Popover
-                    open={Boolean(anchorEl)}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}>
-                    <List>
-                        {['Confirmed', 'Shipped', 'Out For Delivery', 'Delivered'].map((status) => (
-                            <ListItem key={status} disablePadding>
-                                <ListItemButton onClick={() => handleStatusSelect(status)} variant = "outlined">
-                                    <Typography>{status}</Typography>
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                </Popover>
-            </TableCell>
-            
-</TableRow></>
+    </TableRow>
+</>
     );
 }
 

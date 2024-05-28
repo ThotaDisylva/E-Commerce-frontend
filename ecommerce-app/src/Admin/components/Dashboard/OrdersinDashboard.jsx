@@ -7,22 +7,21 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { OrderindashboardIndiv } from './OrderindashboardIndiv';
+import { useSelector,useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchOrders } from '../../../hooks/UseOrdersSlice';
+
 
 export const OrdersinDashboard = () => {
-  const orders = [
-    {
-      id: 10,
-      image: "https://m.media-amazon.com/images/I/71d7rfSl0wL._AC_UF1000,1000_QL80_DpWeblab_.jpg",
-      title: "Samsung",
-      price: 100000
-    },
-    {
-      id: 11,
-      image: "https://m.media-amazon.com/images/I/71d7rfSl0wL._AC_UF1000,1000_QL80_DpWeblab_.jpg",
-      title: "Samsung1",
-      price: 1000
+  const {orders, status, error} = useSelector((state) => state.orders);
+  const dispatch=useDispatch();
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchOrders());
     }
-  ];
+  }, [status,dispatch]);
+
+
   return (
     <div className="w-full" >
         <div className='font-bold text-3xl text-center'>Orders</div>
@@ -33,19 +32,15 @@ export const OrdersinDashboard = () => {
       <Table  aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Image</TableCell>
-            <TableCell align="left">Title</TableCell>
-            <TableCell align="left">Id</TableCell>
-            <TableCell align="left">Price</TableCell>
-            <TableCell align="left">Status</TableCell>
-            {/* <TableCell align="right">Update</TableCell>
-            <TableCell align="right">Delete</TableCell> */}
+            <TableCell align='center'>Image</TableCell>
+            <TableCell align="center">Price</TableCell>
+            <TableCell align="center">Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          <OrderindashboardIndiv orders = {orders}/>
-          <OrderindashboardIndiv orders={orders}/>
-          <OrderindashboardIndiv orders={orders}/>
+          {orders && orders.slice(0,3).map((order) => (
+          <OrderindashboardIndiv key = {order?.orderId} order = {order}/>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
