@@ -4,23 +4,22 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import jsPDF from 'jspdf';
 
 const OrderDetailsCard = ({orderId, orderDetails}) => {
-
+  console.log(orderDetails);
   const handleDownload = async () => {
-    // Fetch order details from the backend
-    // const response = await fetch('https://your-backend-endpoint.com/api/order-details');
+    var sum=0;
+    var products=[]
+    for(var i=0;i<orderDetails.productCartInfo.length;i++){
+      sum=sum+orderDetails.productCartInfo[i].discountedPrice;
+      products.push({name:orderDetails.productCartInfo[i].title, quantity:orderDetails.productCartInfo[i].quantity,price:orderDetails.productCartInfo[i].discountedPrice})
+    }
     const order = {
-      date: '15-May-2024',
-      orderNumber: '743-627368-4836495',
-      paymentNumber:'1234567890-098765',
-      customerName: 'John Doe',
-      shippingAddress:'Olive Serviced Apariced Apartments,No.36,Annanedumsalai, Facit Rd, Kandhanchavadi, Chennai, Tamil Nadu 600096Olive Serviced Apartments,No.36,Annanedumsalai, Facit Rd, Kandhanchavadi, Chennai, Tamil Nadu 600096Olive Serviced Apartments,No.36,Annanedumsalai, Facit Rd, Kandhanchavadi, Chennai, Tamil Nadu 600096',
-      deliveryCharges:1000,
-      products: [
-        { name: 'Product 1Product 1Product 1Product 1Product 1Product 1Product 1Product 1Product 1', quantity: 2, price: 50 },
-        { name: 'Product 2', quantity: 1, price: 150 },
-        { name: 'Product 3', quantity: 3, price: 100 },
-      ],
-      totalAmount: 450
+      date: orderDetails.orderDate,
+      orderNumber: orderId,
+      customerName: orderDetails.orderAddress.name,
+      shippingAddress:`${orderDetails.orderAddress.address}, ${orderDetails.orderAddress.city}, ${orderDetails.orderAddress.state} ${orderDetails.orderAddress.postalCode}`,
+      deliveryCharges:(orderDetails.totalAmount-sum),
+      products: products,
+      totalAmount: orderDetails.totalAmount
     };
   
     const doc = new jsPDF();
@@ -30,7 +29,7 @@ const OrderDetailsCard = ({orderId, orderDetails}) => {
     doc.text('SHOPIT',80,20);
     // Add title
     doc.setFontSize(18);
-    doc.text('Order Details', 20, 30);
+    doc.text('Invoice', 20, 30);
   
     // Add order metadata
     doc.setFontSize(12);
@@ -39,19 +38,15 @@ const OrderDetailsCard = ({orderId, orderDetails}) => {
   
     doc.text('Order#:', 20, 50);
     doc.text(order.orderNumber, 80, 50);
-
-    doc.text('payment#:', 20, 60);
-    doc.text(order.paymentNumber, 80, 60);
-  
-    doc.text('Customer Name:', 20, 70);
-    doc.text(order.customerName, 80, 70);
+    doc.text('Customer Name:', 20, 60);
+    doc.text(order.customerName, 80, 60);
 
     const addressLines = doc.splitTextToSize(order.shippingAddress, 110);
-    doc.text('Shipping Address:', 20, 80);
-    doc.text(addressLines, 80, 80);
+    doc.text('Shipping Address:', 20, 70);
+    doc.text(addressLines, 80, 70);
   
     // Adjust yPosition to account for multiple address lines
-    let yPosition = 90 + (addressLines.length - 1) * 5;
+    let yPosition = 80 + (addressLines.length - 1) * 5;
   
     // Add table headers for product details
     doc.setFontSize(12);
@@ -146,6 +141,7 @@ const OrderDetailsCard = ({orderId, orderDetails}) => {
           role={undefined}
           variant="contained"
           tabIndex={-1}
+          onClick={handleDownload}
           startIcon={<FileDownloadIcon />}
         >
           Download Invoice
