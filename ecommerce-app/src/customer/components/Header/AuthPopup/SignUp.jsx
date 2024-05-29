@@ -4,8 +4,9 @@ import './SignUp.css';
 import useSignup from '../../../../hooks/useSignup';
 import { Link } from 'react-router-dom';
 import { useUserInfoContext } from '../../../../context/UserInfoContext';
+import ClearIcon from "@mui/icons-material/Clear";
 
-const SignUp = ({ toggleForm }) => {
+const SignUp = ({ toggleSignupSigninForm}) => {
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -46,6 +47,7 @@ const handleRegister = async () => {
 
   return (
     <Box className="wrapper" sx={{ maxWidth: 400, mx: 'auto', my: 4, zIndex: 1500, position: 'relative' }}>
+
       <Typography className="form-heading" variant="h4" align="center" gutterBottom>
         Sign up
       </Typography>
@@ -111,7 +113,7 @@ const handleRegister = async () => {
           <Box textAlign="center">
             <Typography variant="body2">
               If you already have an account?{' '}
-              <a href="#" onClick={toggleForm} className="text-blue-600">
+              <a href="#" onClick={toggleSignupSigninForm} className="text-blue-600">
                 Sign in
               </a>
             </Typography>

@@ -1,7 +1,6 @@
 import React from "react";
 import { Typography, Grid, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 function AddressCard({ address, onEdit, editable, onDelete }) {

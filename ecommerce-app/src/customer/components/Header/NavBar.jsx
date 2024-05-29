@@ -15,6 +15,7 @@ import {
   Menu,
   MoreVert,
 } from "@mui/icons-material";
+import HomeIcon from '@mui/icons-material/Home';
 import SearchBar from "./SearchBar/SearchBar";
 import CategoryButton from "./CategoryButton/CategoryButton";
 import SignIn from "./AuthPopup/SignIn";
@@ -24,17 +25,27 @@ import { Link, useNavigate } from "react-router-dom";
 import { useUserInfoContext } from "../../../context/UserInfoContext";
 import useHomePageInfo from "../../../hooks/useHomePageInfo";
 import toast from "react-hot-toast";
+import PasswordReset from "./AuthPopup/PasswordReset";
+import OtpEntry from "./AuthPopup/otpEntry";
+import SendOtp from "./AuthPopup/SendOtp";
+import useForgotPasswordHandler from "../../../hooks/useForgotPasswordHandler";
 
 const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
-  const [cardOpen, setCardOpen] = useState(false);
+const [cardOpen, setCardOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [subCategoryOpen, setSubCategoryOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  // console.log(cartItemCount)
+  const [isSignIn, setIsSignIn] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [isOtpEntry, setIsOtpEntry] = useState(false);
+  const [isPasswordReset, setIsPasswordReset] = useState(false);
+  const [email, setEmail] = useState("");
 
   const { role } = useUserInfoContext();
   const { loadHomePageInfo } = useHomePageInfo();
+  const {sendOtp, verifyOtp, resetPassword,loading, passwordChanged} = useForgotPasswordHandler();
 
   const navigate = useNavigate();
   
@@ -46,15 +57,51 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
     }
   }, [role]);
 
-  const [isSignIn, setIsSignIn] = useState(true);
+  
   const openPopup = () => {
     setIsPopupOpen(true);
   };
   const closePopup = () => {
     setIsPopupOpen(false);
   };
-  const toggleForm = () => {
+  const toggleSignupSigninForm = () => {
     setIsSignIn(!isSignIn);
+    setIsSignUp(!isSignUp);
+  };
+  
+  const handleForgotPassword = (email) => {
+    setEmail(email);
+    setIsSignIn(false);
+    setIsForgotPassword(true);
+  };
+
+  const handleSendOtp = (email) => {
+    if(email !== ""){
+      setIsForgotPassword(false);
+      setIsOtpEntry(true);
+      sendOtp(email);
+    }else{
+      toast.error("Email not entered")
+    }
+  };
+
+  const handleOtpSubmit = (otp) => {
+    if(verifyOtp(otp)){
+        setIsOtpEntry(false);
+        setIsPasswordReset(true);
+    }
+  };
+
+
+  const handlePasswordReset = (newPassword) => {
+    resetPassword({email, newPassword});
+    if(passwordChanged){
+      console.log("Password CHanged")
+      setEmail("");
+      setIsPasswordReset(false);
+      setIsSignIn(true);
+    }
+    
   };
 
 
@@ -63,15 +110,19 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
 
   const handleClick = () => {
     setMenuOpen(!menuOpen);
+    console.log("Category details in side more", categoriesDetails)
   };
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
+    console.log("selectedCategory",selectedCategory)
     setSubCategoryOpen(true);
   };
 
   const handleSubCategoryClick = (subcategory) => {
     console.log("Subcategory clicked:", subcategory);
+    setMenuOpen(!menuOpen);
+    setSubCategoryOpen(!subCategoryOpen);
     setFilters((prevFilters) => ({
       ...prevFilters,
       subcategory:subcategory
@@ -81,6 +132,7 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
 
 
   const handleMoreClick = () => {
+    
     setCardOpen(!cardOpen);
   };
 
@@ -88,6 +140,7 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
     if (!event.target.closest(".menu-container")) {
       setCardOpen(false);
     }
+
   };
 
   const jwtToken = localStorage.getItem("jwtToken");
@@ -102,7 +155,7 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
   }
 
   const handleProfileClick = () =>{
-
+    console.log(categoriesDetails);
   }
 
   useEffect(() => {
@@ -113,6 +166,8 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
     };
   }, []);
 
+  
+
   return (
     <div className="fixed top-0 left-0 w-full bg-white z-[1000]">
       <div className="flex flex-row justify-between items-center h-[4.5rem] px-1 md:px-7">
@@ -120,7 +175,7 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
           <div className="text-4xl font-bold hidden md:block">SHOPIT</div>
         </Link>
 
-        <div className="md:hidden">
+        <div className="md:hidden flex justify-center">
           <IconButton
             size="large"
             aria-label="menu"
@@ -128,6 +183,14 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
             sx={{ "&:hover": { backgroundColor: "white" } }}
           >
             <Menu fontSize="inherit" />
+          </IconButton>
+          <IconButton
+            size="large"
+            aria-label="menu"
+            onClick={()=>navigate("/")}
+            sx={{ "&:hover": { backgroundColor: "white" } }}
+          >
+            <HomeIcon fontSize="inherit" />
           </IconButton>
         </div>
         <div className="w-full md:w-2/5">
@@ -202,15 +265,17 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
         sx={{ "& .MuiDrawer-paper": { width: "70vw" } }}
       >
         <List>
-          {Object.keys(formattedCategories).map((category, index) => (
+
+        {
+          categoriesDetails && categoriesDetails?.map((category)=>(
             <ListItem
-              button
-              key={index}
-              onClick={() => handleCategoryClick(category)}
+             key={category.categoryId}
+             onClick={() => handleCategoryClick(category)}
             >
-              <ListItemText primary={category} />
+              <ListItemText primary={category.categoryName}/>
             </ListItem>
-          ))}
+          ))
+        }
         </List>
       </Drawer>
 
@@ -223,26 +288,59 @@ const NavBar = ({ cartItemCount , categoriesDetails, filters, setFilters}) => {
         sx={{ "& .MuiDrawer-paper": { width: "70vw" } }}
       >
         <List>
-          {formattedCategories[selectedCategory] &&
-            formattedCategories[selectedCategory].map((subcategory, index) => (
+          {selectedCategory && selectedCategory.subCategories?.map((subcategory) => (
+            <Link to={"/search"} state={{fromSearchBar:{filters:filters}}}>
               <ListItem
                 button
-                key={index}
+                key={subcategory.subCategoryId}
                 onClick={() => handleSubCategoryClick(subcategory)}
               >
-                <ListItemText primary={subcategory} />
+                <ListItemText primary={subcategory.subCategoryName} />
               </ListItem>
+              </Link>
             ))}
         </List>
       </Drawer>
 
       {isPopupOpen && (
-        <Popup open={isPopupOpen} closeOnDocumentClick onClose={closePopup}>
-          {isSignIn ? (
-            <SignIn toggleForm={toggleForm} />
-          ) : (
-            <SignUp toggleForm={toggleForm} />
-          )}
+        <Popup open={isPopupOpen}  onClose={closePopup} className="popup-container">
+        <div >
+          {isSignIn && (
+              <SignIn
+                toggleSignupSigninForm={toggleSignupSigninForm}
+                handleForgotPassword={handleForgotPassword}
+
+              />
+            )}
+
+            {isSignUp && (
+              <SignUp toggleSignupSigninForm={toggleSignupSigninForm} />
+            )}
+
+            {isForgotPassword && (
+              <SendOtp
+                email={email}
+                handleSendOtp={handleSendOtp}
+                handleBackToLogin={() => {setIsForgotPassword(false); setIsSignIn(true);}}
+
+              />
+            )}
+
+            {isOtpEntry && (
+              <OtpEntry
+                handleOtpSubmit={handleOtpSubmit}
+                handleBack={() => {setIsOtpEntry(false); setIsForgotPassword(true);}}
+
+              />
+            )}
+
+            {isPasswordReset && (
+              <PasswordReset
+                handlePasswordReset={handlePasswordReset}
+              />
+            )}
+        </div>
+          
         </Popup>
       )}
     </div>
