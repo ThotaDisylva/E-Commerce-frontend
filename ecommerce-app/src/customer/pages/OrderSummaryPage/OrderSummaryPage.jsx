@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Stepper, Step, StepLabel, Typography } from "@mui/material";
+import { Box, Stepper, Step, StepLabel, Typography, CircularProgress } from "@mui/material";
 import productsData from "../../components/ProductCard/ProductsData";
 import CartItem from "../../components/OrderSummary/CartItem";
 import Price from "../../components/OrderSummary/Price";
@@ -40,7 +40,7 @@ export default function OrderSummaryPage() {
   console.log("selectedAddress", selectedAddress)
 
   const navigate = useNavigate();
-  const {createOrder} = useMyOrderPage();
+  const {createOrder, loading} = useMyOrderPage();
 
   const orderInfo = {
     orderStatus: "Cancelled",
@@ -51,7 +51,14 @@ export default function OrderSummaryPage() {
 
   const handlePaymentClick = async() =>{
     await createOrder(orderInfo)
-    
+    if(!loading){
+      return(
+        <div className="flex flex-col justify-center items-center">
+          <CircularProgress size={"50px"}/>
+          <div className="font-bold">Loading Payments...</div>
+        </div>
+      )
+    }
   }
 
 

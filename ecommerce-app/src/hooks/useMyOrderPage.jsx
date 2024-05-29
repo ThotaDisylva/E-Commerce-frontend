@@ -50,7 +50,8 @@ const useMyOrderPage = () => {
                     'Authorization': `Bearer ${jwtToken}`,
                 };
                 console.log("Headers being sent:", headers);
-                console.log(orderInfo)
+                console.log("orderInfo",orderInfo)
+
     
                 const response = await axios.post("http://localhost:8080/api/order/create", orderInfo, { headers });
     

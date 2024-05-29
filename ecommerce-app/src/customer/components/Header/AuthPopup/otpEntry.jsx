@@ -1,13 +1,15 @@
 
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, Grid } from '@mui/material';
+import ClearIcon from "@mui/icons-material/Clear";
 
 const OtpEntry = ({ handleOtpSubmit, handleBack }) => {
   const [otp, setOtp] = useState('');
 
   return (
-    <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: '100vh', px: 2 }}>
-      <Grid item xs={12} sm={8} md={6} lg={4}>
+    <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: '100vh', px: 2}}>
+    
+      <div>
         <Box
           display="flex"
           flexDirection="column"
@@ -17,7 +19,8 @@ const OtpEntry = ({ handleOtpSubmit, handleBack }) => {
             border: '1px solid #ccc',
             borderRadius: 2,
             boxShadow: 3,
-            backgroundColor: 'background.paper'
+            backgroundColor: 'background.paper',
+            maxWidth:"400px"
           }}
         >
           <Typography variant="h5" align="center" gutterBottom>
@@ -32,13 +35,13 @@ const OtpEntry = ({ handleOtpSubmit, handleBack }) => {
             fullWidth
           />
           <Button variant="contained" onClick={() => handleOtpSubmit(otp)} fullWidth>
-            Submit OTP
+            Verify OTP
           </Button>
           <Button variant="text" onClick={handleBack} fullWidth>
             Back to Forgot Password
           </Button>
         </Box>
-      </Grid>
+      </div>
     </Grid>
   );
 };

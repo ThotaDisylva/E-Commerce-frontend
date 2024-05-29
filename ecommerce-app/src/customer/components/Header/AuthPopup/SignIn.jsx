@@ -3,8 +3,9 @@ import { Box, Button, CircularProgress, TextField, Typography } from '@mui/mater
 import "./SignIn.css";
 import useSignin from '../../../../hooks/useSignin';
 import { useUserInfoContext } from '../../../../context/UserInfoContext';
+import ClearIcon from "@mui/icons-material/Clear";
 
-const SignIn = ({ toggleForm }) => {
+const SignIn = ({ toggleSignupSigninForm, handleForgotPassword}) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,7 +19,8 @@ const SignIn = ({ toggleForm }) => {
   };
 
   return (
-    <Box className='wrapper' sx={{ maxWidth: 400, mx: 'auto', my: 4, zIndex: 1500, position: 'relative' }}>
+    <Box className='wrapper' sx={{ maxWidth: 400, mx: 'auto', my: 4, position: 'relative' }}>
+
       <Typography className="form-heading" variant="h4" align="center" gutterBottom>
         Login
       </Typography>
@@ -43,7 +45,7 @@ const SignIn = ({ toggleForm }) => {
 
           <Box display="flex" justifyContent="flex-end" sx={{ mt: -0.5 ,mb: 1}}>
             <Typography variant="body2">
-              <a href="#" className='text-blue-600'>Forgot Password?</a>
+              <a href="#" className='text-blue-600' onClick={() => handleForgotPassword(email)}>Forgot Password?</a>
             </Typography>
           </Box>
 
@@ -57,7 +59,7 @@ const SignIn = ({ toggleForm }) => {
           
           <Box textAlign="center">
             <Typography variant="body2">
-              New User? <a href="#" onClick={toggleForm} className='text-blue-600'>Sign up</a>
+              New User? <a href="#" onClick={toggleSignupSigninForm} className='text-blue-600'>Sign up</a>
             </Typography>
           </Box>
         </Box>

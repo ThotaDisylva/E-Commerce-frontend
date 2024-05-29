@@ -21,8 +21,7 @@ const ProductCardCart=({cartItem})=>{
     };
 
     const handleRemove = async() =>{
-        // removeCartItem(cartId,quantity);
-        removeAllCartItems()
+        removeCartItem(cartId,quantity);
     }
 
     return(

@@ -1,0 +1,29 @@
+.send-otp-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0 16px;
+    width:400px;
+  }
+  
+  .send-otp-box {
+    width: 100%;
+    padding: 24px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .send-otp-box .MuiTypography-root {
+    margin-bottom: 16px;
+  }
+  
+  .send-otp-box .MuiTextField-root {
+    margin-bottom: 16px;
+  }
+  

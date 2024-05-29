@@ -1,22 +1,32 @@
 
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, Grid } from '@mui/material';
+import ClearIcon from "@mui/icons-material/Clear";
+import toast from 'react-hot-toast';
 
-const PasswordReset = ({ handlePasswordReset, handleBackToLogin }) => {
+const PasswordReset = ({ handlePasswordReset}) => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+
   const handleSubmit = () => {
-    if (newPassword === confirmPassword) {
-      handlePasswordReset(newPassword);
-    } else {
-      alert("Passwords do not match");
+    if(newPassword !==""){
+      if (newPassword === confirmPassword) {
+        handlePasswordReset(newPassword);
+      } else {
+          toast.error("Passwords do not match")
+          console.log("Passwords do not match")
+      }
+    }else{
+      toast.error("Password not entered")
+      console.log("Password not entered")
     }
   };
 
   return (
     <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: '100vh', px: 2 }}>
-      <Grid item xs={12} sm={8} md={6} lg={4}>
+
+      <div className='w-[400px]'>
         <Box
           display="flex"
           flexDirection="column"
@@ -51,13 +61,10 @@ const PasswordReset = ({ handlePasswordReset, handleBackToLogin }) => {
             fullWidth
           />
           <Button variant="contained" onClick={handleSubmit} fullWidth>
-            Reset Password
-          </Button>
-          <Button variant="text" onClick={handleBackToLogin} fullWidth>
-            Back to Login
+            Save Changes
           </Button>
         </Box>
-      </Grid>
+      </div>
     </Grid>
   );
 };

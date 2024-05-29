@@ -8,10 +8,10 @@ import useAddressInfo from '../../../../hooks/useAddressInfo';
 function SavedAddressPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentAddress, setCurrentAddress] = useState(null);
-  const {loading, savedAddresses, addAddress, updateAddress} = useAddressInfo();
+  const {loading, savedAddresses, addAddress, updateAddress, deleteAddress} = useAddressInfo();
   const [addresses, setAddresses] = useState([]);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
-  const {deleteAddress} = useAddressInfo();
+  const [deleteAddressId, setDeleteAddressId] = useState("");
 
   useEffect(() => {
     if (!loading) {
@@ -42,11 +42,12 @@ console.log("savedAddresses",savedAddresses)
   };
   const handleDelete = (id) => {
     setShowDeletePopup(true);
+    setDeleteAddressId(id);
   };
 
   const confirmDelete = () => {
     setShowDeletePopup(false);
-    deleteAddress();
+    deleteAddress(deleteAddressId);
   };
 
   const cancelDelete = () => {
