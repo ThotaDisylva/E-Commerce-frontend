@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 
-function CheckoutAddressCard({ address, selected, onSelect, onEdit }) {
+function CheckoutAddressCard({ address, selected, onSelect, onEdit,editable }) {
   return (
     <div className="rounded-lg text-sm md:text-xl w-full mb-2 cursor-pointer" onClick={onSelect} >
       <div
@@ -37,12 +37,13 @@ function CheckoutAddressCard({ address, selected, onSelect, onEdit }) {
                       </p>
                     </div>
                   </div>
+                  {editable && (
                   <div className="px-4 pt-4">
                     <Button
                       className=""
                       variant="outlined"
                       style={{ fontSize: "12px" }}
-                      onClick={onEdit}
+                      onClick={() => onEdit(address)}
                     >
                       <EditIcon
                         style={{ color: "#1976D2", fontSize: "12px" }}
@@ -50,6 +51,7 @@ function CheckoutAddressCard({ address, selected, onSelect, onEdit }) {
                       Edit
                     </Button>
                   </div>
+                  )}
                 </div>
                 <div className="pl-4 pr-4 text-gray-500">
                   <Typography style={{ textAlign: "left", marginTop: "7px" }}>

@@ -20,13 +20,7 @@ export const upDateProductService = () => {
           }catch (error){
 
             console.error("Error updating product details",error);
-          }finally {
-            setLoading(false);
-        }
-        } else {
-            console.error("JWT Token not found in local storage");
-            setLoading(false);
-        }
+          }}
       }
     return {updateProduct};
 }

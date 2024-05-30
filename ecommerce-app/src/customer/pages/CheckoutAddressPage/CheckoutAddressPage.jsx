@@ -93,6 +93,7 @@ function CheckoutAddressPage() {
                   selected={selectedAddress.addressId === address.addressId}
                   onSelect={() => handleAddressChange(address)}
                   onEdit={handleEdit}
+                  editable = {true}
                 />
               ))}
             </div>
