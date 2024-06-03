@@ -8,6 +8,7 @@ const useForgotPasswordHandler = () => {
   const [passwordChanged, setPasswordChanged] = useState(false);
 
   const sendOtp = async (email, resend, setIsForgotPassword, setIsOtpEntry) => {
+    setLoading(true)
     try {
       const response = await axios.post(
         "http://localhost:8080/auth/sendotp",
@@ -25,6 +26,7 @@ const useForgotPasswordHandler = () => {
         toast.error(data.message);
       } else {
         setOtp(data.otp);
+        console.log(otp)
         setIsForgotPassword(false);
         setIsOtpEntry(true);
         toast.success(data.message);

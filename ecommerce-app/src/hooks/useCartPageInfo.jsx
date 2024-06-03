@@ -4,6 +4,7 @@ import { useUserInfoContext } from '../context/UserInfoContext';
 import axios from 'axios';
 import usePaymentSuccessfull from './usePaymentSuccessfull';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const useCartPageInfo = () => {
     const { cartItemsInfo, setCartItemsInfo, cartItemCount, setCartItemCount, setPriceDetails } = useUserInfoContext();
@@ -116,11 +117,19 @@ const useCartPageInfo = () => {
         }
     };
 
-    const addCartItem = async (productId) => {
+    const addCartItem = async (productId, quantity) => {
 
+        console.log("quantity",quantity)
         const jwtToken = localStorage.getItem('jwtToken');
         setLoading(true)
-        if (jwtToken) {
+        var cartItemQuantity = 0;
+        cartItemsInfo?.map(item => {
+            if (item.productId === productId) {
+                cartItemQuantity = item.quantity;
+            }
+        });
+        console.log("cartItemQuantity",cartItemQuantity)
+        if (jwtToken ) {
             try {
                 const response = await axios.post(`http://localhost:8080/api/cart/add/${productId}`, {}, {
                     headers: {
@@ -154,6 +163,9 @@ const useCartPageInfo = () => {
 
         } else {
             console.error("JWT Token not found in local storage");
+            if(cartItemQuantity>=quantity){
+                toast.error("Not Available")
+            }
             setLoading(false);
         }
     };

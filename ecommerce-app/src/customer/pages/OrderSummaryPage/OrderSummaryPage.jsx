@@ -1,5 +1,12 @@
-import React, { useEffect } from "react";
-import { Box, Stepper, Step, StepLabel, Typography, CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Stepper,
+  Step,
+  StepLabel,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import productsData from "../../components/ProductCard/ProductsData";
 import CartItem from "../../components/OrderSummary/CartItem";
 import Price from "../../components/OrderSummary/Price";
@@ -17,8 +24,8 @@ export default function OrderSummaryPage() {
     priceDetails,
     setPriceDetails,
   } = useUserInfoContext();
-  // console.log("cartItem inside ordersummary -> ",cartItemsInfo);
-  // console.log("priceDetails inside ordersummary -> ",priceDetails)
+
+  const [loadingPayment, setLoadingPayment] = useState(false);
 
   function isObjEmpty(obj) {
     return Object.keys(obj).length === 0;
@@ -37,69 +44,72 @@ export default function OrderSummaryPage() {
   const location = useLocation();
   const selectedAddress = location.state;
 
-  console.log("selectedAddress", selectedAddress)
+  console.log("selectedAddress", selectedAddress);
 
   const navigate = useNavigate();
-  const {createOrder, loading} = useMyOrderPage();
+  const { createOrder, loading } = useMyOrderPage();
 
   const orderInfo = {
     orderStatus: "Cancelled",
     deliveryCharges: priceDetails.totalDeliveryCharge,
     totalAmount: priceDetails.totalPayablePrice,
-    addressId: selectedAddress.addressId
-  }
+    addressId: selectedAddress.addressId,
+  };
+  console.log("orderInfo", orderInfo)
 
-  const handlePaymentClick = async() =>{
-    await createOrder(orderInfo)
-    if(!loading){
-      return(
-        <div className="flex flex-col justify-center items-center">
-          <CircularProgress size={"50px"}/>
-          <div className="font-bold">Loading Payments...</div>
-        </div>
-      )
-    }
-  }
-
+  const handlePaymentClick = async () => {
+    setLoadingPayment(true);
+    await createOrder(orderInfo);
+  };
 
   return (
     <div>
-      <div className="px-2 md:px-20">
-        <div >
-          <Stepper activeStep={2}>
-            {steps.map((label) => {
-              return (
-                <Step>
+      {loading || loadingPayment ? (
+        <div className="flex flex-col justify-center items-center h-[31rem]">
+          <CircularProgress size={"50px"} />
+          <div className="font-bold">Loading Payments...</div>
+        </div>
+      ) : (
+        <div className="px-2 md:px-20">
+          <div>
+            <Stepper activeStep={2}>
+              {steps.map((label) => (
+                <Step key={label}>
                   <StepLabel>{label}</StepLabel>
                 </Step>
-              );
-            })}
-          </Stepper>
-        </div>
-
-        <div className="mt-10">
-          <div>
-          <AddressCard key={selectedAddress.addressId} address={selectedAddress} onEdit={()=>{}} editable={false}/>
-          </div>
-          <div className="mt-5 lg:flex">
-            <div className="lg:w-[71%] lg:mr-5 ">
-              {cartItemsInfo?.map((cart) => (
-                <CartItem key={cart.cartId} ProductsData={cart} />
               ))}
-            </div>
+            </Stepper>
+          </div>
+
+          <div className="mt-10">
             <div>
-              <Price
-                actualTotalPrice={priceDetails.actualTotalPrice}
-                totalDisountedPrice={priceDetails.totalDiscountedPrice}
-                totalDeliveryCharges={priceDetails.totalDeliveryCharge}
-                totalPayableAmount={priceDetails.totalPayablePrice}
-                buttonText={"Payment"}
-                handlePaymentClick={handlePaymentClick}
+              <AddressCard
+                key={selectedAddress.addressId}
+                address={selectedAddress}
+                onEdit={() => {}}
+                editable={false}
               />
             </div>
+            <div className="mt-5 lg:flex">
+              <div className="lg:w-[71%] lg:mr-5 ">
+                {cartItemsInfo?.map((cart) => (
+                  <CartItem key={cart.cartId} ProductsData={cart} />
+                ))}
+              </div>
+              <div>
+                <Price
+                  actualTotalPrice={priceDetails.actualTotalPrice}
+                  totalDisountedPrice={priceDetails.totalDiscountedPrice}
+                  totalDeliveryCharges={priceDetails.totalDeliveryCharge}
+                  totalPayableAmount={priceDetails.totalPayablePrice}
+                  buttonText={"Payment"}
+                  handlePaymentClick={handlePaymentClick}
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

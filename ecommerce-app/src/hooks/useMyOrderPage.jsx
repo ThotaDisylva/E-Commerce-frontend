@@ -59,7 +59,7 @@ const useMyOrderPage = () => {
                     console.log("Order added successfully!");
                     setOrders(prevOrders => [...prevOrders,orderInfo ]);
                     // should get orderId in response;
-                    toast.success("Order added successfully!");
+                    // toast.success("Order added successfully!");
 
                         const data = response.data;
 
@@ -71,7 +71,7 @@ const useMyOrderPage = () => {
                                 discountedPrice: Math.ceil(cartItem.price-(cartItem.price*cartItem.discountPercent/100)),
                             }))
                         };
-                   createOrderDetails(requestOrderDetails);
+                   await createOrderDetails(requestOrderDetails);
                 } else {
                     console.error("Unexpected response status:", response.status);
                 }

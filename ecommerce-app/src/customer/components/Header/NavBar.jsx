@@ -303,8 +303,8 @@ const [cardOpen, setCardOpen] = useState(false);
       </Drawer>
 
       {isPopupOpen && (
-        <Popup open={isPopupOpen}  onClose={closePopup} className="popup-container">
-        <div className="z-[1500]">
+        <Popup open={isPopupOpen}  onClose={closePopup} className="z-[2000]">
+        <div >
           {isSignIn && (
               <SignIn
                 toggleSignupSigninForm={toggleSignupSigninForm}
@@ -322,6 +322,7 @@ const [cardOpen, setCardOpen] = useState(false);
                 email={email}
                 handleSendOtp={handleSendOtp}
                 handleBackToLogin={() => {setIsForgotPassword(false); setIsSignIn(true);}}
+                loading={loading}
 
               />
             )}

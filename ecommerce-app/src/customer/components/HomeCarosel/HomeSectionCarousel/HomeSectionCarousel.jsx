@@ -48,7 +48,7 @@ const HomeSectionCarousel = ({subCategory, productsData}) => {
     <div className="relative border bg-white">
     <div className="flex items-center justify-between w-full px-6 py-5">
       <h2 className="text-2xl font-extrabold text-gray-800  ">{subCategory}</h2>
-      <Link to={"/search"} state={{fromSearchBar:{filters:filters}}}>
+      <Link to={"/search"} state={{fromSearchBar:{filters:filters,subcategory:subCategory}}}>
       <IconButton color="primary" sx={{backgroundColor:"blue", height:"25px", width:"25px", '&:hover':{backgroundColor:"blue"}}}>
           <ChevronRightRoundedIcon sx={{color:"white"}}/>
       </IconButton>

@@ -6,11 +6,13 @@ import useCartPageInfo from '../../../hooks/useCartPageInfo';
 import { useParams } from 'react-router-dom';
 import useHomePageInfo from '../../../hooks/useHomePageInfo';
 import HomeSectionCarousel from '../../components/HomeCarosel/HomeSectionCarousel/HomeSectionCarousel';
+import { useUserInfoContext } from '../../../context/UserInfoContext';
+import toast from 'react-hot-toast';
 
 
 export default function ProductDetailsPage() {
   const { productId } = useParams();
-  console.log(productId);
+  console.log("productId",productId);
   const {categoryInfo, loadHomePageInfo} = useHomePageInfo();
   useEffect(() => {
     const fetchData=async()=>{
@@ -22,11 +24,21 @@ export default function ProductDetailsPage() {
   console.log(categoryInfo);
   const {productInfo, productPageInfo} = useProductDetails();
   
-  const {addCartItem}= useCartPageInfo();
+  const {addCartItem, loading}= useCartPageInfo();
+  const { role } = useUserInfoContext();
 
 
-  const handleAddToCart =()=>{
-    addCartItem(productId);
+  const handleAddToCart =(e)=>{
+    console.log("role",role)
+    if (role !== null) {
+      e.stopPropagation();
+      addCartItem(productId);
+      if (!loading) {
+        toast.success("Added to Cart");
+      }
+    } else {
+      toast.error("Sign in to add items to cart");
+    }
   }
 
   useEffect(() => {
@@ -59,20 +71,14 @@ export default function ProductDetailsPage() {
             <p className="text-green-600 text-2xl font-semibold">({productInfo.discountPercent}% Off)</p>
             </div>
             <p className="text-green-600 font-semibold">Inclusive of all taxes</p>
-            <form className="mt-10" >
+
               <button
-                type="submit"
                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-blue-500 px-8 py-3 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2"
                 onClick={handleAddToCart}
                 >
                 Add to cart
               </button>
-              {/* <button
-                type="submit"
-                className=" mt-3 flex w-full items-center justify-center rounded-md border border-transparent bg-blue-500 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2">
-                Buy Now
-              </button> */}
-            </form>
+
           </div>
         </div>
         <div className="mx-auto bg-white max-w-2xl px-4 sm:px-6 lg:grid lg:max-w-7xl lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24">   

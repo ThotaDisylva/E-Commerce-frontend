@@ -57,10 +57,10 @@ const useOrderDetails = () => {
     
                 if (response.status === 201) {
                     console.log("Order Details added successfully!");
-                    toast.success("Order Details added successfully!");
+                    // toast.success("Order Details added successfully!");
                     setOrderDetails(prevOrderDetails => [...prevOrderDetails,orderDetailsInfo ]);
                     await removeAllCartItems();
-                    prePaymmentRequest(orderDetailsInfo.orderId);
+                    await prePaymmentRequest(orderDetailsInfo.orderId);
 
                 } else {
                     console.error("Unexpected response status:", response.status);

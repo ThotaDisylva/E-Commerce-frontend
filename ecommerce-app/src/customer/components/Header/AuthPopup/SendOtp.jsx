@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button, TextField, Typography } from '@mui/material';
+import { Button, CircularProgress, TextField, Typography } from '@mui/material';
 import './SendOtp.css';
 
-const SendOtp = ({ email, handleSendOtp, handleBackToLogin }) => {
+const SendOtp = ({ email, handleSendOtp, handleBackToLogin, loading }) => {
     const [enteredEmail, setEnteredEmail] = useState(email); 
 
   return (
@@ -20,8 +20,8 @@ const SendOtp = ({ email, handleSendOtp, handleBackToLogin }) => {
           onChange={(e)=>setEnteredEmail(e.target.value)}
           fullWidth
         />
-        <Button variant="contained" onClick={()=>handleSendOtp(enteredEmail)} fullWidth>
-          Send OTP
+        <Button variant="contained" disabled={loading} onClick={()=>handleSendOtp(enteredEmail)} fullWidth>
+          {loading ? <CircularProgress size={"20px"}/> : "Send OTP"}
         </Button>
         <Button variant="text" onClick={handleBackToLogin} fullWidth>
           Back to Login

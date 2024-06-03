@@ -13,6 +13,7 @@ const ProductCard = ({ product }) => {
     discountPercent,
     price,
     subtitle,
+    productQuantity
   } = product;
 
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const ProductCard = ({ product }) => {
   const handleAddToCart = (e) => {
     if (role !== null) {
       e.stopPropagation();
-      addCartItem(productId);
+      addCartItem(productId,productQuantity);
       if (!loading) {
         toast.success("Added to Cart");
       }
