@@ -7,12 +7,13 @@ import {Updateproduct} from './Updateproduct';
 import { useDispatch } from "react-redux";
 import { deleteProduct } from "../../../hooks/UseProductsSlice";
 
-export const ProductInAdmin = ({product,onUpdate}) => {
+export const ProductInAdmin = ({product,onUpdate,onDelete}) => {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
 
     const dispatch = useDispatch();
+    const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const handleUpdateClick = () => {
     setOpenUpdateDialog(true);
@@ -31,9 +32,24 @@ export const ProductInAdmin = ({product,onUpdate}) => {
     dispatch(updatedProduct(updatedProduct));
     handleCloseUpdateDialog();
   }
+    // const handleDelete = () => {
+    //     dispatch(deleteProduct(product.productId));
+    //     window.location.reload();
+    // };
+
     const handleDelete = () => {
-        dispatch(deleteProduct(product.productId));
-        window.location.reload();
+      setShowDeletePopup(true);
+    };
+  
+    const confirmDelete = () => {
+      setShowDeletePopup(false);
+      dispatch(deleteProduct(product.productId));
+      window.location.reload();
+      // deleteUser();
+    };
+  
+    const cancelDelete = () => {
+      setShowDeletePopup(false);
     };
 
     return (
@@ -58,7 +74,27 @@ export const ProductInAdmin = ({product,onUpdate}) => {
                     </TableCell>
                   <TableCell align="center"><Button variant="contained" onClick={handleDelete}>Delete</Button></TableCell>
                 </TableRow>
-               
+        {showDeletePopup && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <p className="mb-4">Are you sure you want to delete your account?</p>
+            <div className="flex space-x-4">
+              <button
+                onClick={confirmDelete}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+              >
+                Yes
+              </button>
+              <button
+                onClick={cancelDelete}
+                className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
                {/* ))} */}
             <hr />
         </>
