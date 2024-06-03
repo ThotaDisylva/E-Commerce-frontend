@@ -33,9 +33,6 @@ const SignUp = ({ toggleSignupSigninForm}) => {
 
 const handleSubmit = async (event) => {
   event.preventDefault();
-    // const role = registerAsManager ? 'admin' : 'user';
-    // const formDataWithRole = { ...formData, role };
-    // await signup(formDataWithRole);
 };
 
 const handleRegister = async () => {

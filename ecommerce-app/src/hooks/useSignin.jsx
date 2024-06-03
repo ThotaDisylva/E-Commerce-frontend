@@ -37,6 +37,8 @@ const useSignin = () => {
             localStorage.setItem("jwtToken", data?.jwtToken);
             localStorage.setItem("userId", data?.userId);
 
+            console.log("JwtToken in signin hook",localStorage.getItem("jwtToken"))
+
             if(data.role === "admin"){
                 navigate("/admin")
             }else{
@@ -46,7 +48,14 @@ const useSignin = () => {
 
 
         } catch (error) {
-            toast.error(error.message);
+            console.error(error.message);
+            if (error.message.includes('Incorrect password')) {
+                toast.error('Incorrect password. Please try again.');
+            } else if (error.message.includes('User not found')) {
+                toast.error('User not found. Please check your email.');
+            } else {
+                toast.error('An error occurred. Please try again.');
+            }
         } finally {
             setLoading(false)
         }

@@ -3,15 +3,18 @@ import React, { useEffect, useState } from 'react';
 import { useUserInfoContext } from '../context/UserInfoContext';
 import axios from 'axios';
 import usePaymentSuccessfull from './usePaymentSuccessfull';
+import { useNavigate } from 'react-router-dom';
 
 const useCartPageInfo = () => {
     const { cartItemsInfo, setCartItemsInfo, cartItemCount, setCartItemCount, setPriceDetails } = useUserInfoContext();
     const [loading, setLoading] = useState(false);
     const jwtToken = localStorage.getItem('jwtToken');
-    
+    const navigate = useNavigate();    
 
+    console.log("before jwt ", jwtToken)
     const cartPageInfo = async () => {
 
+        console.log("after jwt ", jwtToken)
         setLoading(true)
         if (jwtToken) {
             try {
@@ -40,12 +43,12 @@ const useCartPageInfo = () => {
         }
     };
 
-    useEffect(() => {
-        if(jwtToken){
-            cartPageInfo();  
-        }
+    // useEffect(() => {
+    //     if(jwtToken){
+    //         cartPageInfo();  
+    //     }
          
-    }, []);
+    // }, []);
 
     const calculatePriceDetails = (cartItems) => {
         let actualTotalPrice = 0;
@@ -172,8 +175,11 @@ const useCartPageInfo = () => {
 
                     console.log("updatedCartItems", updatedCartItems);
 
-                    setCartItemsInfo(updatedCartItems);
                     setCartItemCount(prevCount => prevCount - quantity);
+                    
+                    
+                    setCartItemsInfo(updatedCartItems);
+                    
                     calculatePriceDetails(updatedCartItems);
 
                     localStorage.setItem("cart_items_count", cartItemCount)

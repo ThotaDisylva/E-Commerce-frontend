@@ -17,11 +17,13 @@ import { useUserInfoContext } from "./context/UserInfoContext";
 import useNavbar from "./hooks/useNavbar";
 import { AdminPage } from "./Admin/pages/AdminPage/AdminPage";
 import PaymentSuccessfullPage from "../src/customer/pages/PaymentSuccessfull/PaymentSuccessfullPage"
+import useAuth from "./hooks/useAuth";
 
 function App() {
 
   const {role, cartItemCount, categoriesDetails} = useUserInfoContext();
   const {getCategoriesDetails} = useNavbar();
+  const {checkExpiry} = useAuth();
   const [filters, setFilters] = useState({
     keyword: '',
     category: '',
@@ -34,9 +36,10 @@ function App() {
     if(role!=="admin"){
       getCategoriesDetails();
     }
+    checkExpiry();
   },[]);
 
-
+  
 
 
   return (
