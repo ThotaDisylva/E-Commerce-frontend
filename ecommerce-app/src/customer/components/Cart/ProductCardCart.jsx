@@ -6,7 +6,7 @@ import useCartPageInfo from "../../../hooks/useCartPageInfo";
 const ProductCardCart=({cartItem})=>{
     const { cartId, productId, brand, title, subTitle, imageUrl, price, discountPercent, quantity } = cartItem;
 
-    const {reduceCartItem, addCartItem, removeCartItem, removeAllCartItems} = useCartPageInfo();
+    const {reduceCartItem, addCartItem, removeCartItem} = useCartPageInfo();
 
     const [count, setCount] = useState(quantity); 
     const incrementCount = () => {
@@ -22,7 +22,6 @@ const ProductCardCart=({cartItem})=>{
 
     const handleRemove = async() =>{
         removeCartItem(cartId,quantity);
-        
     }
 
     return(

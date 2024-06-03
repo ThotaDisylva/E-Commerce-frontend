@@ -64,7 +64,9 @@ const useAddressInfo = () => {
                 if (response.status === 201) {
                     console.log("Address added successfully!");
                     toast.success('Address added!');
-                    setSavedAddresses(prevAddresses => [...prevAddresses,addressInfo ]);
+                    const data = response.data;
+                    console.log("created Address", data);
+                    setSavedAddresses(prevAddresses => [...prevAddresses,data ]);
                 } else {
                     console.error("Unexpected response status:", response.status);
                 }

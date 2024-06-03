@@ -2,12 +2,22 @@ import React from "react";
 import { useSnackbar } from 'notistack';
 import { Link } from "react-router-dom";
 import useCartPageInfo from "../../../hooks/useCartPageInfo";
+import toast from "react-hot-toast";
+import { useUserInfoContext } from "../../../context/UserInfoContext";
 function ProductCardSearch({ product }) {
-  const { enqueueSnackbar } = useSnackbar();
-  const {addCartItem}= useCartPageInfo();
-  const handleAddToBag = () => {
-    addCartItem(product.productId);
-    enqueueSnackbar('Item added to cart successfully!', { variant: 'success' });
+  const {addCartItem, loading}= useCartPageInfo();
+
+  const { role } = useUserInfoContext();
+  const handleAddToBag = (e) => {
+    if (role !== null) {
+      e.stopPropagation();
+      addCartItem(product.productId);
+      if (!loading) {
+        toast.success("Added to Cart");
+      }
+    } else {
+      toast.error("Sign in to add items to cart");
+    }
   };
   return (
     

@@ -43,7 +43,7 @@ const handleRegister = async () => {
 
 
   return (
-    <Box className="wrapper" sx={{ maxWidth: 400, mx: 'auto', my: 4, zIndex: 1500, position: 'relative' }}>
+    <Box className="wrapper" sx={{ maxWidth: 400, mx: 'auto', my: 4, zIndex: 2000, position: 'relative' }}>
 
       <Typography className="form-heading" variant="h4" align="center" gutterBottom>
         Sign up
@@ -95,6 +95,7 @@ const handleRegister = async () => {
             name="phoneNumber"
             value={formData.phoneNumber}
             onChange={handleInputChange}
+            required
           />
           <Box display="flex" alignItems="center" sx={{ mt: -1.5, mb: -1.5 }} flex="1" className="space-x-1">
             <Checkbox checked={registerAsManager} onChange={handleCheckboxChange} />
