@@ -37,12 +37,12 @@ const useSignin = () => {
             localStorage.setItem("jwtToken", data?.jwtToken);
             localStorage.setItem("userId", data?.userId);
 
-            console.log("JwtToken in signin hook",localStorage.getItem("jwtToken"))
+            
 
             if(data.role === "admin"){
                 navigate("/admin")
             }else{
-                cartPageInfo();
+                await cartPageInfo();
                 navigate("/")
             }
 

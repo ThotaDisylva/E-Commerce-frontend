@@ -13,9 +13,12 @@ const CartPage=()=>{
     const {cartPageInfo} = useCartPageInfo();
 
 
-    useEffect(()=>{
-        cartPageInfo();
-    },[])
+    useEffect(() => {
+        const load = async()=>{
+           await cartPageInfo();
+        }
+        load(); 
+    }, []);
  
     console.log(cartItemsInfo)
     return(
