@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Radio, RadioGroup, FormControlLabel, Typography, Button } from '@mui/material';
 import { Category, Height } from '@mui/icons-material';
 
-const FilterSidebar = ({ filters, setFilters, resetF, setReset }) => {
+const FilterSidebar = ({ filters, setFilters, setReset }) => {
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
     setFilters((prevFilters) => ({

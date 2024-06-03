@@ -81,7 +81,7 @@ function CategoryButton({categoriesDetails,filters,setFilters}) {
         <div className="absolute top-0 left-full w-64 bg-white shadow-md max-h-[35rem] overflow-y-auto">
           <ul>
             {category.subCategories.map((subcategory) => (
-              <Link to={"/search"} state={{fromSearchBar:{filters:filters}}}>
+              <Link to={"/search"} onClick={() => handleSubcategoryClick(subcategory)} state={{fromSearchBar:{filters:filters, subcategory:subcategory.subCategoryName}}}>
               <li
                 key={subcategory.subCategoryId}
                 className={`px-4 py-2 ${activeSubMenu && activeSubMenu.subCategoryId === subcategory.subCategoryId ? 'bg-[#b9ccf1]' : 'hover:bg-[#b9ccf1]'}`}

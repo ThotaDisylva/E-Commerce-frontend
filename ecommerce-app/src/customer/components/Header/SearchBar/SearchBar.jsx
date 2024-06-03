@@ -30,7 +30,7 @@ const SearchBar = ({filters, setFilters}) => {
         <input placeholder='Search for items...' value={filters.keyword} onChange={handleSearch} type='text' className='border-0 outline-none h-9 text-base w-full bg-[#F1F2F4]'/>
         <div className='ml-2'>
           <div>
-          <Link to={"/search"} state={{fromSearchBar:{filters:filters}}}>
+          <Link to={"/search"} state={{fromSearchBar:{filters:filters, subcategory:filters.subcategory}}}>
             <SearchIcon/>
             </Link>
             </div>

@@ -8,7 +8,14 @@ import { useLocation } from 'react-router-dom'
 const SearchPage = () => {
   const [reset,setReset]=useState(1);
   const location = useLocation();
-  const {fromSearchBar}=location.state;
+  const {fromSearchBar}=location.state==undefined?{fromSearchBar:{filters:{
+    keyword: '',
+    category: '',
+    subcategory:'',
+    sortByPrice: -1,
+    sortByDate: -1,
+  }, subcategory:""}}:location.state;
+
   const [filters, setFilters] = useState({
     keyword: '',
     category: '',
@@ -18,9 +25,14 @@ const SearchPage = () => {
   });
   filters.keyword=fromSearchBar.filters.keyword;
   if(reset==1){
-  filters.subcategory=fromSearchBar.filters.subcategory;
-  }
+  filters.subcategory=fromSearchBar.subcategory;
   console.log(filters);
+  }
+  if(reset==0){
+    fromSearchBar.subcategory='';
+    setReset(1);
+  }
+  
   
   const productsPerPage = 10;
   const {products, fetchSearchData} = useSearchPage();
