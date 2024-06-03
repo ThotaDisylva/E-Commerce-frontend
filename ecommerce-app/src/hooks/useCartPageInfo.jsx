@@ -8,13 +8,12 @@ import { useNavigate } from 'react-router-dom';
 const useCartPageInfo = () => {
     const { cartItemsInfo, setCartItemsInfo, cartItemCount, setCartItemCount, setPriceDetails } = useUserInfoContext();
     const [loading, setLoading] = useState(false);
-    const jwtToken = localStorage.getItem('jwtToken');
+    
     const navigate = useNavigate();    
 
-    console.log("before jwt ", jwtToken)
     const cartPageInfo = async () => {
 
-        console.log("after jwt ", jwtToken)
+        const jwtToken = localStorage.getItem('jwtToken');
         setLoading(true)
         if (jwtToken) {
             try {
@@ -45,9 +44,9 @@ const useCartPageInfo = () => {
 
     // useEffect(() => {
     //     if(jwtToken){
+    //         console.log("inside useEffect useCartPageInfo")
     //         cartPageInfo();  
     //     }
-         
     // }, []);
 
     const calculatePriceDetails = (cartItems) => {
@@ -77,6 +76,7 @@ const useCartPageInfo = () => {
 
     const reduceCartItem = async (cartId) => {
         
+        const jwtToken = localStorage.getItem('jwtToken');
         setLoading(true)
         if (jwtToken) {
             try {
@@ -118,6 +118,7 @@ const useCartPageInfo = () => {
 
     const addCartItem = async (productId) => {
 
+        const jwtToken = localStorage.getItem('jwtToken');
         setLoading(true)
         if (jwtToken) {
             try {
@@ -159,6 +160,7 @@ const useCartPageInfo = () => {
 
     const removeCartItem = async (cartId, quantity) => {
 
+        const jwtToken = localStorage.getItem('jwtToken');
         setLoading(true)
         if (jwtToken) {
             try {
@@ -198,6 +200,8 @@ const useCartPageInfo = () => {
     };
 
     const removeAllCartItems = async() =>{
+
+        const jwtToken = localStorage.getItem('jwtToken');
         setLoading(true)
         if (jwtToken) {
             try {
