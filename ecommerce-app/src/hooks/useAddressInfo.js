@@ -6,9 +6,10 @@ const useAddressInfo = () => {
 
     const [loading, setLoading] = useState(false);
     const [savedAddresses, setSavedAddresses] = useState([])
-    const jwtToken = localStorage.getItem("jwtToken");
+    
 
     const loadSavedAddress = async() =>{
+        const jwtToken = localStorage.getItem("jwtToken");
         setLoading(true)
         if (jwtToken) {
             try {
@@ -47,6 +48,7 @@ const useAddressInfo = () => {
         console.log("Input address info checked!")
         console.log(addressInfo)
 
+        const jwtToken = localStorage.getItem("jwtToken");
         setLoading(true);
         if (jwtToken) {
             try {
@@ -86,6 +88,7 @@ const useAddressInfo = () => {
         console.log(addressInfo)
 
         setLoading(true);
+        const jwtToken = localStorage.getItem("jwtToken");
         if (jwtToken) {
             try {
                 const headers = {
@@ -126,6 +129,7 @@ const useAddressInfo = () => {
     const deleteAddress= async(addressId) =>{
 
         setLoading(true);
+        const jwtToken = localStorage.getItem("jwtToken");
         if (jwtToken) {
             try {
                 const response = await axios.delete(`http://localhost:8080/api/addresses/delete/${addressId}`, {

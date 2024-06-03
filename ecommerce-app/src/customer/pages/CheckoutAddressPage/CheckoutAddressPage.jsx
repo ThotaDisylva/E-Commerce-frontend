@@ -9,8 +9,7 @@ import toast from "react-hot-toast";
 function CheckoutAddressPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentAddress, setCurrentAddress] = useState(null);
-  const { loading, savedAddresses, addAddress, updateAddress } =
-    useAddressInfo();
+  const { loading, savedAddresses, addAddress, updateAddress } = useAddressInfo();
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState({});
 

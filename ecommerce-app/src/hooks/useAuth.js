@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 const useAuth = () => {
 
     const navigate = useNavigate();
-    const jwtToken = localStorage.getItem("jwtToken");
+    
     
 const checkExpiry = async () => {
 
-    
+    const jwtToken = localStorage.getItem("jwtToken");
     if (jwtToken) {
     try {
         const response = await axios.get(`http://localhost:8080/auth/check/token/expiry`,{ token: `Bearer ${jwtToken}`},

@@ -24,8 +24,7 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()
 });
 
 export const deleteProduct = createAsyncThunk('products/deleteProduct', async (productId, {rejectWithValue}) => {
-  const jwtToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzd2FzdGlrMS5wYWRoZWVAZW1haWwuY29tIiwiaWF0IjoxNzE2NzgzMTMyLCJleHAiOjE3MTY4Njk1MzJ9.dtDJARO5FX6MkLPMWQBOkZskDee6I9jaZcrMx_dffPHYyXu1Z7ZfGF33sFVResO8SN-qfEPjXIRtk9GtI4deIw'
-
+  const jwtToken = localStorage.getItem("jwtToken");
   if (jwtToken){
       try {
           const response = await axios.delete(`http://localhost:8080/api/admin/products/${productId}`,{
