@@ -57,6 +57,7 @@ function CheckoutAddressPage() {
     } else {
       // Adding a new address
       addAddress(newAddress);
+      
     }
     togglePopup();
   };

@@ -77,9 +77,8 @@ const [cardOpen, setCardOpen] = useState(false);
 
   const handleSendOtp = (email) => {
     if(email !== ""){
-      setIsForgotPassword(false);
-      setIsOtpEntry(true);
-      sendOtp(email);
+      
+      sendOtp(email,false, setIsForgotPassword, setIsOtpEntry);
     }else{
       toast.error("Email not entered")
     }
@@ -95,12 +94,10 @@ const [cardOpen, setCardOpen] = useState(false);
 
   const handlePasswordReset = (newPassword) => {
     resetPassword({email, newPassword});
-    if(passwordChanged){
       console.log("Password CHanged")
       setEmail("");
       setIsPasswordReset(false);
       setIsSignIn(true);
-    }
     
   };
 
@@ -147,7 +144,12 @@ const [cardOpen, setCardOpen] = useState(false);
 
   const handleCartIconClick = () =>{
     if(jwtToken){
-      navigate("/cart");
+      
+      if(cartItemCount>0){
+        navigate("/cart");
+      }else{
+        toast.error("Cart is empty")
+      }
     }else{
       toast.error("Login to access cart")
       openPopup();
@@ -238,14 +240,12 @@ const [cardOpen, setCardOpen] = useState(false);
       {cardOpen && (
         <Card className="bg-white lg:hidden absolute top-[4.5rem] right-0 w-[10rem] py-2">
           <div className="flex items-center hover:bg-[#F1F2F4] cursor-pointer px-5">
-            <Link to={"/cart"}>
-              <div className="my-3">
+              <div className="my-3" onClick={handleCartIconClick}>
                 <Badge badgeContent={cartItemCount} color="primary">
                   <ShoppingCartOutlinedIcon fontSize="medium" />
                 </Badge>
                 <span className="ml-2">Cart</span>
               </div>
-            </Link>
           </div>
           <div className="flex items-center hover:bg-[#F1F2F4] cursor-pointer px-5">
             <div className="my-3" onClick={role ? ()=>{navigate("/profile")}:openPopup}>
@@ -289,7 +289,7 @@ const [cardOpen, setCardOpen] = useState(false);
       >
         <List>
           {selectedCategory && selectedCategory.subCategories?.map((subcategory) => (
-            <Link to={"/search"} state={{fromSearchBar:{filters:filters}}}>
+            <Link to={"/search"} state={{fromSearchBar:{filters:filters, subcategory:subcategory.subCategoryName}}}>
               <ListItem
                 button
                 key={subcategory.subCategoryId}
@@ -304,7 +304,7 @@ const [cardOpen, setCardOpen] = useState(false);
 
       {isPopupOpen && (
         <Popup open={isPopupOpen}  onClose={closePopup} className="popup-container">
-        <div >
+        <div className="z-[1500]">
           {isSignIn && (
               <SignIn
                 toggleSignupSigninForm={toggleSignupSigninForm}
