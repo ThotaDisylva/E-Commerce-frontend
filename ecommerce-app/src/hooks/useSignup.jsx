@@ -1,16 +1,21 @@
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { useUserInfoContext } from '../context/UserInfoContext';
+import { useNavigate } from 'react-router-dom';
+import useCartPageInfo from './useCartPageInfo';
 
 const useSignup =() => {
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
     const {setRole} = useUserInfoContext();
+    const navigate = useNavigate();
+    const {cartPageInfo} = useCartPageInfo();
 
     const signup = async ({ firstName, lastName, email, password, phoneNumber, role }) => {
 
         console.log("inside signup hook func")
-        const success = handleInputErrors({ firstName, lastName, email, password, phoneNumber, role });
+        const success = handleInputErrors({ firstName, lastName, email, password, phoneNumber, role },setError);
         if (!success) return;
 
         console.log("checked")
@@ -37,18 +42,30 @@ const useSignup =() => {
             localStorage.setItem("jwtToken", data?.jwtToken);
             localStorage.setItem("userId", data?.userId);
 
+            if(data.role === "admin"){
+                navigate("/admin")
+            }else{
+                cartPageInfo();
+                navigate("/")
+            }
+
         } catch (error) {
-            toast.error(error.message);
+            console.error(error.message);
+            if (error.message.includes('User already exists')) {
+                toast.error('User already exists.');
+            }else {
+                toast.error('An error occurred. Please try again.');
+            }
         } finally {
             setLoading(false);
         }
     }
-    return { loading, signup };
+    return { loading, signup,error };
 }
 
 export default useSignup
 
-function handleInputErrors({ firstName, lastName, email, password, phoneNumber, role }) {
+function handleInputErrors({ firstName, lastName, email, password, phoneNumber, role },setError) {
     if (!firstName || !lastName || !email || !password || !phoneNumber || !role) {
         toast.error('Please fill in all fields');
         return false;
@@ -57,6 +74,13 @@ function handleInputErrors({ firstName, lastName, email, password, phoneNumber, 
     if (password.length < 6) {
         toast.error('Password must be atleast 6 characters');
         return false;
+    }
+
+    if(phoneNumber.length!==10){
+        setError('Phone number must be exactly 10 digits.')
+        return false;
+    }else{
+        setError('')
     }
 
     return true;

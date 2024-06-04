@@ -18,12 +18,5 @@
     flex-direction: column;
     gap: 16px;
   }
-  
-  .send-otp-box .MuiTypography-root {
-    margin-bottom: 16px;
-  }
-  
-  .send-otp-box .MuiTextField-root {
-    margin-bottom: 16px;
-  }
+
   

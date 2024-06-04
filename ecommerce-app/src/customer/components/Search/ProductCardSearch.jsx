@@ -4,14 +4,15 @@ import { Link } from "react-router-dom";
 import useCartPageInfo from "../../../hooks/useCartPageInfo";
 import toast from "react-hot-toast";
 import { useUserInfoContext } from "../../../context/UserInfoContext";
+import { CircularProgress } from "@mui/material";
 function ProductCardSearch({ product }) {
   const {addCartItem, loading}= useCartPageInfo();
 
   const { role } = useUserInfoContext();
-  const handleAddToBag = (e) => {
+  const handleAddToBag = async(e) => {
     if (role !== null) {
       e.stopPropagation();
-      addCartItem(product.productId);
+      await addCartItem(product.productId);
       if (!loading) {
         toast.success("Added to Cart");
       }
@@ -63,8 +64,9 @@ function ProductCardSearch({ product }) {
           type="button"
           className="sm:w-[10rem] w-[49%] rounded-md border border-transparent bg-blue-500 px-8 py-3 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2"
           onClick={handleAddToBag}
+          disabled={loading}
         >
-          Add to cart
+          {loading ? <CircularProgress size={"20px"}/> : "Add to cart"}
         </button>
         
       </div>

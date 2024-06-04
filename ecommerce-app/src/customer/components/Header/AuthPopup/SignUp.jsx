@@ -17,7 +17,7 @@ const SignUp = ({ toggleSignupSigninForm}) => {
     role: 'user', // default role is 'user'
   });
 
-  const { loading, signup } = useSignup();
+  const { loading, signup, error } = useSignup();
   const { role } = useUserInfoContext();
 
   const [registerAsManager, setRegisterAsManager] = useState(false);
@@ -90,12 +90,15 @@ const handleRegister = async () => {
           />
           <TextField
             label="Phone Number"
-            type="tel"
+            type="number"
             variant="outlined"
             name="phoneNumber"
             value={formData.phoneNumber}
             onChange={handleInputChange}
+            inputProps={{ maxLength: 10 }}
             required
+            error={!!error}
+            helperText={error}
           />
           <Box display="flex" alignItems="center" sx={{ mt: -1.5, mb: -1.5 }} flex="1" className="space-x-1">
             <Checkbox checked={registerAsManager} onChange={handleCheckboxChange} />
@@ -103,11 +106,9 @@ const handleRegister = async () => {
               Register as Admin
             </Typography>
           </Box>
-          <Link to={role==="admin"? "/admin":"/"}>
             <Button variant="contained" disabled={loading} type="submit" onClick={handleRegister}fullWidth >
               {loading ? <CircularProgress size={"20px"}/> : "Register"}
             </Button>
-          </Link>
           <Box textAlign="center">
             <Typography variant="body2">
               If you already have an account?{' '}

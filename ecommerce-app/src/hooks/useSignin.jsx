@@ -52,7 +52,7 @@ const useSignin = () => {
             if (error.message.includes('Incorrect password')) {
                 toast.error('Incorrect password. Please try again.');
             } else if (error.message.includes('User not found')) {
-                toast.error('User not found. Please check your email.');
+                toast.error('Account not found. Please check your email.');
             } else {
                 toast.error('An error occurred. Please try again.');
             }

@@ -49,6 +49,7 @@ const usePaymentSuccessfull = () => {
 
                 if (response.status === 200) {
                     console.log("Order payment completed successfully!");
+                    toast.success("Order placed!");
                 } else {
                     console.error("Unexpected response status:", response.status);
                 }

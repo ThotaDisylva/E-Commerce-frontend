@@ -84,6 +84,10 @@ const [cardOpen, setCardOpen] = useState(false);
     }
   };
 
+  const handleResendOTP = (email) => { 
+    sendOtp(email,true, setIsForgotPassword, setIsOtpEntry);
+  };
+
   const handleOtpSubmit = (otp) => {
     if(verifyOtp(otp)){
         setIsOtpEntry(false);
@@ -329,8 +333,9 @@ const [cardOpen, setCardOpen] = useState(false);
 
             {isOtpEntry && (
               <OtpEntry
+              email={email}
                 handleOtpSubmit={handleOtpSubmit}
-                handleBack={() => {setIsOtpEntry(false); setIsForgotPassword(true);}}
+                handleResendOTP={handleResendOTP}
 
               />
             )}

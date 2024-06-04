@@ -68,7 +68,7 @@ function CheckoutAddressPage() {
       {!isOpen && (
         <div>
           <div className="px-2 md:px-20">
-            <Stepper activeStep={2}>
+            <Stepper activeStep={1}>
               {steps.map((label) => {
                 return (
                   <Step>
