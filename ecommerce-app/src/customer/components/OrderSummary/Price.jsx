@@ -25,7 +25,7 @@ const Price = ({actualTotalPrice, totalDisountedPrice, totalDeliveryCharges, tot
             </Box>
             <Divider  sx={{marginTop:"10px"}}/>            <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', fontWeight: 'bold' }}>
               <Typography style={{ marginRight: '20px', fontSize: '15px',fontWeight:'bolder' }}>Total Amount</Typography>
-              <Typography style={{ color: '#008000', fontSize: '15px', fontWeight: 'bolder' }}>{`₹${totalPayableAmount}`}</Typography>
+              <Typography style={{ fontSize: '15px', fontWeight: 'bolder' }}>{`₹${totalPayableAmount}`}</Typography>
             </Box>
           </Box>
         <Grid item xs={12} md={12} sx={{ display: 'flex', alignItems: 'flex-end' }}>

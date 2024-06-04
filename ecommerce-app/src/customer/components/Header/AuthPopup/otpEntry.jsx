@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, Grid } from '@mui/material';
 import ClearIcon from "@mui/icons-material/Clear";
 
-const OtpEntry = ({ handleOtpSubmit, handleBack }) => {
+const OtpEntry = ({email, handleOtpSubmit, handleResendOTP }) => {
   const [otp, setOtp] = useState('');
 
   return (
@@ -23,12 +23,14 @@ const OtpEntry = ({ handleOtpSubmit, handleBack }) => {
             maxWidth:"400px"
           }}
         >
-          <Typography variant="h5" align="center" gutterBottom>
-            Enter OTP
+          <Typography variant="h5" align="left" >
+          Verification required
           </Typography>
+          <p>To continue, complete this verification step. We've sent an OTP to the email {email}. Please enter it below to complete verification.</p>
           <TextField
             label="OTP"
             variant="outlined"
+            type='number'
             required
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
@@ -37,8 +39,8 @@ const OtpEntry = ({ handleOtpSubmit, handleBack }) => {
           <Button variant="contained" onClick={() => handleOtpSubmit(otp)} fullWidth>
             Verify OTP
           </Button>
-          <Button variant="text" onClick={handleBack} fullWidth>
-            Back to Forgot Password
+          <Button variant="text" onClick={handleResendOTP} fullWidth>
+            Resend Otp
           </Button>
         </Box>
       </div>

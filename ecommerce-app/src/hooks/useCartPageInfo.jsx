@@ -117,55 +117,55 @@ const useCartPageInfo = () => {
         }
     };
 
-    const addCartItem = async (productId, quantity) => {
-
-        console.log("quantity",quantity)
+    const addCartItem = async (productId) => {
         const jwtToken = localStorage.getItem('jwtToken');
-        setLoading(true)
-        var cartItemQuantity = 0;
-        cartItemsInfo?.map(item => {
-            if (item.productId === productId) {
-                cartItemQuantity = item.quantity;
-            }
-        });
-        console.log("cartItemQuantity",cartItemQuantity)
-        if (jwtToken ) {
+        setLoading(true);
+
+        if (jwtToken) {
             try {
                 const response = await axios.post(`http://localhost:8080/api/cart/add/${productId}`, {}, {
                     headers: {
                         Authorization: `Bearer ${jwtToken}`
                     }
                 });
-
+    
                 if (response.status === 201) {
-                    console.log('Item added to cart successfully'); 
-                    console.log("cartItems inside add",cartItemsInfo)
+                    console.log('Item added to cart successfully');
+                    console.log("cartItems inside add", cartItemsInfo);
                     const updatedCartItems = cartItemsInfo?.map(item => {
                         if (item.productId === productId) {
                             return { ...item, quantity: item.quantity + 1 };
                         }
                         return item;
                     });
-
+    
                     setCartItemCount(prevCount => prevCount + 1);
-                    console.log("after",cartItemCount)
+                    console.log("after", cartItemCount);
                     setCartItemsInfo(updatedCartItems);
                     calculatePriceDetails(updatedCartItems);
-
-                    localStorage.setItem("cart_items_count", cartItemCount)
-                    localStorage.setItem("cart_items_info", JSON.stringify(cartItemsInfo))
+    
+                    localStorage.setItem("cart_items_count", cartItemCount);
+                    localStorage.setItem("cart_items_info", JSON.stringify(cartItemsInfo));
                 }
             } catch (error) {
+                if (error.response) {
+                    const { status, data } = error.response;
+                    if (status === 400) {
+                        toast.error(data.message || 'Product quantity exceeded.');
+                    } else if (status === 500) {
+                        toast.error('An unexpected error occurred. Please try again later.');
+                    } else {
+                        toast.error('Error adding cart item.');
+                    }
+                } else {
+                    toast.error('Error adding cart item.');
+                }
                 console.error('Error adding cart item:', error);
-            }finally {
-                setLoading(false)
+            } finally {
+                setLoading(false);
             }
-
         } else {
             console.error("JWT Token not found in local storage");
-            if(cartItemQuantity>=quantity){
-                toast.error("Not Available")
-            }
             setLoading(false);
         }
     };

@@ -9,9 +9,10 @@ const SendOtp = ({ email, handleSendOtp, handleBackToLogin, loading }) => {
     <div className="send-otp-container ">
       <div className="send-otp-box relative">
       
-        <Typography variant="h5" align="center" gutterBottom>
-          Send OTP
+        <Typography variant="h5" align="center"  >
+        Password assistance
         </Typography>
+        <p>Enter the email address associated with your SHOPIT account.</p>
         <TextField
           label="Email"
           type="email"
@@ -19,6 +20,7 @@ const SendOtp = ({ email, handleSendOtp, handleBackToLogin, loading }) => {
           value={enteredEmail}
           onChange={(e)=>setEnteredEmail(e.target.value)}
           fullWidth
+          required
         />
         <Button variant="contained" disabled={loading} onClick={()=>handleSendOtp(enteredEmail)} fullWidth>
           {loading ? <CircularProgress size={"20px"}/> : "Send OTP"}

@@ -23,6 +23,8 @@ export default function ProductDetailsPage() {
   
   console.log(categoryInfo);
   const {productInfo, productPageInfo} = useProductDetails();
+
+  console.log("productInfo", productInfo)
   
   const {addCartItem, loading}= useCartPageInfo();
   const { role } = useUserInfoContext();
@@ -99,7 +101,7 @@ export default function ProductDetailsPage() {
           
         </div>
         <div className="mx-auto my-auto mt-6 h-fit bg-white pt-6 max-w-2xl sm:px-6 pb-12 lg:max-w-7xl lg:gap-x-8 lg:px-8">
-        {categoryInfo?.map((subCategory) => (
+        {categoryInfo?.filter(subCategory => subCategory.subCategoryName === productInfo.subCategoryName).map((subCategory) => (
           <Caroussel
             key={subCategory.subCategoryId}
             subCategory={subCategory.subCategoryName}

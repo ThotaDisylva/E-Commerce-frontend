@@ -51,11 +51,9 @@ const SignIn = ({ toggleSignupSigninForm, handleForgotPassword}) => {
 
           <Box display="flex" gap={2}></Box>
 
-          {/* <Link to={role==="admin"? "/admin":"/"}> */}
             <Button variant="contained" disabled={loading} type="submit" fullWidth sx={{ mt: -3 }}>
               {loading ? <CircularProgress size={"20px"}/> : "Login"}
             </Button>
-          {/* </Link> */}
           
           <Box textAlign="center">
             <Typography variant="body2">

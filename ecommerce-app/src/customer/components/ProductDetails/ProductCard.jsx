@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useCartPageInfo from "../../../hooks/useCartPageInfo";
 import toast from "react-hot-toast";
 import { useUserInfoContext } from "../../../context/UserInfoContext";
+import { CircularProgress } from "@mui/material";
 
 const ProductCard = ({ product }) => {
   const {
@@ -25,10 +26,10 @@ const ProductCard = ({ product }) => {
 
   const { role } = useUserInfoContext();
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = async (e) => {
     if (role !== null) {
       e.stopPropagation();
-      addCartItem(productId,productQuantity);
+      await addCartItem(productId);
       if (!loading) {
         toast.success("Added to Cart");
       }
@@ -86,8 +87,9 @@ const ProductCard = ({ product }) => {
         <button
           onClick={handleAddToCart}
           className="add-to-cart-button w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+          disabled={loading}
         >
-          Add to Cart
+          {loading ? <CircularProgress size={"20px"}/> : "Add to Cart"}
         </button>
       </div>
     </div>

@@ -64,9 +64,9 @@ const OrderDetailsPage = () => {
               ))}
           </Stepper>
         </div>
-        <div className="flex sm:flex-1 justify-end">
+        {/* <div className="flex sm:flex-1 justify-end">
           <Button>Cancel Order</Button>
-        </div>
+        </div> */}
       </div>
       <div>
         {orderDetails?.productCartInfo?.map((product) => (
