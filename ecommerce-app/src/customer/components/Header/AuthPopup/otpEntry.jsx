@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
-import { Box, Button, TextField, Typography, Grid } from '@mui/material';
+import { Box, Button, TextField, Typography, Grid, CircularProgress } from '@mui/material';
 import ClearIcon from "@mui/icons-material/Clear";
 
-const OtpEntry = ({email, handleOtpSubmit, handleResendOTP }) => {
+const OtpEntry = ({email, handleOtpSubmit, handleResendOTP, loading }) => {
   const [otp, setOtp] = useState('');
 
   return (
@@ -39,8 +39,8 @@ const OtpEntry = ({email, handleOtpSubmit, handleResendOTP }) => {
           <Button variant="contained" onClick={() => handleOtpSubmit(otp)} fullWidth>
             Verify OTP
           </Button>
-          <Button variant="text" onClick={handleResendOTP} fullWidth>
-            Resend Otp
+          <Button variant="text" disabled={loading} onClick={()=>handleResendOTP()} fullWidth>
+            {loading ? <CircularProgress size={"20px"}/> : "Resend Otp"}
           </Button>
         </Box>
       </div>
