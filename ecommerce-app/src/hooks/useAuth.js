@@ -11,7 +11,7 @@ const checkExpiry = async () => {
     const jwtToken = localStorage.getItem("jwtToken");
     if (jwtToken) {
     try {
-        const response = await axios.get(`http://localhost:8080/auth/check/token/expiry`,{ token: `Bearer ${jwtToken}`},
+        const response = await axios.post(`http://localhost:8080/auth/check/token/expiry`,{ token: `Bearer ${jwtToken}`},
             {
                 headers: {
                     'Content-Type': 'application/json',

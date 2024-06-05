@@ -77,14 +77,14 @@ const [cardOpen, setCardOpen] = useState(false);
 
   const handleSendOtp = (email) => {
     if(email !== ""){
-      
+      setEmail(email)
       sendOtp(email,false, setIsForgotPassword, setIsOtpEntry);
     }else{
       toast.error("Email not entered")
     }
   };
 
-  const handleResendOTP = (email) => { 
+  const handleResendOTP = () => { 
     sendOtp(email,true, setIsForgotPassword, setIsOtpEntry);
   };
 
@@ -336,7 +336,7 @@ const [cardOpen, setCardOpen] = useState(false);
               email={email}
                 handleOtpSubmit={handleOtpSubmit}
                 handleResendOTP={handleResendOTP}
-
+                loading = {loading}
               />
             )}
 
