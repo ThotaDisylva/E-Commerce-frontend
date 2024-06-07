@@ -27,9 +27,6 @@ const OrderInAdmin = ({order}) => {
         console.error(error);
       }
   };
-    const handleDelete = () => {
-        onDelete(); 
-    };
 
     return (
 <>
@@ -50,7 +47,7 @@ const OrderInAdmin = ({order}) => {
       <TableCell align="center">{order.totalPrice}</TableCell>
       <TableCell align="center">{order.orderStatus}</TableCell>
       <TableCell align="center">
-            <Button variant="center" onClick={handleClick}>Status</Button>
+            <Button variant="contained" onClick={handleClick}>Status</Button>
             <Popover
               open={Boolean(anchorEl)}
               anchorEl={anchorEl}
