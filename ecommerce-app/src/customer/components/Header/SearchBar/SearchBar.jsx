@@ -26,8 +26,8 @@ const SearchBar = ({filters, setFilters}) => {
   //   fetchSearchData;
   // };
   return (
-      <div className='flex items-center w-full h-10 rounded bg-[#F1F2F4] py-1 px-3'>
-        <input placeholder='Search for items...' value={filters.keyword} onChange={handleSearch} type='text' className='border-0 outline-none h-9 text-base w-full bg-[#F1F2F4]'/>
+      <div className='flex items-center w-full h-10 rounded bg-[#F5F4FE] py-1 px-3'>
+        <input placeholder='Search for items...' value={filters.keyword} onChange={handleSearch} type='text' className='border-0 outline-none h-9 text-base w-full bg-[#F5F4FE]'/>
         <div className='ml-2'>
           <div>
           <Link to={"/search"} state={{fromSearchBar:{filters:filters, subcategory:filters.subcategory}}}>

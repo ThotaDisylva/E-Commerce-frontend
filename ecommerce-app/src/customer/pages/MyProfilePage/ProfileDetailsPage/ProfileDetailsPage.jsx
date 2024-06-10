@@ -5,7 +5,7 @@ import { useUserInfoContext } from "../../../../context/UserInfoContext";
 
 const ProfileDetailsPage = () => {
 
-  const {profileInfo, loading, updateProfileInfo, deleteUser} = useProfileInfo();
+  const {profileInfo, loading, updateProfileInfo, deleteUser, containLogOut} = useProfileInfo();
   const navigate = useNavigate();
   const {setRole} = useUserInfoContext();
   const [isEditing, setIsEditing] = useState(false);

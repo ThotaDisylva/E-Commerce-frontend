@@ -50,7 +50,7 @@ export default function OrderSummaryPage() {
   const { createOrder, loading } = useMyOrderPage();
 
   const orderInfo = {
-    orderStatus: "Cancelled",
+    orderStatus: "Pending",
     deliveryCharges: priceDetails.totalDeliveryCharge,
     totalAmount: priceDetails.totalPayablePrice,
     addressId: selectedAddress.addressId,
