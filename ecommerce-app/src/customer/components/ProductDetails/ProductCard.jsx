@@ -18,7 +18,7 @@ const ProductCard = ({ product }) => {
   } = product;
 
   const navigate = useNavigate();
-  const { loading, addCartItem } = useCartPageInfo();
+  const { loading, addCartItem, quantityExceeded } = useCartPageInfo();
 
   const handleProductClick = () => {
     navigate(`/productDetails/${product.productId}`);
@@ -30,8 +30,8 @@ const ProductCard = ({ product }) => {
     if (role !== null) {
       e.stopPropagation();
       await addCartItem(productId);
-      if (!loading) {
-        toast.success("Added to Cart");
+      if (!quantityExceeded) {
+        toast.success("Added to Cart 345");
       }
     } else {
       toast.error("Sign in to add items to cart");

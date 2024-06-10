@@ -45,7 +45,7 @@ const HomeSectionCarousel = ({subCategory, productsData}) => {
   ));
 
   return (
-    <div className="relative border bg-white">
+    <div className="relative border bg-[#FFFFFF]">
     <div className="flex items-center justify-between w-full px-6 py-5">
       <h2 className="text-2xl font-extrabold text-gray-800  ">{subCategory}</h2>
       <Link to={"/search"} state={{fromSearchBar:{filters:filters,subcategory:subCategory}}}>

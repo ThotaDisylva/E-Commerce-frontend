@@ -20,36 +20,33 @@ import PaymentSuccessfullPage from "../src/customer/pages/PaymentSuccessfull/Pay
 import useAuth from "./hooks/useAuth";
 
 function App() {
-
-  const {role, cartItemCount, categoriesDetails} = useUserInfoContext();
-  const {getCategoriesDetails} = useNavbar();
-  const {checkExpiry} = useAuth();
+  const { role, cartItemCount, categoriesDetails } = useUserInfoContext();
+  const { getCategoriesDetails } = useNavbar();
+  const { checkExpiry } = useAuth();
   const [filters, setFilters] = useState({
     keyword: '',
     category: '',
-    subcategory:'',
+    subcategory: '',
     sortByPrice: -1,
     sortByDate: -1,
   });
 
-  useEffect(()=>{
-    if(role!=="admin"){
+  useEffect(() => {
+    if (role !== "admin") {
       getCategoriesDetails();
     }
     checkExpiry();
-  },[]);
-
-  
-
+  }, []);
 
   return (
     <>
-
-      {!(role==="admin") && (<div>
-        <NavBar cartItemCount={role===null? 0: cartItemCount} categoriesDetails={categoriesDetails} filters={filters} setFilters={setFilters}/>
-      </div>)}
-      <div className={(role==="admin")? "pt-[2rem]":"pt-[6rem]"}>
-      <Toaster/>
+      {role !== "admin" && (
+        <div>
+          <NavBar cartItemCount={role === null ? 0 : cartItemCount} categoriesDetails={categoriesDetails} filters={filters} setFilters={setFilters} />
+        </div>
+      )}
+      <div className={role === "admin" ? "pt-[2rem]" : "pt-[6rem]"}>
+        <Toaster />
         <Routes>
             <Route path="/" element={(role==="admin") ? <Navigate to="/admin"/> : <Home/>}/>
             <Route path="/cart" element=<CartPage />/>
@@ -61,14 +58,15 @@ function App() {
             <Route path="/orderDetails" element=<OrderDetailsPage />/> 
             <Route path="/search" element=<SearchPage/> filters={filters} setFilters={setFilters}/>
             <Route path="/productDetails/:productId" element=<ProductDetailsPage />/>
-            <Route path="/paymentsuccessfull/:orderId" element=<PaymentSuccessfullPage/>/>
+            <Route path="/paymentsuccessful/:orderId" element=<PaymentSuccessfullPage/>/>
             <Route path="/admin/*" element={(role!=="admin") ? <Navigate to="/"/> : <AdminPage/>}/>
         </Routes>
-        
       </div>
-      {!(role==="admin")&& (<div>
-        <Footer/>
-      </div>)}
+      {role !== "admin" && (
+        <div>
+          <Footer />
+        </div>
+      )}
     </>
   );
 }

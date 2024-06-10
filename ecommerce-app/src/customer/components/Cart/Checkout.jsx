@@ -3,15 +3,19 @@ import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserInfoContext } from '../../../context/UserInfoContext';
 import toast from 'react-hot-toast';
+import useCartPageInfo from '../../../hooks/useCartPageInfo';
 const Checkout = ({actualTotalPrice, totalDisountedPrice, totalDeliveryCharges, totalPayableAmount}) => {
 
   const { cartItemCount} = useUserInfoContext();
 
   const navigate = useNavigate();
 
-  const handleCheckOut = () =>{
+  const {cartQuantityChecker} = useCartPageInfo();
+
+  const handleCheckOut = async() =>{
     if(cartItemCount>0){
-      navigate("/checkoutAddress")
+      await cartQuantityChecker();
+      
     }else{
       toast.error("Cart is empty")
     }
